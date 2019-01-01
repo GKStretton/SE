@@ -1,0 +1,6 @@
+The api is being accessed via a google service account
+
+The email of the servicea account has to be explicitly added to any new calendar we  want to access.
+
+In the google calendar api, dates/times are in the format:
+[yyyy-mm-dd]T[hh:mm:ss:0z] - specifically, this is the RFC3339 format
