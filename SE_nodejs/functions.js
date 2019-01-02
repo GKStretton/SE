@@ -4,7 +4,7 @@ these all require an auth object
 in our case, the auth object is our jwtclient(service account)
 */
 
-//checks if busy at certain time, returns 'busy' or 'not busy'
+//checks if busy at certain time, returns 'busy' or 'notBusy'
 const {google} = require('googleapis');
 
 function checkBusy(startTime, endTime, calendarId, authInput, callback) {
@@ -53,6 +53,7 @@ function listEvents(calendarId, authInput) {
 }
 
 function addEvent(startTime,endTime,calendarId,summary,authInput){
+    let calendar = google.calendar('v3');
     calendar.events.insert({
         auth: authInput,
         calendarId: calendarId,
@@ -71,30 +72,10 @@ function addEvent(startTime,endTime,calendarId,summary,authInput){
             console.log('added');
             return true;
         }
+    });
 
 }
-//attempts to add an event at a certain time window
-//uses the checkbusy function to check whether to add the event
-//returns true/false based off whether it was able to add the event
-function addEventIfFree(startTime, endTime, calendarId,summary, authInput) {
-    let calendar = google.calendar('v3');
-    checkBusy(startTime, endTime, calendarId, authInput,function(err,response){
-        if(err){
-            console.log(err.code);
-            console.log(err.message);
-            return false;
-        }
-        else{
-            if (response == 'busy'){
-                console.log('busy');
-                return false;
-            }
-            else{ // if not busy, we can insert the event
-                addEvent(startTime, endTime, calendarId,summary, authInput); 
-            }
-        }
-    }); 
-}
+
 
 module.exports.checkBusy = checkBusy;
 module.exports.addEvent = addEvent;

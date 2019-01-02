@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 apiFunctions = require('./functions');
+addEvent = apiFunctions.addEvent;
+checkBusy = apiFunctions.checkBusy;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -26,12 +28,25 @@ jwtClient.authorize(function(err, tokens) {
     }
 });
 
-
+startTime = '2019-01-01T23:30:00.0z';
+endTime = '2019-01-01T23:40:00.0z';
+calendarId = 'ul3q8rqrmurad3mm8495066r8k@group.calendar.google.com';
 //test query
-apiFunctions.addEvent('2019-01-01T20:30:00.0z',
-    '2019-01-01T21:30:00.0z',
-    'ul3q8rqrmurad3mm8495066r8k@group.calendar.google.com',
-    'testevent2',
-    jwtClient
-);
+
+checkBusy(startTime, endTime, calendarId, jwtClient,function(err,response){
+    if(err){
+        console.log(err.code);
+        console.log(err.message);
+        return false;
+    }
+    else{
+        if (response == 'busy'){
+            console.log('busy');
+            return false;
+        }
+        else{ // if not busy, we can insert the event
+            addEvent(startTime, endTime, calendarId,'testevent', jwtClient); 
+        }
+    }
+}); 
 
