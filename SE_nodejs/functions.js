@@ -24,7 +24,7 @@ function checkBusy(startTime, endTime, calendarId, authInput, callback) {
         }
     }, function(err, response) {
         if (err) {
-            callback(err); // we have no way of knowing, so we return busy
+            callback(err); 
         } else {
             for (key in response.data.calendars) {
                 if (response.data.calendars[key].busy.length > 0) { // the busy object is non empty if there is a clash
@@ -52,10 +52,31 @@ function listEvents(calendarId, authInput) {
     });
 }
 
+function addEvent(startTime,endTime,calendarId,summary,authInput){
+    calendar.events.insert({
+        auth: authInput,
+        calendarId: calendarId,
+        resource:{
+            start:{dateTime:startTime,timeZone:'Europe/London'},
+            end: {dateTime:endTime,timeZone:'Europe/London'},
+            summary:summary
+        }  
+    },function(err,response){
+        if(err){
+            console.log(err.code);
+            console.log(err.message);
+            return false;
+        }
+        else{
+            console.log('added');
+            return true;
+        }
+
+}
 //attempts to add an event at a certain time window
 //uses the checkbusy function to check whether to add the event
 //returns true/false based off whether it was able to add the event
-function addEvent(startTime, endTime, calendarId,summary, authInput) {
+function addEventIfFree(startTime, endTime, calendarId,summary, authInput) {
     let calendar = google.calendar('v3');
     checkBusy(startTime, endTime, calendarId, authInput,function(err,response){
         if(err){
@@ -69,26 +90,7 @@ function addEvent(startTime, endTime, calendarId,summary, authInput) {
                 return false;
             }
             else{ // if not busy, we can insert the event
-                calendar.events.insert({
-                    auth: authInput,
-                    calendarId: calendarId,
-                    resource:{
-                        start:{dateTime:startTime,timeZone:'Europe/London'},
-                        end: {dateTime:endTime,timeZone:'Europe/London'},
-                        summary:summary
-                    }  
-                },function(err,response){
-                    if(err){
-                        console.log(err.code);
-                        console.log(err.message);
-                        return false;
-                    }
-                    else{
-                        console.log('added');
-                        return true;
-                    }
-                });
-
+                addEvent(startTime, endTime, calendarId,summary, authInput); 
             }
         }
     }); 
