@@ -52,7 +52,7 @@ function listEvents(calendarId, authInput) {
     });
 }
 
-function addEvent(startTime,endTime,calendarId,summary,authInput){
+function addEvent(startTime,endTime,calendarId,summary,authInput,callback){
     let calendar = google.calendar('v3');
     calendar.events.insert({
         auth: authInput,
@@ -64,13 +64,10 @@ function addEvent(startTime,endTime,calendarId,summary,authInput){
         }  
     },function(err,response){
         if(err){
-            console.log(err.code);
-            console.log(err.message);
-            return false;
+            callback(err);
         }
         else{
-            console.log('added');
-            return true;
+            callback(false);
         }
     });
 

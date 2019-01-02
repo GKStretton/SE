@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang ="en">
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+</head>
+
+<body>
+<form id = "bookingForm">
+<label> Start Date/Time:</label>
+<input name = "startDateTime"> <br>
+<label> End Date/Time </label>
+<input name = "endDateTime"> <br>
+<label> Email: </label>
+<input type="email" name = "email" > <br>
+<label> Phone number:</label>
+<input type="text" name = "phone"><br>
+<label> Additional information </label>
+<input type="text" name = "info"><br>
+<button type="button" id = "formSubmit">Submit</button>
+</form>
+</body>
+
+<script>
+
+$(document).on("click","#formSubmit",function(){
+
+	$.post("/bookingRequest",$("bookingForm").serialise(),function(data){
+		alert("Sucess!");
+	})
+	.fail(function(){
+		alert("Unable to make your bookng");
+	});
+	
+});
+
+</script>
+
+
+
+</html>
