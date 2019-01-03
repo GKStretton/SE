@@ -2,21 +2,39 @@ const {google} = require('googleapis');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const app = express();
+const session = require('client-sessions'); //cookies
+const RFC4122 = require('rfc4122');
+let rfc4122 = new RFC4122();
+console.log(rfc4122.v1().replace(/-/g,""));
 var counter = 0; 
-
-apiFunctions = require('./functions');
+apiFunctions = require('./functions'); // functions which call google calendar api
 addEvent = apiFunctions.addEvent;
 checkBusy = apiFunctions.checkBusy;
 deleteEvent = apiFunctions.deleteEvent;
+const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-
 app.use(express.static(path.join(__dirname,'public')));
 
-const privatekey = require("./private-key.json");
+app.use(session({
+  cookieName: "myCookie",
+  secret: "ucndh34634h48dhsdtywefhsdf7sdf", //some long string used to sign the cookie
+  duration: 24 * 60 * 60 * 1000,
+  activeDuration: 1000 * 60 * 5
+}));
+
+app.use(function(req,res,next){
+    req.myCookie.booking = {};        
+    console.log('doing cookies')
+    console.log(req.myCookie);
+    next();
+});
+const bookingRouter = express.Router();
+app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
+
+const privatekey = require("./private-key.json"); //private key from google service account, service acc email also has to be added to each calendar manually
 // configure a JWT auth client
 var jwtClient = new google.auth.JWT(
     privatekey.client_email,
@@ -30,7 +48,7 @@ jwtClient.authorize(function(err, tokens) {
         console.log(err);
         return;
     } else {
-        console.log("Successfully connected!");
+        console.log('Calendar api successfully authenticated');
     }
 });
 app.get('/form',function(req,res){
@@ -38,12 +56,13 @@ app.get('/form',function(req,res){
 });
 
 //query that creates a lock on a slot
-app.post('/lockRequest',function(req,res){
+bookingRouter.post('/lockRequest',function(req,res){
+    console.log(req.myCookie);
     calendarId = 'ul3q8rqrmurad3mm8495066r8k@group.calendar.google.com';
-    checkBusy(req.body.startTime, req.body.endTime, calendarId, jwtClient,function(err,response){
+    checkBusy(calendarId, jwtClient,req.body.startTime, req.body.endTime,function(err,response){
         if(err){
             console.log(err.code);
-            console.log(err.message);
+            console.log('Check busy error: ' + err.message);
             res.status(400).send('invalid'); // some sort of error occurs on google's side
         }
         else{
@@ -52,23 +71,33 @@ app.post('/lockRequest',function(req,res){
                 res.status(400).send('busy'); //if the slot is busy
             }
             else{ // if not busy, we lock the slot, the user still needs to pay though
-                addEvent(req.body.startTime, req.body.endTime,'loc' + counter.toString(), 'locked',req.body.eventName, jwtClient,function(err){
+                let eventId =  rfc4122.v1(); 
+                eventId = eventId.replace(/-/g,"")
+                console.log(eventId);
+                addEvent(calendarId, jwtClient,req.body.startTime, req.body.endTime,'locked',eventId,function(err){
                     if(err){
+                        console.log(err.message);
                         res.status(400).send('invalid'); // some sort of error occurs on google's side
                     }
                     else{
+                        console.log('200');
+                        req.myCookie.booking.eventId = eventId;
                         res.sendStatus(200); //success
+                        //setTimeout(deleteEvent(calendarId,jwtClient,eventId),120000) //delete lock on timeout this doesn't work currently
                     }
                 }); 
             }
         }
     }); 
-
 });
 
-app.post('cancelBookingRequest',function(req,res))
+bookingRouter.post('/cancelBooking',function(req,res){
+    console.log(req.body.message);
+});
 
-app.post('paidBookingRequest')
+bookingRouter.post('/paidBookingRequest',function(req,res){
+
+});
 
 
 app.listen(5000);

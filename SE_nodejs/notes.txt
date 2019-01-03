@@ -3,4 +3,15 @@ The api is being accessed via a google service account
 The email of the servicea account has to be explicitly added to any new calendar we  want to access.
 
 In the google calendar api, dates/times are in the format:
-[yyyy-mm-dd]T[hh:mm:s0.0z] - specifically, this is the RFC3339 format
+[yyyy-mm-dd]T[hh:mm:s0.0z] - specifically, this is the RFC3339 format.
+
+Concurrency control system:
+
+User makes time slot selection and clicks book now - >
+If free, the time slot is locked on the google calendar (with a unique id,
+this unique id is also set in the cookie of the user)
+The function in the back end starts a timer, which will remove the lock
+after a certain time.
+When the user clicks to make their payment, we check if a lock is still in place 
+with the given id from our cookie. If so, we confirm the payment and replace the lock
+with a confirmed booking.
