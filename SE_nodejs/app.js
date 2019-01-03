@@ -5,8 +5,6 @@ const path = require('path');
 const session = require('client-sessions'); //cookies
 const RFC4122 = require('rfc4122');
 let rfc4122 = new RFC4122();
-console.log(rfc4122.v1().replace(/-/g,""));
-var counter = 0; 
 apiFunctions = require('./functions'); // functions which call google calendar api
 addEvent = apiFunctions.addEvent;
 checkBusy = apiFunctions.checkBusy;
@@ -17,7 +15,6 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(express.static(path.join(__dirname,'public')));
-
 app.use(session({
   cookieName: "myCookie",
   secret: "ucndh34634h48dhsdtywefhsdf7sdf", //some long string used to sign the cookie
@@ -75,7 +72,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                 eventId = eventId.replace(/-/g,"")
                 console.log(eventId);
                 addEvent(calendarId, jwtClient,req.body.startTime, req.body.endTime,'locked',eventId,function(err){
-                    if(err){
+                    if(err){ 
                         console.log(err.message);
                         res.status(400).send('invalid'); // some sort of error occurs on google's side
                     }
