@@ -72,7 +72,8 @@ bookingRouter.post('/lockRequest',function(req,res){
                 eventId = eventId.replace(/-/g,"")
                 console.log(eventId);
                 addEvent(calendarId, jwtClient,req.body.startTime, req.body.endTime,'locked',eventId,function(err){
-                    if(err){ 
+                    if(err){
+                        console.log(err.code);
                         console.log(err.message);
                         res.status(400).send('invalid'); // some sort of error occurs on google's side
                     }
@@ -80,7 +81,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                         console.log('200');
                         req.myCookie.booking.eventId = eventId;
                         res.sendStatus(200); //success
-                        //setTimeout(deleteEvent(calendarId,jwtClient,eventId),120000) //delete lock on timeout this doesn't work currently
+                        setTimeout(function(){deleteEvent(calendarId,jwtClient,eventId)},120000); //delete lock on timeout this doesn't work currently
                     }
                 }); 
             }

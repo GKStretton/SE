@@ -83,7 +83,11 @@ function deleteEvent(calendarId,authInput,eventId){
         auth:authInput,
         calendarId:calendarId,
         eventId:eventId
-    })
+    },function(err,response){
+        if(err){
+            console.log(err.message);
+        }
+    });
 }
 
 module.exports.checkBusy = checkBusy;
