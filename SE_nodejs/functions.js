@@ -7,6 +7,7 @@ in our case, the auth object is our jwtclient(service account)
 //checks if busy at certain time, returns 'busy' or 'notBusy'
 const {google} = require('googleapis');
 
+//for generating a unique id for a lockout event
 function checkBusy(startTime, endTime, calendarId, authInput, callback) {
     let response = '';
     let calendar = google.calendar('v3');
@@ -52,7 +53,7 @@ function listEvents(calendarId, authInput) {
     });
 }
 
-function addEvent(startTime,endTime,calendarId,summary,authInput,callback){
+function addEvent(startTime,endTime,calendarId,eventId,summary,authInput,callback){
     let calendar = google.calendar('v3');
     calendar.events.insert({
         auth: authInput,
@@ -60,7 +61,8 @@ function addEvent(startTime,endTime,calendarId,summary,authInput,callback){
         resource:{
             start:{dateTime:startTime,timeZone:'Europe/London'},
             end: {dateTime:endTime,timeZone:'Europe/London'},
-            summary:summary
+            summary:summary,
+            id: eventId
         }  
     },function(err,response){
         if(err){
@@ -73,6 +75,16 @@ function addEvent(startTime,endTime,calendarId,summary,authInput,callback){
 
 }
 
+//deletes event with certain ID
+function deleteEvent(eventId,calendarId,authInput){
+    let calendar = google.calendar('v3');
+    calendar.events.delete({
+        auth:authInput,
+        calendarId:calendarId,
+        eventId:eventId
+    })
+}
 
 module.exports.checkBusy = checkBusy;
 module.exports.addEvent = addEvent;
+module.exports.deleteEvent = deleteEvent;
