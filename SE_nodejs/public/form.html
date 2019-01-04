@@ -36,7 +36,7 @@ Obviously a better solution for picking time slot needs to be implemented <br>
                 // When you have a Payment ID, you need to call the `resolve` method, e.g `resolve(data.paymentID)`
                 // Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
 
-                jQuery.post('/booking/create-payment')
+                jQuery.post('/booking/createPayment')
                     .done(function(data) { resolve(data.paymentID); })
                     .fail(function(err)  { reject(err); });
             });
@@ -54,7 +54,7 @@ Obviously a better solution for picking time slot needs to be implemented <br>
             // At this point, the payment has been authorized, and you will need to call your back-end to complete the
             // payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
-            jQuery.post('/booking/execute-payment', { paymentID: data.paymentID, payerID: data.payerID })
+            jQuery.post('/booking/executePayment', { paymentID: data.paymentID, payerID: data.payerID })
                 .done(function(data) { /* Go to a success page */ })
                 .fail(function(err)  { /* Go to an error page  */  });
         },

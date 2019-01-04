@@ -2,9 +2,9 @@
 request functions for the google calendar api
 these all require an auth object
 in our case, the auth object is our jwtclient(service account)
+general format is function(calendarId,authInput,[parameters],callback)
 */
 
-//general format is function(calendarId,authInput,[parameters],callback)
 //checks if busy at certain time, returns 'busy' or 'notBusy'
 const {google} = require('googleapis');
 
@@ -77,7 +77,7 @@ function addEvent(calendarId,authInput,startTime,endTime,summary,eventId,callbac
 }
 
 //deletes event with given ID
-function deleteEvent(calendarId,authInput,eventId){
+function deleteEvent(calendarId,authInput,eventId,callback){
     let calendar = google.calendar('v3');
     calendar.events.delete({
         auth:authInput,
@@ -85,7 +85,10 @@ function deleteEvent(calendarId,authInput,eventId){
         eventId:eventId
     },function(err,response){
         if(err){
-            console.log(err.message);
+            callback(err);
+        }
+        else{
+            callback(false);
         }
     });
 }
