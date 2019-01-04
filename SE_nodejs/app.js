@@ -6,7 +6,7 @@ const path = require('path');
 const session = require('client-sessions'); //cookies
 const RFC4122 = require('rfc4122');
 let rfc4122 = new RFC4122();
-calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
+const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -46,11 +46,19 @@ jwtClient.authorize(function(err, tokens) {
     }
 });
 
-const paypalSecret = require("./paypalSecret.json");
+//const paypalSecret = require("./paypalSecret.json");
 const paypalId = require("./paypalId.json");
-
-
-
+const paypalApiFunctions = require('./paypalApiFunctions.js');
+//how we get a paypal api token
+paypalApiFunctions.createToken(paypalId.clientId,'',function(err,token){
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log("Token: ");
+        console.log(token);
+    }
+})//for sandbox we don't need a secret
 
 
 app.get('/form',function(req,res){
