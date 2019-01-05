@@ -10,15 +10,33 @@ let rfc4122 = new RFC4122();
 const nodemailer = require('nodemailer');
 const emailCredentials = require('./tokens/emailCredentials.json')
 let options = {
-    host:"gmail.com",
+    service : 'gmail',
+    secure:true,
     auth:{
         user: emailCredentials.username,
         pass:emailCredentials.password
     }
 }
-let transporter = nodemailer.createTransport(options);
-
-
+let defaults = {
+    from: 'group6.se.durham@gmail.com'
+}
+let transporter = nodemailer.createTransport(options, defaults);
+var message = {
+    to: 'group6.se.durham@gmail.com',
+    subject:'test',
+    html:'<p>test</p>'
+}
+/* 
+* test message for nodemailer
+transporter.sendMail(message,function(err){
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log('message sent');
+    }
+})
+*/
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
