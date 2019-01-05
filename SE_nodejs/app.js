@@ -23,7 +23,10 @@ app.use(session({
   activeDuration: 1000 * 60 * 5
 }));
 app.use(function(req,res,next){
-    req.myCookie.booking = {};        
+    if(typeof req.myCookie.booking == "undefined"){
+        req.myCookie.booking = {};
+    }   
+
     console.log('doing cookies')
     console.log(req.myCookie);
     next();
@@ -55,7 +58,7 @@ app.get('/form',function(req,res){
 
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
-    console.log(req.myCookie);
+    req.myCookie.booking.eventName = req.body.eventName; 
     calendarFunctions.checkBusy(calendarId, jwtClient,req.body.startTime, req.body.endTime,function(err,response){
         if(err){
             console.log(err.code);
@@ -69,7 +72,7 @@ bookingRouter.post('/lockRequest',function(req,res){
             }
             else{ // if not busy, we lock the slot, the user still needs to pay though
                 let eventId =  rfc4122.v1(); 
-                eventId = eventId.replace(/-/g,"")
+                eventId = eventId.replace(/-/g,"");
                 console.log(eventId);
                 calendarFunctions.addEvent(calendarId, jwtClient,req.body.startTime, req.body.endTime,'locked',eventId,function(err){
                     if(err){
@@ -100,7 +103,7 @@ bookingRouter.post('/cancelBooking',function(req,res){
     });
 });
 
-//creates a paypal payment and sends the id to front end butto script
+//creates a paypal payment and sends the id to front end button script
 bookingRouter.post('/createPayment',function(req,res){
     paypalApiFunctions.createPayment(
         paypalId.clientId,
@@ -122,23 +125,47 @@ bookingRouter.post('/createPayment',function(req,res){
         })
 });
 
+//checks if lock is stil in place, if so, we add the actual booking event
+//once sucessfully added, we then can finalise the paypal payment
 bookingRouter.post('/executePayment',function(req,res){
-    paypalApiFunctions.executePayment(
-        paypalId.clientId,
-        '',
-        '0.01',
-        req.body.paymentID,
-        req.body.payerID,
-        function(err,response){
-            if(err){
-                console.log(err);
-                res.send(400);
-            }
-            else{
-                console.log('Payment executed');
-            }
-        });
-        
+    //check if lock is still in place
+    calendarFunctions.getEvent(calendarId,jwtClient,req.myCookie.booking.eventId,function(err,response){ 
+        if(err){ //this means the lock is gone - we have timed out
+            console.log(err);
+            res.sendStatus(400);
+        }
+        else{
+            let eventId =  rfc4122.v1(); 
+            eventId = eventId.replace(/-/g,"");
+            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.eventName,eventId,function(err){
+                    if(err){
+                        console.log(err.code);
+                        console.log(err.message);
+                        res.sendStatus(400); // some sort of error occurs on google's side
+                    }
+                    else{ //successfully added booking, so we can finalise the payment
+                        paypalApiFunctions.executePayment(
+                            paypalId.clientId,
+                            '',
+                            '0.01',
+                            req.body.paymentID,
+                            req.body.payerID,
+                            function(err,response){
+                                if(err){ // payment error, we have to delete the booking
+                                    console.log(err)
+                                    res.sendStatus(400);
+                                    calendarFunctions.deleteEvent(calendarId,jwtClient,eventId);
+                                }
+                                else{
+                                    console.log('Payment executed');
+                                    res.sendStatus(200);
+                                    calendarFunctions.deleteEvent(calendarId,jwtClient,req.myCookie.booking.eventId); // delete the lock event, we no longer need
+                                }
+                            });
+                    }
+            });
+        }   
+    });
 });
 
 

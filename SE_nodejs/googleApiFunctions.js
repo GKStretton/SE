@@ -7,11 +7,10 @@ general format is function(calendarId,authInput,[parameters],callback)
 
 //checks if busy at certain time, returns 'busy' or 'notBusy'
 const {google} = require('googleapis');
-
+const calendar = google.calendar('v3');
 //for generating a unique id for a lockout event
 function checkBusy(calendarId, authInput,startTime, endTime, callback) {
     let response = '';
-    let calendar = google.calendar('v3');
     calendar.freebusy.query({ //checks if busy at a certain time
         auth: authInput,
         resource: {
@@ -40,7 +39,6 @@ function checkBusy(calendarId, authInput,startTime, endTime, callback) {
 }
 
 function listEvents(calendarId, authInput) {
-    let calendar = google.calendar('v3');
     calendar.events.list({ // lists items from the calendar
         auth: authInput,
         calendarId: calendarId
@@ -55,7 +53,6 @@ function listEvents(calendarId, authInput) {
 }
 
 function addEvent(calendarId,authInput,startTime,endTime,summary,eventId,callback){
-    let calendar = google.calendar('v3');
     calendar.events.insert({
         auth: authInput,
         calendarId: calendarId,
@@ -78,7 +75,6 @@ function addEvent(calendarId,authInput,startTime,endTime,summary,eventId,callbac
 
 //deletes event with given ID
 function deleteEvent(calendarId,authInput,eventId,callback){
-    let calendar = google.calendar('v3');
     calendar.events.delete({
         auth:authInput,
         calendarId:calendarId,
@@ -93,6 +89,21 @@ function deleteEvent(calendarId,authInput,eventId,callback){
     });
 }
 
+function getEvent(calendarId,authInput,eventId,callback){
+    calendar.events.get({
+        auth:authInput,
+        calendarId:calendarId,
+        eventId:eventId
+    }, function(err,response){
+        if(err){
+            callback(err);
+        }
+        else{
+            callback(false,response);
+        }
+    });
+}
 module.exports.checkBusy = checkBusy;
 module.exports.addEvent = addEvent;
 module.exports.deleteEvent = deleteEvent;
+module.exports.getEvent  = getEvent;

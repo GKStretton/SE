@@ -24,7 +24,6 @@ Obviously a better solution for picking time slot needs to be implemented <br>
 </div>
 
 <script>
-
     paypal.Button.render({
     	env:'sandbox',//or 'production'
         // Set up a getter to create a Payment ID using the payments api, on your server side:
@@ -56,8 +55,8 @@ Obviously a better solution for picking time slot needs to be implemented <br>
             // payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 
             jQuery.post('/booking/executePayment', { paymentID: data.paymentID, payerID: data.payerID })
-                .done(function(data) { /* Go to a success page */ })
-                .fail(function(err)  { /* Go to an error page  */  });
+                .done(function(data) { console.log("You made a payment") }) // go to a payment success page
+                .fail(function(err)  { console.log("Failed to execute your payment") }); // go to a payment failure page
         },
 
         // Pass a function to be called when the customer cancels the payment
