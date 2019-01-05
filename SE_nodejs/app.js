@@ -6,10 +6,24 @@ const path = require('path');
 const session = require('client-sessions'); //cookies
 const RFC4122 = require('rfc4122'); //unique id for calendar event
 let rfc4122 = new RFC4122();
+//mail stuff
+const nodemailer = require('nodemailer');
+const emailCredentials = require('./tokens/emailCredentials.json')
+let options = {
+    host:"gmail.com",
+    auth:{
+        user: emailCredentials.username,
+        pass:emailCredentials.password
+    }
+}
+let transporter = nodemailer.createTransport(options);
+
+
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
 const paypalApiFunctions = require('./paypalApiFunctions.js');
+
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
