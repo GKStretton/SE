@@ -7,8 +7,8 @@ const session = require('client-sessions'); //cookies
 const RFC4122 = require('rfc4122'); //unique id for calendar event
 let rfc4122 = new RFC4122();
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
-//const paypalSecret = require("./paypalSecret.json");
-const paypalId = require("./paypalId.json");
+//const paypalSecret = require("./tokens/paypalSecret.json");
+const paypalId = require("./tokens/paypalId.json");
 const paypalApiFunctions = require('./paypalApiFunctions.js');
 const app = express();
 app.use(bodyParser.json());
@@ -34,7 +34,7 @@ app.use(function(req,res,next){
 const bookingRouter = express.Router();
 app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
 
-const privatekey = require("./private-key.json"); //private key from google service account, service acc email also has to be added to each calendar manually
+const privatekey = require("./tokens/private-key.json"); //private key from google service account, service acc email also has to be added to each calendar manually
 // configure a JWT auth client
 var jwtClient = new google.auth.JWT(
     privatekey.client_email,
