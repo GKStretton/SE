@@ -100,8 +100,10 @@ bookingRouter.post('/cancelBooking',function(req,res){
     });
 });
 
+//creates a paypal payment and sends the id to front end butto script
 bookingRouter.post('/createPayment',function(req,res){
-    paypalApiFunctions.createPayment(paypalId.clientId,
+    paypalApiFunctions.createPayment(
+        paypalId.clientId,
         '',
         '0.01',
         'http://localhost:5000/form',
@@ -112,7 +114,6 @@ bookingRouter.post('/createPayment',function(req,res){
                 res.send(400);
             }
             else{
-                console.log('Created payment');
                 console.log(response.body.id);
                 res.json({
                     id:response.body.id
@@ -122,7 +123,22 @@ bookingRouter.post('/createPayment',function(req,res){
 });
 
 bookingRouter.post('/executePayment',function(req,res){
-
+    paypalApiFunctions.executePayment(
+        paypalId.clientId,
+        '',
+        '0.01',
+        req.body.paymentID,
+        req.body.payerID,
+        function(err,response){
+            if(err){
+                console.log(err);
+                res.send(400);
+            }
+            else{
+                console.log('Payment executed');
+            }
+        });
+        
 });
 
 
