@@ -17,3 +17,11 @@ Inside the tokens folder, make a file called paypalId.json with the following st
 }
 
 And when testing the paypal transaction you can use the sandbox account login on discord
+
+
+Using the form:
+
+Enter a start and end time in the format specified, as well as a name for the event:
+If the time slot is valid, the paypal button will pop up.
+Pay using the sandbox account (it will transfer £0.01 of fake money)
+The page should refresh and the event should be visible with your name.
