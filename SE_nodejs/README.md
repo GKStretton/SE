@@ -25,3 +25,7 @@ Enter a start and end time in the format specified, as well as a name for the ev
 If the time slot is valid, the paypal button will pop up.
 Pay using the sandbox account (it will transfer £0.01 of fake money)
 The page should refresh and the event should be visible with your name.
+
+TODO:
+
+Nodemailer stuff
