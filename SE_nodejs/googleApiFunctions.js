@@ -81,10 +81,14 @@ function deleteEvent(calendarId,authInput,eventId,callback){
         eventId:eventId
     },function(err,response){
         if(err){
-            callback(err);
+            if(typeof callback === "function"){
+                callback(err);
+            }   
         }
         else{
-            callback(false);
+            if(typeof callback === "function"){
+                callback(false);
+            }
         }
     });
 }

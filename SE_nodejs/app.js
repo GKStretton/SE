@@ -1,10 +1,10 @@
-const calendarId = 'ul3q8rqrmurad3mm8495066r8k@group.calendar.google.com'; // test calendar
+const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
 const {google} = require('googleapis');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('client-sessions'); //cookies
-const RFC4122 = require('rfc4122');
+const RFC4122 = require('rfc4122'); //unique id for calendar event
 let rfc4122 = new RFC4122();
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./paypalSecret.json");
