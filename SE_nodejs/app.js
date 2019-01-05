@@ -7,6 +7,9 @@ const session = require('client-sessions'); //cookies
 const RFC4122 = require('rfc4122');
 let rfc4122 = new RFC4122();
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
+//const paypalSecret = require("./paypalSecret.json");
+const paypalId = require("./paypalId.json");
+const paypalApiFunctions = require('./paypalApiFunctions.js');
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -45,21 +48,6 @@ jwtClient.authorize(function(err, tokens) {
         console.log('Calendar api successfully authenticated');
     }
 });
-
-//const paypalSecret = require("./paypalSecret.json");
-const paypalId = require("./paypalId.json");
-const paypalApiFunctions = require('./paypalApiFunctions.js');
-//how we get a paypal api token
-paypalApiFunctions.createToken(paypalId.clientId,'',function(err,token){
-    if(err){
-        console.log(err);
-    }
-    else{
-        console.log("Token: ");
-        console.log(token);
-    }
-})//for sandbox we don't need a secret
-
 
 app.get('/form',function(req,res){
     res.redirect('form.html');
@@ -113,7 +101,24 @@ bookingRouter.post('/cancelBooking',function(req,res){
 });
 
 bookingRouter.post('/createPayment',function(req,res){
-
+    paypalApiFunctions.createPayment(paypalId.clientId,
+        '',
+        '0.01',
+        'http://localhost:5000/form',
+        'http://localhost:5000/form',
+        function(err,response){
+            if(err){
+                console.log(err);
+                res.send(400);
+            }
+            else{
+                console.log('Created payment');
+                console.log(response.body.id);
+                res.json({
+                    id:response.body.id
+                });
+            }
+        })
 });
 
 bookingRouter.post('/executePayment',function(req,res){

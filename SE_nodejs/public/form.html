@@ -19,13 +19,14 @@ Obviously a better solution for picking time slot needs to be implemented <br>
 </form>
 <br> <br>
 
-<div id="paymentContainer" style = "display:none">
+<div id="paymentContainer" style = "display:">
 	Confirm booking:
 </div>
 
 <script>
 
     paypal.Button.render({
+    	env:'sandbox',//or 'production'
         // Set up a getter to create a Payment ID using the payments api, on your server side:
         payment: function() {
             return new paypal.Promise(function(resolve, reject) {
@@ -37,7 +38,7 @@ Obviously a better solution for picking time slot needs to be implemented <br>
                 // Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
 
                 jQuery.post('/booking/createPayment')
-                    .done(function(data) { resolve(data.paymentID); })
+                    .done(function(data) { resolve(data.id); })
                     .fail(function(err)  { reject(err); });
             });
         },
