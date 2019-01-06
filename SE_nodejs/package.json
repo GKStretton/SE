@@ -9,6 +9,8 @@
     "express": "^4.16.4",
     "googleapis": "^27.0.0",
     "nodemailer": "^5.0.0",
+    "pug": "^2.0.3",
+    "request": "^2.88.0",
     "rfc4122": "^1.0.5"
   },
   "devDependencies": {},
