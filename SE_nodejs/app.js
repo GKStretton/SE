@@ -9,7 +9,7 @@ let rfc4122 = new RFC4122();
 //mail stuff
 const nodemailer = require('nodemailer');
 const emailCredentials = require('./tokens/emailCredentials.json')
-let options = {
+let mailOptions = {
     service : 'gmail',
     secure:true,
     auth:{
@@ -17,10 +17,10 @@ let options = {
         pass:emailCredentials.password
     }
 }
-let defaults = {
+let mailDefaults = {
     from: 'group6.se.durham@gmail.com'
 }
-let transporter = nodemailer.createTransport(options, defaults);
+let mailTransporter = nodemailer.createTransport(mailOptions, mailDefaults);
 var message = {
     to: 'group6.se.durham@gmail.com',
     subject:'test',
@@ -28,7 +28,7 @@ var message = {
 }
 /* 
 * test message for nodemailer
-transporter.sendMail(message,function(err){
+mailTransporter.sendMail(message,function(err){
     if(err){
         console.log(err);
     }
@@ -84,6 +84,7 @@ jwtClient.authorize(function(err, tokens) {
     }
 });
 
+//actually serving html or pug
 app.get('/form',function(req,res){
     res.redirect('form.html');
 });

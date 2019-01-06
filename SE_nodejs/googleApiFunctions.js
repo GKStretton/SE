@@ -8,46 +8,23 @@ general format is function(calendarId,authInput,[parameters],callback)
 //checks if busy at certain time, returns 'busy' or 'notBusy'
 const {google} = require('googleapis');
 const calendar = google.calendar('v3');
-//for generating a unique id for a lockout event
-function checkBusy(calendarId, authInput,startTime, endTime, callback) {
-    let response = '';
-    calendar.freebusy.query({ //checks if busy at a certain time
-        auth: authInput,
-        resource: {
-            items: [{
-                id: calendarId
-            }],
-            timeMin: startTime,
-            timeMax: endTime,
-            timeZone: "Europe/London",
-            groupExpansionMax: 1,
-            calendarExpansionMax: 1
-        }
-    }, function(err, response) {
-        if (err) {
-            callback(err); 
-        } else {
-            for (key in response.data.calendars) {
-                if (response.data.calendars[key].busy.length > 0) { // the busy object is non empty if there is a clash
-                    callback(false,'busy');
-                } else {
-                    callback(false,'notBusy');
-                }
-            }
-        }
-    });
-}
 
-function listEvents(calendarId, authInput) {
+function checkBusy(calendarId, authInput, startTime, endTime,callback) {
     calendar.events.list({ // lists items from the calendar
         auth: authInput,
-        calendarId: calendarId
+        calendarId: calendarId,
+        timeMin: startTime,
+        timeMax:endTIme
     }, function(err, response) {
         if (err) {
-            console.log(err.code);
-            console.log(err.message);
+            callback(err)
         } else {
-            console.log(response.data.items);
+            if(response.data.items.length == 0){ // check if any events clashed
+                callback(false,'notBusy');
+            }
+            else{
+                callback(false,'busy')
+            }
         }
     });
 }
