@@ -88,7 +88,7 @@ jwtClient.authorize(function(err, tokens) {
 
 //serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
 app.get('/',function(req,res){
-	const index = pug.renderFile(__dirname + '/public/template.pug');
+	const index = pug.renderFile(__dirname + '/views/template.pug');
 	res.send(index);
 });
 
