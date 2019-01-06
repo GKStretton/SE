@@ -1,4 +1,5 @@
-const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
+const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar - we'll need multiple
+const lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
 const {google} = require('googleapis');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -8,7 +9,7 @@ const RFC4122 = require('rfc4122'); //unique id for calendar event
 let rfc4122 = new RFC4122();
 //mail stuff
 const nodemailer = require('nodemailer');
-const emailCredentials = require('./tokens/emailCredentials.json')
+const emailCredentials = require('./tokens/emailCredentials.json');
 let mailOptions = {
     service : 'gmail',
     secure:true,
@@ -92,7 +93,7 @@ app.get('/form',function(req,res){
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking.eventName = req.body.eventName; 
-    calendarFunctions.checkBusy(calendarId, jwtClient,req.body.startTime, req.body.endTime,function(err,response){
+    calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,req.body.startTime, req.body.endTime,'test',function(err,response){
         if(err){
             console.log(err.code);
             console.log('Check busy error: ' + err.message);
@@ -107,7 +108,13 @@ bookingRouter.post('/lockRequest',function(req,res){
                 let eventId =  rfc4122.v1(); 
                 eventId = eventId.replace(/-/g,"");
                 console.log(eventId);
-                calendarFunctions.addEvent(calendarId, jwtClient,req.body.startTime, req.body.endTime,'locked',eventId,function(err){
+                let lockDate = new Date();
+                let currentTime = lockDate.getTime();
+                let lockObject = JSON.stringify({ // put json in the event description
+                    'facility':'test',
+                    'time':currentTime
+                })
+                calendarFunctions.addEvent(lockCalendarId, jwtClient,req.body.startTime, req.body.endTime,'lock',lockObject,eventId,function(err){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
@@ -117,7 +124,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                         console.log('200');
                         req.myCookie.booking.eventId = eventId;
                         res.sendStatus(200); //success
-                        setTimeout(function(){calendarFunctions.deleteEvent(calendarId,jwtClient,eventId)},120000); //delete lock on timeout
+                        setTimeout(function(){calendarFunctions.deleteEvent(lockCalendarId,jwtClient,eventId)},120000); //delete lock on timeout
                     }
                 }); 
             }
@@ -162,7 +169,7 @@ bookingRouter.post('/createPayment',function(req,res){
 //once sucessfully added, we then can finalise the paypal payment
 bookingRouter.post('/executePayment',function(req,res){
     //check if lock is still in place
-    calendarFunctions.getEvent(calendarId,jwtClient,req.myCookie.booking.eventId,function(err,response){ 
+    calendarFunctions.getEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId,function(err,response){ 
         if(err){ //this means the lock is gone - we have timed out
             console.log(err);
             res.sendStatus(400);
@@ -170,7 +177,8 @@ bookingRouter.post('/executePayment',function(req,res){
         else{
             let eventId =  rfc4122.v1(); 
             eventId = eventId.replace(/-/g,"");
-            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.eventName,eventId,function(err){
+            bookingJson = JSON.stringify({"facility":"test"});
+            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.eventName,bookingJson,eventId,function(err){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
@@ -187,12 +195,12 @@ bookingRouter.post('/executePayment',function(req,res){
                                 if(err){ // payment error, we have to delete the booking
                                     console.log(err)
                                     res.sendStatus(400);
-                                    calendarFunctions.deleteEvent(calendarId,jwtClient,eventId);
+                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,eventId);
                                 }
                                 else{
                                     console.log('Payment executed');
                                     res.sendStatus(200);
-                                    calendarFunctions.deleteEvent(calendarId,jwtClient,req.myCookie.booking.eventId); // delete the lock event, we no longer need
+                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId); // delete the lock event, we no longer need
                                 }
                             });
                     }
