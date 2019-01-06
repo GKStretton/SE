@@ -1,0 +1,46 @@
+//-static layout elements e.g. navbar,footer 
+html
+	head
+		block head
+		script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js")
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+		link(rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css")
+		//-add scripts here 
+	body
+		block navbar
+		div(class="container-fluid")
+			div(class="row")
+				nav(class="navbar navbar-default navbar-static-top")
+					a(class="navbar-left" href="#") 
+						img(src="/img/pvcc_logo.png" height="10%" width="20%")
+					ul(class="nav navbar-nav navbar-right")
+						li
+							a(href='#') Home
+						li
+							a(href='#') About Us
+						//li
+							// a(href='#') What's On
+						li
+							a(href='#') Facilities
+						li
+							a(href='#') Contact Us	
+						
+		block content
+		
+		block footer
+		div(class="container-fluid" style="position:fixed;bottom:0;width:100%;")
+			div(class="row")
+				div(class="col-sm-6")
+					p © Copyright - Park View Community Association
+				div(class="col-sm-6")
+					ul(class="nav nav-pills")
+						li
+							a(href='#') Home
+						li
+							a(href='#') About Us
+						//li
+							// a(href='#') What's On
+						li
+							a(href='#') Facilities
+						li
+							a(href='#') Contact Us
