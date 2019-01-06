@@ -1,4 +1,5 @@
-const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar - we'll need multiple
+const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
+const pug = require('pug');
 const lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
 const {google} = require('googleapis');
 const express = require('express');
@@ -85,7 +86,12 @@ jwtClient.authorize(function(err, tokens) {
     }
 });
 
-//actually serving html or pug
+//serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
+app.get('/',function(req,res){
+	const index = pug.renderFile(__dirname + '/views/template.pug');
+	res.send(index);
+});
+
 app.get('/form',function(req,res){
     res.redirect('form.html');
 });
