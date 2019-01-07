@@ -50,6 +50,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname,'views')));
 app.use(session({
   cookieName: "myCookie",
   secret: "ucndh34634h48dhsdtywefhsdf7sdf", //some long string used to sign the cookie
@@ -65,6 +66,7 @@ app.use(function(req,res,next){
     console.log(req.myCookie);
     next();
 });
+app.set('view engine','pug');
 const bookingRouter = express.Router();
 app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
 
@@ -88,12 +90,13 @@ jwtClient.authorize(function(err, tokens) {
 
 //serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
 app.get('/',function(req,res){
-	const index = pug.renderFile(__dirname + '/views/template.pug');
+	const index = res.render('template');
 	res.send(index);
 });
 
 app.get('/form',function(req,res){
-    res.redirect('form.html');
+    //res.redirect('form.html');
+    res.render('form');
 });
 
 //query that creates a lock on a slot
