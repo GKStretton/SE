@@ -1,4 +1,5 @@
-
+//- remove extends when this is actually imported into a page
+extends template
 block content
 	div(class="container")
 		form
@@ -7,16 +8,16 @@ block content
 					| Facility:
 				select(id="facility-input" name="facility" class="form-control")
 					option(value="test facility") test
+			//- some datepicker plugin needs to be added
 			div(class="form-group") 
-			//pls use some js plugin to make a date picker
 				label(for="date-input")
 					| Date:
 				input(class="form-control")
 			div(class="form-group")
 				label(for="time-input")
 					| Time:
+				//- this needs to take in values from back end
 				select(id="time-input" name="time" class="form-control")
-				//this needs to take in values from back end
 					option(value="12:30") 12:30
 			div(class="form-group")
 				label(for="name-input")

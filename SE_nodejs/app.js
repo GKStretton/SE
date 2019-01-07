@@ -96,7 +96,7 @@ app.get('/',function(req,res){
 
 app.get('/form',function(req,res){
     //res.redirect('form.html');
-    res.render('form');
+    res.render('form-automated');
 });
 
 //query that creates a lock on a slot
