@@ -1,0 +1,24 @@
+extends template
+
+block content 
+	div(class="row")
+		img(src=top_image class="img-responsive")
+	div(class="row")
+		div(class="col-sm-2")
+		div(class="col-sm-8")
+			p page_name
+			hr
+			div(class="row")
+				div(class="col-sm-4")
+					img(src=side_image class="img-responsive")
+				div(class="col-sm-8")
+					div(class="container-fluid")
+						p description
+						input(type="button" class="btn" id="btn-signup" value="Book Now")
+						hr
+						div(class="row")
+							div(class="col-sm-6")
+								p availability
+							div(class="col-sm-6")
+								p pricing
+		div(class="col-sm-2")

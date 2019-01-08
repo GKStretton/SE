@@ -93,7 +93,17 @@ app.get('/',function(req,res){
 	const index = res.render('template');
 	res.send(index);
 });
-
+/*
+app.get('/facility',function(req,res){
+	const facility = res.render('facility-template',{
+		top_image:'/img/astroturf-top.jpeg',
+		page_name:"Astro Turf",
+		side_image:'/img/astroturf-side.jpeg',
+		availability:"THIS IS AVAILABILITY YADA YADA YADA",
+		pricing:"this is pricing, yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+	});
+});
+*/
 app.get('/form',function(req,res){
     //res.redirect('form.html');
     res.render('form');
