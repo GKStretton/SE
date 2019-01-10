@@ -124,7 +124,14 @@ app.get('/payment',function(req,res){
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking.eventName = req.body.eventName;
     req.myCookie.booking.facility = req.body.facility; 
-    calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,req.body.startTime, req.body.endTime,'test',function(err,response){
+    let time = req.body.time;
+    let startTime = req.body.date +'T'+ time + ":00.0z";
+    console.log(time.slice(0,1));
+    let incTime = (parseInt(time.slice(0,2)) + 1).toString() + time.slice(2,5);
+    let endTime = req.body.date +'T'+ incTime + ":00.0z";
+    console.log(startTime);
+    console.log(endTime);
+    calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,startTime,endTime,'test',function(err,response){
         if(err){
             console.log(err.code);
             console.log('Check busy error: ' + err.message);
@@ -145,7 +152,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                     'facility':'test',
                     'time':currentTime
                 })
-                calendarFunctions.addEvent(lockCalendarId, jwtClient,req.body.startTime, req.body.endTime,'lock',lockObject,eventId,function(err){
+                calendarFunctions.addEvent(lockCalendarId, jwtClient,startTime,endTime,'lock',lockObject,eventId,function(err){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
