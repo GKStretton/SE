@@ -1,9 +1,9 @@
 //-static layout elements e.g. navbar,footer 
 html
 	head
-		block head
-		script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js")
+		block head		
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+		script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js")
 		script(src="/scripts/functions.js")
 		link(rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css")
 		link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
@@ -16,12 +16,12 @@ html
 			div(class="row")
 				nav(class="navbar navbar-expand-sm bg-light fixed-top" style="width:100%")
 					div(class="navbar-brand")
-						img(src="/img/pvcc_logo.png" height="10%" width="20%")
+						img(src="/img/pvcc_logo.png" height="8%" width="20%")
 					ul(class="nav navbar-nav navbar-right")
 						li
-							a(href='#') Home
+							a(href='/') Home
 						li
-							a(href='#') About Us
+							a(href='/about-us') About Us
 						//li
 							// a(href='#') What's On
 						li
@@ -39,9 +39,9 @@ html
 				div(class="col-sm-6")
 					ul(class="nav nav-pills")
 						li
-							a(href='#') Home
+							a(href='/') Home
 						li
-							a(href='#') About Us
+							a(href='/about-us') About Us
 						//li
 							// a(href='#') What's On
 						li

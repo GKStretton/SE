@@ -6,3 +6,4 @@ function toggleVisability(id){
        else
           doc.style.display = 'block';
 };
+
