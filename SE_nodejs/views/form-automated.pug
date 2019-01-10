@@ -1,5 +1,5 @@
 div(class="container")
-	form
+	form(id="automatedForm")
 		div(class="form-group")
 			label(for="facility-input")
 				| Facility:
@@ -28,3 +28,5 @@ div(class="container")
 			label(for="info-input")
 				| Additional info:
 			textarea(id="info-input" name="info" rows="3" class="form-control")
+		button(type="button" id="automatedFormSubmit" class="btn btn-primary") Submit
+	p(id="errMsg")

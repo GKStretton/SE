@@ -116,23 +116,24 @@ app.get('/form',function(req,res){
 
 app.get('/payment',function(req,res){
     paymentData = {
-        facility: req.query.facility
+        facility: req.myCookie.booking.facility
     }
     res.render('payment-page',paymentData);
 });
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
-    req.myCookie.booking.eventName = req.body.eventName; 
+    req.myCookie.booking.eventName = req.body.eventName;
+    req.myCookie.booking.facility = req.body.facility; 
     calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,req.body.startTime, req.body.endTime,'test',function(err,response){
         if(err){
             console.log(err.code);
             console.log('Check busy error: ' + err.message);
-            res.status(400).send('invalid'); // some sort of error occurs on google's side
+            res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on google's side
         }
         else{
             if (response == 'busy'){
                 console.log('busy');
-                res.status(400).send('busy'); //if the slot is busy
+                res.status(400).send('Error: The time slot you chose is already booked'); //if the slot is busy
             }
             else{ // if not busy, we lock the slot, the user still needs to pay though
                 let eventId =  rfc4122.v1(); 
@@ -148,7 +149,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
-                        res.status(400).send('invalid'); // some sort of error occurs on google's side
+                        res.status(400).send('Error: We could\'t make your booking'); // some sort of error occurs on google's side
                     }
                     else{
                         console.log('200');
@@ -179,8 +180,8 @@ bookingRouter.post('/createPayment',function(req,res){
         paypalId.clientId,
         '',
         '0.01',
-        'http://localhost:5000/form',
-        'http://localhost:5000/form',
+        'http://localhost:5000/form/payment/sucess', 
+        'http://localhost:5000/payment/cancel', 
         function(err,response){
             if(err){
                 console.log(err);
@@ -218,7 +219,6 @@ bookingRouter.post('/executePayment',function(req,res){
                         paypalApiFunctions.executePayment(
                             paypalId.clientId,
                             '',
-                            '0.01',
                             req.body.paymentID,
                             req.body.payerID,
                             function(err,response){

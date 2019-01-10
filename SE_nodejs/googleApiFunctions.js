@@ -16,7 +16,7 @@ function checkLocked(lockCalendarId, authInput, startTime, endTime,facility,call
         timeMax:endTime,
     }, function(err, response) {
         if (err) {
-            callback(err,true);
+            callback(err);
         } else {
             let currentTime = new Date();
             for(i = 0; i < response.data.items.length; i++){
