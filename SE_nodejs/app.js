@@ -19,6 +19,7 @@ let mailOptions = {
         pass:emailCredentials.password
     }
 }
+
 let mailDefaults = {
     from: 'group6.se.durham@gmail.com'
 }
@@ -90,8 +91,7 @@ jwtClient.authorize(function(err, tokens) {
 
 //serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
 app.get('/',function(req,res){
-	const index = res.render('template');
-	res.send(index);
+	res.render('template');
 });
 
 app.get('/facility',function(req,res){
@@ -114,6 +114,12 @@ app.get('/form',function(req,res){
     res.render('form-automated');
 });
 
+app.get('/payment',function(req,res){
+    paymentData = {
+        facility: req.query.facility
+    }
+    res.render('payment-page',paymentData);
+});
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking.eventName = req.body.eventName; 
