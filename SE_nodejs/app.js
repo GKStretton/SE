@@ -93,17 +93,22 @@ app.get('/',function(req,res){
 	const index = res.render('template');
 	res.send(index);
 });
-/*
+
 app.get('/facility',function(req,res){
+	//top_image:banner image source location 
+	//side_image:source of display images 	TODO have multiple sources to populate a slideshow
+	//availability: times where strings include day data e.g. 'Monday: 12:00-16:00'
+	//pricing:formatted string containing pricing info
 	const facility = res.render('facility-template',{
-		top_image:'/img/astroturf-top.jpeg',
+		top_image:'/img/astroturf-top.jpg',
 		page_name:"Astro Turf",
-		side_image:'/img/astroturf-side.jpeg',
+		side_image:'/img/astroturf-side.jpg',
+		description:"Description yes yes yes",
 		availability:"THIS IS AVAILABILITY YADA YADA YADA",
 		pricing:"this is pricing, yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 	});
 });
-*/
+
 app.get('/form',function(req,res){
     //res.redirect('form.html');
     res.render('form-automated');
