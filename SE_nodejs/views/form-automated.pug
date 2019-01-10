@@ -1,33 +1,30 @@
-//- remove extends when this is actually imported into a page
-extends template
-block content
-	div(class="container")
-		form
-			div(class="form-group")
-				label(for="facility-input")
-					| Facility:
-				select(id="facility-input" name="facility" class="form-control")
-					option(value="test facility") test
-			//- some datepicker plugin needs to be added
-			div(class="form-group") 
-				label(for="date-input")
-					| Date:
-				input(class="form-control")
-			div(class="form-group")
-				label(for="time-input")
-					| Time:
-				//- this needs to take in values from back end
-				select(id="time-input" name="time" class="form-control")
-					option(value="12:30") 12:30
-			div(class="form-group")
-				label(for="name-input")
-					| Name:
-				input(id="name-input" name="name" type="text" class="form-control")
-			div(class="form-group")
-				label(for="email-input")
-					| Email:
-				input(id="email-input" name="email" type="email" class="form-control")
-			div(class="form-group")
-				label(for="info-input")
-					| Additional info:
-				textarea(id="info-input" name="info" rows="3" class="form-control")
+div(class="container")
+	form
+		div(class="form-group")
+			label(for="facility-input")
+				| Facility:
+			select(id="facility-input" name="facility" class="form-control")
+				option(value="test facility") test
+		//- some datepicker plugin needs to be added
+		div(class="form-group") 
+			label(for="date-input")
+				| Date:
+			input(class="form-control")
+		div(class="form-group")
+			label(for="time-input")
+				| Time:
+			//- this needs to take in values from back end
+			select(id="time-input" name="time" class="form-control")
+				option(value="12:30") 12:30
+		div(class="form-group")
+			label(for="name-input")
+				| Name:
+			input(id="name-input" name="name" type="text" class="form-control")
+		div(class="form-group")
+			label(for="email-input")
+				| Email:
+			input(id="email-input" name="email" type="email" class="form-control")
+		div(class="form-group")
+			label(for="info-input")
+				| Additional info:
+			textarea(id="info-input" name="info" rows="3" class="form-control")

@@ -4,14 +4,15 @@ html
 		block head
 		script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js")
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+		script(src="/script/functions.js")
 		link(rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css")
 		//-add scripts here 
 	body
-		block navbar
 		div(class="container-fluid")
+			block navbar
 			div(class="row")
-				nav(class="navbar navbar-expand-sm bg-light sticky-top")
-					a(class="navbar-left navbar-brand" href="#") 
+				nav(class="navbar navbar-expand-sm bg-light fixed-top" style="width:100%")
+					div(class="navbar-brand")
 						img(src="/img/pvcc_logo.png" height="10%" width="20%")
 					ul(class="nav navbar-nav navbar-right")
 						li
@@ -21,15 +22,15 @@ html
 						//li
 							// a(href='#') What's On
 						li
-							a(href='#') Facilities
+							a(href='/facility') Facilities
 						li
 							a(href='#') Contact Us	
 						
-		block content
-		
-		block footer
-		div(class="container-fluid" style="position:fixed;bottom:0;width:100%;")
-			div(class="row")
+		div(class="container-fluid" style="min-height:100vh;margin-top:100px;")
+			block content
+		div(class="container-fluid")
+			block footer
+			div(class="row" style="bottom:0;width:100%;")
 				div(class="col-sm-6")
 					p © Copyright - Park View Community Association
 				div(class="col-sm-6")
