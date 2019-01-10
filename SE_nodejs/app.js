@@ -90,8 +90,7 @@ jwtClient.authorize(function(err, tokens) {
 
 //serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
 app.get('/',function(req,res){
-	const index = res.render('template');
-	res.send(index);
+	res.render('home');
 });
 
 app.get('/facility',function(req,res){
@@ -99,7 +98,7 @@ app.get('/facility',function(req,res){
 	//side_image:source of display images 	TODO have multiple sources to populate a slideshow
 	//availability: times where strings include day data e.g. 'Monday: 12:00-16:00'
 	//pricing:formatted string containing pricing info
-	const facility = res.render('facility-template',{
+	res.render('facility-template',{
 		top_image:'/img/astroturf-top.jpg',
 		page_name:"Astro Turf",
 		side_image:'/img/astroturf-side.jpg',
@@ -107,6 +106,10 @@ app.get('/facility',function(req,res){
 		availability:"THIS IS AVAILABILITY YADA YADA YADA",
 		pricing:"this is pricing, yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 	});
+});
+
+app.get('/about-us',function(req,res){
+	res.render('about-us');
 });
 
 app.get('/form',function(req,res){
