@@ -13,7 +13,7 @@ block content
 					img(src=side_image class="img-responsive" style="width:100%;")
 				div(class="col-sm-8")
 					div(class="container-fluid")
-						p #{description}
+						block description
 						//- add onclick js to hide.show form
 						input(type="button" class="btn" id="btn-signup" value="Book Now" onclick="toggleVisability('form-div')") 
 						div(id="form-div" class="container-fluid" style="display:none;")
@@ -22,9 +22,10 @@ block content
 						div(class="row")
 							div(class="col-sm-6")
 								p Availability
-								p #{availability}
+								block availability
 							div(class="col-sm-6")
 								p Pricing
-								p #{pricing}
+								block pricing 
 		div(class="col-sm-2")
 	iframe(src="https://calendar.google.com/calendar/embed?src=gen9kai518437ib6jc8sq2dsfg%40group.calendar.google.com&ctz=Europe%2FLondon"  width="600" height="400" frameborder="0" scrolling="no")
+  
