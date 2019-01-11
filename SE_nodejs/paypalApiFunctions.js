@@ -45,7 +45,7 @@ function createPayment(clientId,secret,price,redirectUri,cancelUri,callback){
 }
 
 //executes the payment with a request to the paypal api
-function executePayment(clientId,secret,price,paymentId,payerId,callback){
+function executePayment(clientId,secret,paymentId,payerId,callback){
     request.post(PAYPAL_URI + '/v1/payments/payment/' + paymentId + '/execute',
       {
         auth:
@@ -60,7 +60,6 @@ function executePayment(clientId,secret,price,paymentId,payerId,callback){
           {
             amount:
             {
-              total: price,
               currency: 'GBP'
             }
           }]

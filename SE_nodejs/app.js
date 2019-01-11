@@ -56,7 +56,7 @@ app.use(session({
   cookieName: "myCookie",
   secret: "ucndh34634h48dhsdtywefhsdf7sdf", //some long string used to sign the cookie
   duration: 24 * 60 * 60 * 1000,
-  activeDuration: 1000 * 60 * 5
+  activeDuration: 1000 * 60 * 5 //5 mins
 }));
 app.use(function(req,res,next){
     if(typeof req.myCookie.booking == "undefined"){
@@ -122,7 +122,11 @@ app.get('/payment',function(req,res){
     paymentData = {
         facility: req.myCookie.booking.facility
     }
-    res.render('payment-page',paymentData);
+    res.render('payment/payment-page',paymentData);
+});
+
+app.get('/payment/success',function(req,res){
+    res.render('payment/payment-success');
 });
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
@@ -219,14 +223,15 @@ bookingRouter.post('/executePayment',function(req,res){
         else{
             let eventId =  rfc4122.v1(); 
             eventId = eventId.replace(/-/g,"");
-            bookingJson = JSON.stringify({"facility":"test"});
-            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.eventName,bookingJson,eventId,function(err){
+            bookingJson = JSON.stringify({"facility":"--facility--"});
+            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,"--faclity--",bookingJson,eventId,function(err){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
                         res.sendStatus(400); // some sort of error occurs on google's side
                     }
                     else{ //successfully added booking, so we can finalise the payment
+                        console.log(req.body);
                         paypalApiFunctions.executePayment(
                             paypalId.clientId,
                             '',
