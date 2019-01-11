@@ -103,9 +103,9 @@ app.get('/facility',function(req,res){
 		top_image:'/img/astroturf-top.jpg',
 		page_name:"Astro Turf",
 		side_image:'/img/astroturf-side.jpg',
-		description:"Description yes yes yes",
-		availability:"THIS IS AVAILABILITY YADA YADA YADA",
-		pricing:"this is pricing, yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+		description:"--Description here--",
+		availability:"--availability times--",
+		pricing:"--pricing--"
 	});
 });
 
