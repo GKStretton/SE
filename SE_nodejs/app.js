@@ -94,9 +94,47 @@ app.get('/',function(req,res){
 	res.render('home');
 });
 
-app.get('/facility',function(req,res){
-	res.render('astroturf');
+//now serving facilities dropdown menu pages ˅˅˅˅
+app.get('/facility/astro-turf',function(req,res){
+	res.render('astro-turf');
 });
+
+app.get('/facility/sports-hall',function(req,res){
+	res.render('sports-hall');
+});
+
+app.get('/facility/sports-field',function(req,res){
+	res.render('sports-field');
+});
+
+app.get('/facility/gymnasium',function(req,res){
+	res.render('gymnasium');
+});
+
+app.get('/facility/theatre',function(req,res){
+	res.render('theatre');
+});
+
+app.get('/facility/performing-arts-room',function(req,res){
+	res.render('performing-arts-room');
+});
+
+app.get('/facility/green-room',function(req,res){
+	res.render('green-room');
+});
+
+app.get('/facility/dining-hall',function(req,res){
+	res.render('dining-hall');
+});
+
+app.get('/facility/it-suite',function(req,res){
+	res.render('it-suite');
+});
+
+app.get('/facility/classrooms',function(req,res){
+	res.render('classrooms');
+});
+//now serving facilities dropdown menu pages ^^^^
 
 app.get('/about-us',function(req,res){
 	res.render('about-us');
