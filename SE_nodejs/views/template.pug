@@ -18,16 +18,27 @@ html
 					div(class="navbar-brand")
 						img(src="/img/pvcc_logo.png" height="8%" width="20%")
 					ul(class="nav navbar-nav navbar-right")
-						li
-							a(href='/') Home
-						li
-							a(href='/about-us') About Us
-						//li
-							// a(href='#') What's On
-						li
-							a(href='/facility') Facilities
-						li
-							a(href='#') Contact Us	
+						li(class="nav-item active")
+							a(class="nav-link" href='/') Home
+						li(class="nav-item")
+							a(class="nav-link" href='/about-us') About Us
+						//li(class="nav-item")
+							// a(class="nav-link" href='#') What's On
+						li(class="nav-item dropdown")
+							a(class="nav-link dropdown-toggle" href='#' id="navbar-facility-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Facilities
+							div(class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink")
+								a(class="dropdown-item" href='/facility/astro-turf') Astro Turf
+								a(class="dropdown-item" href='/facility/sports-hall') Sports Hall
+								a(class="dropdown-item" href='/facility/sports-field') Sports Field
+								a(class="dropdown-item" href='/facility/gymnasium') The Gymnasium
+								a(class="dropdown-item" href='/facility/theatre') Theatre
+								a(class="dropdown-item" href='/facility/performing-arts-room') Performing Arts Room
+								a(class="dropdown-item" href='/facility/green-room') The Green Room
+								a(class="dropdown-item" href='/facility/dining-hall') Dining Hall
+								a(class="dropdown-item" href='/facility/it-suite') IT Suite
+								a(class="dropdown-item" href='/facility/classrooms') Classrooms			
+						li(class="nav-item")
+							a(class="nav-link" href='#') Contact Us	
 						
 		div(class="container-fluid" style="min-height:100vh;margin-top:100px;")
 			block content
@@ -38,13 +49,13 @@ html
 					p © Copyright - Park View Community Association
 				div(class="col-sm-6")
 					ul(class="nav nav-pills")
-						li
-							a(href='/') Home
-						li
-							a(href='/about-us') About Us
-						//li
-							// a(href='#') What's On
-						li
-							a(href='#') Facilities
-						li
-							a(href='#') Contact Us
+						li(class="nav-item active")
+							a(class="nav-link" href='/') Home
+						li(class="nav-item")
+							a(class="nav-link" href='/about-us') About Us
+						//li(class="nav-item")
+							// a(class="nav-link" href='#') What's On
+						li(class="nav-link" class="nav-item")
+							a(href='/facility') Our Facilities
+						li(class="nav-item")
+							a(class="nav-link" href='#') Contact Us	
