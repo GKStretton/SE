@@ -24,22 +24,24 @@ let mailDefaults = {
     from: 'group6.se.durham@gmail.com'
 }
 let mailTransporter = nodemailer.createTransport(mailOptions, mailDefaults);
-var message = {
-    to: 'group6.se.durham@gmail.com',
-    subject:'test',
-    html:'<p>test</p>'
+
+function sendConfirmationMail(adminMail,userEmail,bookingText){
+    let messageToAdmin = {
+        to: adminMail,
+        subject:'test',
+        html:'<p>Booking recieved: </br>' + bookingText + '</p>'
+    }
+
+    let messageToUser = {
+        to: userEmail,
+        subject: 'test',
+        html:'<p> Booking confirmation for your booking: </br>'+ bookingText + '</p>'
+    }
+    //in the below sendMail functions an option callback to catch errors could be added
+    mailTransporter.sendMail(messageToAdmin);
+    mailTransporter.sendMail(messageToUser);
 }
-/* 
-* test message for nodemailer
-mailTransporter.sendMail(message,function(err){
-    if(err){
-        console.log(err);
-    }
-    else{
-        console.log('message sent');
-    }
-})
-*/
+
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
@@ -71,7 +73,8 @@ app.set('view engine','pug');
 const bookingRouter = express.Router();
 app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
 
-const privatekey = require("./tokens/private-key.json"); //private key from google service account, service acc email also has to be added to each calendar manually
+//private key from google service account, service acc email also has to be added to each calendar manually
+const privatekey = require("./tokens/private-key.json"); 
 // configure a JWT auth client
 var jwtClient = new google.auth.JWT(
     privatekey.client_email,
@@ -159,6 +162,7 @@ app.get('/payment/success',function(req,res){
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking.eventName = req.body.eventName;
     req.myCookie.booking.facility = req.body.facility; 
+    req.myCookie.booking.email = req.body.email;
     let time = req.body.time;
     let startTime = req.body.date +'T'+ time + ":00.0z";
     console.log(time.slice(0,1));
@@ -238,8 +242,11 @@ bookingRouter.post('/createPayment',function(req,res){
         })
 });
 
-//checks if lock is stil in place, if so, we add the actual booking event
-//once sucessfully added, we then can finalise the paypal payment
+/*
+* checks if lock is stil in place, if so, we add the actual booking event
+* The event is added first, before we finalise(execute) the payment, this ensures no user ends up paying without a booking on the calendar
+* In the event a payment fails to execute, we delete the booking from the calendar
+*/
 bookingRouter.post('/executePayment',function(req,res){
     //check if lock is still in place
     calendarFunctions.getEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId,function(err,response){ 
@@ -268,12 +275,16 @@ bookingRouter.post('/executePayment',function(req,res){
                                 if(err){ // payment error, we have to delete the booking
                                     console.log(err)
                                     res.sendStatus(400);
-                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,eventId);
+                                    //delete lock event
+                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
+                                    calendarFunctions.deleteEvent(calendarId,jwtClient,eventId);
                                 }
-                                else{
+                                else{//payment achieved successfully
                                     console.log('Payment executed');
                                     res.sendStatus(200);
-                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId); // delete the lock event, we no longer need
+                                    // delete the lock event we no longer need
+                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId); 
+                                    sendConfirmationMail('group6.se.durham@gmail.com',req.myCookie.booking.email,'test');
                                 }
                             });
                     }
