@@ -7,3 +7,6 @@ function toggleVisability(id){
           doc.style.display = 'block';
 };
 
+function changeGalleryImage(s){
+	document.getElementById("facility-gallery-image").src = s;
+};
