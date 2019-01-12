@@ -99,43 +99,43 @@ app.get('/',function(req,res){
 
 //now serving facilities dropdown menu pages ˅˅˅˅
 app.get('/facility/astro-turf',function(req,res){
-	res.render('astro-turf');
+	res.render('facilities/astro-turf');
 });
 
 app.get('/facility/sports-hall',function(req,res){
-	res.render('sports-hall');
+	res.render('facilities/sports-hall');
 });
 
 app.get('/facility/sports-field',function(req,res){
-	res.render('sports-field');
+	res.render('facilities/sports-field');
 });
 
 app.get('/facility/gymnasium',function(req,res){
-	res.render('gymnasium');
+	res.render('facilities/gymnasium');
 });
 
 app.get('/facility/theatre',function(req,res){
-	res.render('theatre');
+	res.render('facilities/theatre');
 });
 
 app.get('/facility/performing-arts-room',function(req,res){
-	res.render('performing-arts-room');
+	res.render('facilities/performing-arts-room');
 });
 
 app.get('/facility/green-room',function(req,res){
-	res.render('green-room');
+	res.render('facilities/green-room');
 });
 
 app.get('/facility/dining-hall',function(req,res){
-	res.render('dining-hall');
+	res.render('facilities/dining-hall');
 });
 
 app.get('/facility/it-suite',function(req,res){
-	res.render('it-suite');
+	res.render('facilities/it-suite');
 });
 
 app.get('/facility/classrooms',function(req,res){
-	res.render('classrooms');
+	res.render('facilities/classrooms');
 });
 //now serving facilities dropdown menu pages ^^^^
 
