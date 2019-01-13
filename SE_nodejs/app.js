@@ -157,7 +157,7 @@ bookingRouter.post('/lockRequest',function(req,res){
     let endTime = req.body.date +'T'+ incTime + ":00.0z";
     console.log(startTime);
     console.log(endTime);
-    calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,startTime,endTime,'--facility--',function(err,response){
+    calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,startTime,endTime,req.body.facility,function(err,response){
         if(err){
             console.log(err.code);
             console.log('Check busy error: ' + err.message);
@@ -175,7 +175,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                 let lockDate = new Date();
                 let currentTime = lockDate.getTime();
                 let lockObject = JSON.stringify({ // put json in the event description
-                    'facility':'--facility--',
+                    'facility':req.body.facility,
                     'time':currentTime
                 })
                 calendarFunctions.addEvent(lockCalendarId, jwtClient,startTime,endTime,'lock',lockObject,eventId,function(err){
@@ -244,8 +244,8 @@ bookingRouter.post('/executePayment',function(req,res){
         else{
             let eventId =  rfc4122.v1(); 
             eventId = eventId.replace(/-/g,"");
-            bookingJson = JSON.stringify({"facility":"--facility--"});
-            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,"--facility--",bookingJson,eventId,function(err){
+            bookingJson = JSON.stringify({"facility":req.myCookie.booking.facility});
+            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.facility,bookingJson,eventId,function(err){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);

@@ -1,11 +1,8 @@
 div(class="container")
 	form(id="automatedForm")
-		div(class="form-group")
-			label(for="facility-input")
-				| Facility:
+		div(class="form-group" style="display:none")
 			select(id="facility-input" name="facility" class="form-control")
-				option(value="test facility") test
-		//- some datepicker plugin needs to be added
+				option(value=facility)
 		div(class="form-group") 
 			label(for="date-input")
 				| Date:
