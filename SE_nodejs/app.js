@@ -42,7 +42,7 @@ function sendConfirmationMail(adminMail,userEmail,bookingText){
     mailTransporter.sendMail(messageToUser);
 }
 
-function sendEnquiryMail(adminMail,name,email,phone,facility,message){
+function sendEnquiryMail(adminMail,facility,name,email,phone,message){
     let messageToAdmin = {
         to: adminMail,
         subject:'Booking Enquiry',

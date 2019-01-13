@@ -1,5 +1,6 @@
 extends ../template
 //- TODO: add image view for the side images of the page 
+
 block content
 	div(class="row")
 		div(class="col-sm-12")
@@ -23,9 +24,12 @@ block content
 					div(class="container-fluid")
 						block description
 						//- add onclick js to hide.show form
-						input(type="button" class="btn" id="btn-signup" value="Book Now" onclick="toggleVisability('form-div')") 
+						input(type="button" class="btn" id="btn-signup" value=button_name onclick="toggleVisability('form-div')") 
 						div(id="form-div" class="container-fluid" style="display:none;")
-							include form-automated
+							if button_name === 	"Book Now"
+								include form-automated
+							else
+								include form-manual
 						hr
 						div(class="row")
 							div(class="col-sm-6")
