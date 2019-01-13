@@ -70,8 +70,6 @@ app.use(function(req,res,next){
     next();
 });
 app.set('view engine','pug');
-const bookingRouter = express.Router();
-app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
 
 //private key from google service account, service acc email also has to be added to each calendar manually
 const privatekey = require("./tokens/private-key.json"); 
@@ -97,47 +95,29 @@ app.get('/',function(req,res){
 	res.render('home');
 });
 
+/*
+* This router and function let us easily render multiple facility pages 
+* Useful for if we want to pass more data to these pages in the future
+*/
+const facilityRouter = express.Router();
+app.use('/facility',facilityRouter);
+function serveFacility(uri,facilityName){ 
+    facilityRouter.get(uri, function(req,res){
+        res.render('facilities' + uri,{facility: facilityName});
+    });
+}
 //now serving facilities dropdown menu pages ˅˅˅˅
-app.get('/facility/astro-turf',function(req,res){
-	res.render('facilities/astro-turf');
-});
+serveFacility('/astro-turf','astro-turf');
+serveFacility('/sports-hall','sports-hall');
+serveFacility('/sports-field','sports-field');
+serveFacility('/gymnasium','gymnasium');
+serveFacility('/theatre','theatre');
+serveFacility('/performing-arts-room','performing-arts-room');
+serveFacility('/green-room','green-room');
+serveFacility('/dining-hall','dining-hall');
+serveFacility('/it-suite','it-suite');
+serveFacility('/classrooms','classrooms');
 
-app.get('/facility/sports-hall',function(req,res){
-	res.render('facilities/sports-hall');
-});
-
-app.get('/facility/sports-field',function(req,res){
-	res.render('facilities/sports-field');
-});
-
-app.get('/facility/gymnasium',function(req,res){
-	res.render('facilities/gymnasium');
-});
-
-app.get('/facility/theatre',function(req,res){
-	res.render('facilities/theatre');
-});
-
-app.get('/facility/performing-arts-room',function(req,res){
-	res.render('facilities/performing-arts-room');
-});
-
-app.get('/facility/green-room',function(req,res){
-	res.render('facilities/green-room');
-});
-
-app.get('/facility/dining-hall',function(req,res){
-	res.render('facilities/dining-hall');
-});
-
-app.get('/facility/it-suite',function(req,res){
-	res.render('facilities/it-suite');
-});
-
-app.get('/facility/classrooms',function(req,res){
-	res.render('facilities/classrooms');
-});
-//now serving facilities dropdown menu pages ^^^^
 
 app.get('/about-us',function(req,res){
 	res.render('about-us');
@@ -158,6 +138,13 @@ app.get('/payment',function(req,res){
 app.get('/payment/success',function(req,res){
     res.render('payment/payment-success');
 });
+
+/*
+* This router is for everything concerning bookings and payment
+* Functions here make the actual request to the google calendar and paypal apis
+*/
+const bookingRouter = express.Router();
+app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking.eventName = req.body.eventName;
