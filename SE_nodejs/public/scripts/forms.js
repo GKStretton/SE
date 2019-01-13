@@ -10,7 +10,16 @@ $(document).on("click","#automatedFormSubmit",function(){
 	})
 });
 
+$(document).on("click","#manualFormSubmit",function(){
+	let formData = $("#manualForm").serialize();
+	console.log(formData);
+	$.post("/booking/enquiry",formData,function(data){
 
+	})
+	.fail(function(res){
+		$('#errMsg').text(res.responseText);
+	})
+});
 $(document).ready(function(){
 	flatpickr("#date-input",{
     minDate: "today",
