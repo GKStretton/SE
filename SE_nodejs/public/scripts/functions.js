@@ -9,4 +9,9 @@ function toggleVisability(id){
 
 function changeGalleryImage(s){
 	document.getElementById("facility-gallery-image").src = s;
+	document.getElementById("facility-gallery-fancybox").href = s;
 };
+
+$(document).ready(function() {
+	$('.fancybox').fancybox();
+});
