@@ -2,7 +2,7 @@
 $(document).on("click","#automatedFormSubmit",function(){
 	let formData = $("#automatedForm").serialize();
 		$.post("/booking/lockRequest",formData,function(data){
-			window.location.replace("/payment");
+			location.assign("/payment");
 	})
 	.fail(function(res){
 		console.log(res);
@@ -12,9 +12,8 @@ $(document).on("click","#automatedFormSubmit",function(){
 
 $(document).on("click","#manualFormSubmit",function(){
 	let formData = $("#manualForm").serialize();
-	console.log(formData);
 	$.post("/booking/enquiry",formData,function(data){
-
+		location.assign("/booking/enquiry/success");
 	})
 	.fail(function(res){
 		$('#errMsg').text(res.responseText);

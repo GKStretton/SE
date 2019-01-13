@@ -29,13 +29,13 @@ function sendConfirmationMail(adminMail,userEmail,bookingText){
     let messageToAdmin = {
         to: adminMail,
         subject:'Booking Confirmation',
-        html:'<p>Booking recieved: </br>' + bookingText + '</p>'
+        html:'<p>Booking recieved: <br>' + bookingText + '</p>'
     }
 
     let messageToUser = {
         to: userEmail,
         subject: 'Booking Confirmation',
-        html:'<p> Booking confirmation for your booking: </br>'+ bookingText + '</p>'
+        html:'<p> Booking confirmation for your booking: <br>'+ bookingText + '</p>'
     }
     //in the below sendMail functions an option callback to catch errors could be added
     mailTransporter.sendMail(messageToAdmin);
@@ -47,10 +47,10 @@ function sendEnquiryMail(adminMail,name,email,phone,facility,message){
         to: adminMail,
         subject:'Booking Enquiry',
         html:'<p> Booking enquiry from ' + name + ': </br>'
-        + 'Facility: ' + facility + '</br>' 
-        + 'Message: ' + message + '</br>'
-        + 'Email: ' + email + '</br>'
-        + 'Phone: ' + phone + '</br> </p>'
+        + 'Facility: ' + facility + '<br>' 
+        + 'Message: ' + message + '<br>'
+        + 'Email: ' + email + '<br>'
+        + 'Phone: ' + phone + '<br> </p>'
     }
     mailTransporter.sendMail(messageToAdmin);
 }
@@ -178,12 +178,13 @@ bookingRouter.post('/enquiry',function(req,res){
         req.body.phone,
         req.body.enquiry
     )
-    res.redirect('/booking/enquiry/success');
+    res.sendStatus(200);
 });
 
 bookingRouter.get('/enquiry/success',function(req,res){
-    res.render('/facilities/enquiry-success');
+    res.render('facilities/enquiry-success');
 });
+
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking.eventName = req.body.eventName;
@@ -226,7 +227,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                     else{
                         console.log('200');
                         req.myCookie.booking.eventId = eventId;
-                        res.sendStatus(200).redirect('/payment'); //success
+                        res.sendStatus(200); //success
                         setTimeout(function(){calendarFunctions.deleteEvent(lockCalendarId,jwtClient,eventId)},120000); //delete lock on timeout
                     }
                 }); 
