@@ -1,0 +1,9 @@
+extends ../template
+block append head
+	script(src="https://www.paypalobjects.com/api/checkout.js")
+	script(src="/scripts/payment.js")
+block content
+	div(id="paymentText")
+		h3 Make your payment
+		p Pay with paypal below to finalise your booking for #{facility}
+	div(id ="paymentContainer")

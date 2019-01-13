@@ -19,26 +19,29 @@ let mailOptions = {
         pass:emailCredentials.password
     }
 }
+
 let mailDefaults = {
     from: 'group6.se.durham@gmail.com'
 }
 let mailTransporter = nodemailer.createTransport(mailOptions, mailDefaults);
-var message = {
-    to: 'group6.se.durham@gmail.com',
-    subject:'test',
-    html:'<p>test</p>'
+
+function sendConfirmationMail(adminMail,userEmail,bookingText){
+    let messageToAdmin = {
+        to: adminMail,
+        subject:'test',
+        html:'<p>Booking recieved: </br>' + bookingText + '</p>'
+    }
+
+    let messageToUser = {
+        to: userEmail,
+        subject: 'test',
+        html:'<p> Booking confirmation for your booking: </br>'+ bookingText + '</p>'
+    }
+    //in the below sendMail functions an option callback to catch errors could be added
+    mailTransporter.sendMail(messageToAdmin);
+    mailTransporter.sendMail(messageToUser);
 }
-/* 
-* test message for nodemailer
-mailTransporter.sendMail(message,function(err){
-    if(err){
-        console.log(err);
-    }
-    else{
-        console.log('message sent');
-    }
-})
-*/
+
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
@@ -55,7 +58,7 @@ app.use(session({
   cookieName: "myCookie",
   secret: "ucndh34634h48dhsdtywefhsdf7sdf", //some long string used to sign the cookie
   duration: 24 * 60 * 60 * 1000,
-  activeDuration: 1000 * 60 * 5
+  activeDuration: 1000 * 60 * 5 //5 mins
 }));
 app.use(function(req,res,next){
     if(typeof req.myCookie.booking == "undefined"){
@@ -67,10 +70,9 @@ app.use(function(req,res,next){
     next();
 });
 app.set('view engine','pug');
-const bookingRouter = express.Router();
-app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
 
-const privatekey = require("./tokens/private-key.json"); //private key from google service account, service acc email also has to be added to each calendar manually
+//private key from google service account, service acc email also has to be added to each calendar manually
+const privatekey = require("./tokens/private-key.json"); 
 // configure a JWT auth client
 var jwtClient = new google.auth.JWT(
     privatekey.client_email,
@@ -90,23 +92,35 @@ jwtClient.authorize(function(err, tokens) {
 
 //serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
 app.get('/',function(req,res){
-	const index = res.render('template');
-	res.send(index);
+	res.render('home');
 });
 
-app.get('/facility',function(req,res){
-	//top_image:banner image source location 
-	//side_image:source of display images 	TODO have multiple sources to populate a slideshow
-	//availability: times where strings include day data e.g. 'Monday: 12:00-16:00'
-	//pricing:formatted string containing pricing info
-	const facility = res.render('facility-template',{
-		top_image:'/img/astroturf-top.jpg',
-		page_name:"Astro Turf",
-		side_image:'/img/astroturf-side.jpg',
-		description:"Description yes yes yes",
-		availability:"THIS IS AVAILABILITY YADA YADA YADA",
-		pricing:"this is pricing, yeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
-	});
+/*
+* This router and function let us easily render multiple facility pages 
+* Useful for if we want to pass more data to these pages in the future
+*/
+const facilityRouter = express.Router();
+app.use('/facility',facilityRouter);
+function serveFacility(uri,facilityName){ 
+    facilityRouter.get(uri, function(req,res){
+        res.render('facilities' + uri,{facility: facilityName});
+    });
+}
+//now serving facilities dropdown menu pages ˅˅˅˅
+serveFacility('/astro-turf','astro-turf');
+serveFacility('/sports-hall','sports-hall');
+serveFacility('/sports-field','sports-field');
+serveFacility('/gymnasium','gymnasium');
+serveFacility('/theatre','theatre');
+serveFacility('/performing-arts-room','performing-arts-room');
+serveFacility('/green-room','green-room');
+serveFacility('/dining-hall','dining-hall');
+serveFacility('/it-suite','it-suite');
+serveFacility('/classrooms','classrooms');
+
+
+app.get('/about-us',function(req,res){
+	res.render('about-us');
 });
 
 app.get('/contact-us',function(req,res){
@@ -124,19 +138,45 @@ app.get('/form',function(req,res){
     res.render('form-automated');
 });
 
+app.get('/payment',function(req,res){
+    paymentData = {
+        facility: req.myCookie.booking.facility
+    }
+    res.render('payment/payment-page',paymentData);
+});
+
+app.get('/payment/success',function(req,res){
+    res.render('payment/payment-success');
+});
+
+/*
+* This router is for everything concerning bookings and payment
+* Functions here make the actual request to the google calendar and paypal apis
+*/
+const bookingRouter = express.Router();
+app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
-    req.myCookie.booking.eventName = req.body.eventName; 
-    calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,req.body.startTime, req.body.endTime,'test',function(err,response){
+    req.myCookie.booking.eventName = req.body.eventName;
+    req.myCookie.booking.facility = req.body.facility; 
+    req.myCookie.booking.email = req.body.email;
+    let time = req.body.time;
+    let startTime = req.body.date +'T'+ time + ":00.0z";
+    console.log(time.slice(0,1));
+    let incTime = (parseInt(time.slice(0,2)) + 1).toString() + time.slice(2,5);
+    let endTime = req.body.date +'T'+ incTime + ":00.0z";
+    console.log(startTime);
+    console.log(endTime);
+    calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,startTime,endTime,req.body.facility,function(err,response){
         if(err){
             console.log(err.code);
             console.log('Check busy error: ' + err.message);
-            res.status(400).send('invalid'); // some sort of error occurs on google's side
+            res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on google's side
         }
         else{
             if (response == 'busy'){
                 console.log('busy');
-                res.status(400).send('busy'); //if the slot is busy
+                res.status(400).send('Error: The time slot you chose is already booked'); //if the slot is busy
             }
             else{ // if not busy, we lock the slot, the user still needs to pay though
                 let eventId =  rfc4122.v1(); 
@@ -145,14 +185,14 @@ bookingRouter.post('/lockRequest',function(req,res){
                 let lockDate = new Date();
                 let currentTime = lockDate.getTime();
                 let lockObject = JSON.stringify({ // put json in the event description
-                    'facility':'test',
+                    'facility':req.body.facility,
                     'time':currentTime
                 })
-                calendarFunctions.addEvent(lockCalendarId, jwtClient,req.body.startTime, req.body.endTime,'lock',lockObject,eventId,function(err){
+                calendarFunctions.addEvent(lockCalendarId, jwtClient,startTime,endTime,'lock',lockObject,eventId,function(err){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
-                        res.status(400).send('invalid'); // some sort of error occurs on google's side
+                        res.status(400).send('Error: We could\'t make your booking'); // some sort of error occurs on google's side
                     }
                     else{
                         console.log('200');
@@ -183,8 +223,8 @@ bookingRouter.post('/createPayment',function(req,res){
         paypalId.clientId,
         '',
         '0.01',
-        'http://localhost:5000/form',
-        'http://localhost:5000/form',
+        'http://localhost:5000/form/payment/sucess', 
+        'http://localhost:5000/payment/cancel', 
         function(err,response){
             if(err){
                 console.log(err);
@@ -199,8 +239,11 @@ bookingRouter.post('/createPayment',function(req,res){
         })
 });
 
-//checks if lock is stil in place, if so, we add the actual booking event
-//once sucessfully added, we then can finalise the paypal payment
+/*
+* checks if lock is stil in place, if so, we add the actual booking event
+* The event is added first, before we finalise(execute) the payment, this ensures no user ends up paying without a booking on the calendar
+* In the event a payment fails to execute, we delete the booking from the calendar
+*/
 bookingRouter.post('/executePayment',function(req,res){
     //check if lock is still in place
     calendarFunctions.getEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId,function(err,response){ 
@@ -211,30 +254,34 @@ bookingRouter.post('/executePayment',function(req,res){
         else{
             let eventId =  rfc4122.v1(); 
             eventId = eventId.replace(/-/g,"");
-            bookingJson = JSON.stringify({"facility":"test"});
-            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.eventName,bookingJson,eventId,function(err){
+            bookingJson = JSON.stringify({"facility":req.myCookie.booking.facility});
+            calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.facility,bookingJson,eventId,function(err){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
                         res.sendStatus(400); // some sort of error occurs on google's side
                     }
                     else{ //successfully added booking, so we can finalise the payment
+                        console.log(req.body);
                         paypalApiFunctions.executePayment(
                             paypalId.clientId,
                             '',
-                            '0.01',
                             req.body.paymentID,
                             req.body.payerID,
                             function(err,response){
                                 if(err){ // payment error, we have to delete the booking
                                     console.log(err)
                                     res.sendStatus(400);
-                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,eventId);
+                                    //delete lock event
+                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
+                                    calendarFunctions.deleteEvent(calendarId,jwtClient,eventId);
                                 }
-                                else{
+                                else{//payment achieved successfully
                                     console.log('Payment executed');
                                     res.sendStatus(200);
-                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId); // delete the lock event, we no longer need
+                                    // delete the lock event we no longer need
+                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId); 
+                                    sendConfirmationMail('group6.se.durham@gmail.com',req.myCookie.booking.email,'test');
                                 }
                             });
                     }

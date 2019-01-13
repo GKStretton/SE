@@ -1,15 +1,12 @@
 div(class="container")
-	form
-		div(class="form-group")
-			label(for="facility-input")
-				| Facility:
+	form(id="automatedForm")
+		div(class="form-group" style="display:none")
 			select(id="facility-input" name="facility" class="form-control")
-				option(value="test facility") test
-		//- some datepicker plugin needs to be added
+				option(value=facility)
 		div(class="form-group") 
 			label(for="date-input")
 				| Date:
-			input(class="form-control")
+			input(class="form-control" id="date-input" name="date")
 		div(class="form-group")
 			label(for="time-input")
 				| Time:
@@ -28,3 +25,5 @@ div(class="container")
 			label(for="info-input")
 				| Additional info:
 			textarea(id="info-input" name="info" rows="3" class="form-control")
+		button(type="button" id="automatedFormSubmit" class="btn btn-primary") Submit
+	p(id="errMsg")

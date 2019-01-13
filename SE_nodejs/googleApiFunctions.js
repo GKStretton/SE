@@ -8,48 +8,41 @@ general format is function(calendarId,authInput,[parameters],callback)
 //checks if busy at certain time, returns 'busy' or 'notBusy'
 const {google} = require('googleapis');
 const calendar = google.calendar('v3');
-function checkLocked(lockCalendarId, authInput, startTime, endTime,facility,callback) {
-    calendar.events.list({ // lists items from the calendar
-        auth: authInput,
-        calendarId: lockCalendarId,
-        timeMin: startTime,
-        timeMax:endTime,
-    }, function(err, response) {
-        if (err) {
-            callback(err,true);
-        } else {
-            let currentTime = new Date();
-            for(i = 0; i < response.data.items.length; i++){
-                let lockObject = JSON.parse(response.data.items[i].description);
-                if (lockObject.facility == facility){
-                    let lockTime = parseInt(lockObject.time);
-                    if((currentTime.getTime() - lockTime) > 1000 * 60 * 15){
-                        callback(false,true);
-                        return;
+function rejectIfLocked(lockCalendarId, authInput, startTime, endTime,facility){
+    return new Promise(function(resolve,reject) {
+        calendar.events.list({ // lists items from the calendar
+            auth: authInput,
+            calendarId: lockCalendarId,
+            timeMin: startTime,
+            timeMax:endTime,
+        }, function(err, response) {
+            if (err) {
+                reject(err);
+            } else {
+                let currentTime = new Date();
+                for(i = 0; i < response.data.items.length; i++){
+                    let lockObject = JSON.parse(response.data.items[i].description);
+                    if (lockObject.facility == facility){
+                        if((currentTime.getTime() - parseInt(lockObject.time)) > 1000 * 60 * 15){
+                            reject('busy');
+                        }
+                        
                     }
-                    
                 }
+                resolve();
             }
-            callback(false,false);
-        }
+        });
     });
 }
 
-function checkBusy(lockCalendarId,calendarId, authInput, startTime, endTime,facility,callback){
-    checkLocked(lockCalendarId, authInput, startTime, endTime,facility,function(err,isLocked){
-        if(err){
-            callback(err);
-        }
-        else {
-            if(isLocked){
-                callback(false,'busy');
-            }
-            else{
-                calendar.events.list({ // lists items from the calendar
+function checkBusy(calendarId,lockCalendarId, authInput, startTime, endTime,facility,callback){
+    rejectIfLocked(lockCalendarId, authInput, startTime, endTime,facility)
+        .then(function(){
+             calendar.events.list({ // lists items from the calendar
                     auth: authInput,
                     calendarId: calendarId,
                     timeMin: startTime,
-                    timeMax:endTime,
+                    timeMax: endTime,
                 }, function(err, response) {
                     if(err){
                         callback(err);
@@ -57,20 +50,27 @@ function checkBusy(lockCalendarId,calendarId, authInput, startTime, endTime,faci
                     else{
                         for(i = 0; i < response.data.items.length; i++){
                             let booking = JSON.parse(response.data.items[i].description);
-                                console.log(booking);
                                 if (booking.facility == facility){
                                     callback(false,'busy');
                                     return;
                                 }
                         }
-                    }    
-                    callback(false,'notBusy');
-                });
-            }
-        }
+                    callback(false,'notBusy');  
+                    }
 
-    });
+            })
+        })
+        .catch(function(reason){
+            if (reason == 'busy'){
+                callback(false,'busy');
+            }
+            else{
+                callback(reason);
+            }
+        });
 }
+
+            
 function addEvent(calendarId,authInput,startTime,endTime,summary,description,eventId,callback){
     calendar.events.insert({
         auth: authInput,
