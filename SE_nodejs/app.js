@@ -109,6 +109,16 @@ app.get('/facility',function(req,res){
 	});
 });
 
+app.get('/contact-us',function(req,res){
+	res.render('contact-us');
+});
+
+app.post('/contact-us/send',function(req,res){
+	// TODO Send email
+	// TODO Give confirmation to user
+	res.send(req.body); // placeholder returns json to user
+});
+
 app.get('/form',function(req,res){
     //res.redirect('form.html');
     res.render('form-automated');

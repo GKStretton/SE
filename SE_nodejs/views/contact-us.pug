@@ -1,0 +1,62 @@
+extends template
+
+block content
+	div(class="row")
+		p ***map***
+	div(class="row")
+		div(class="col-sm")
+			h2 CONTACT US
+			p
+				b Park View Community Association<br />
+				| Church Chare<br />
+				| Chester-le-Street<br />
+				| Co. Durham<br />
+				| DH3 3PZ
+			
+			p
+				b Telephone:
+				|  0191 388 10 43<br />
+
+				// Email is hyperlink on original site
+				b Email:
+				|  info@pvcc.co.uk
+
+			p
+				// "Get Directions" is hyperlink on original site
+				The Community Centre is located off Junction 63 of the A1M (A167) within the grounds of Park View Academy. Get Directions
+
+			h3 Centre Opening Times
+
+			p
+				b Monday
+				|  4:30pm - 10pm<br />
+				b Tuesday
+				|  4:30pm - 10pm<br />
+				b Wednesday
+				|  4:30pm - 10pm<br />
+				b Thursday
+				|  4:30pm - 10pm<br />
+				b Friday
+				|  4:30pm - 10pm<br />
+				b Saturday
+				|  7am - 10pm<br />
+				b Sunday
+				|  9am - 5pm
+				
+		div(class="col-sm")
+			h2 GET IN TOUCH
+			form(action='/contact-us/send/',method='POST')
+				p
+					| Your name<br />
+					input(type='text',name='name')
+				p
+					| Your Email<br />
+					input(type='text',name='email')
+				p
+					| Your Telephone<br />
+					input(type='text',name='telephone')
+				p
+					| How Can We Help?<br />
+					input(type='text',name='message')
+				p
+					input(type='submit', value='Send')
