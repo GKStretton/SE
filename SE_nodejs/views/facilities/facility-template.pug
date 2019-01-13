@@ -14,9 +14,11 @@ block content
 					div(class="image-container")
 						div(class="row")
 							div(class="col-lg-12 main-image-container img-fluid")
-								img(src=side_image id="facility-gallery-image" style="width:100%;max-width:500px;height:350;")
+								a(class="fancybox" href=side_image id="facility-gallery-fancybox")
+									img(src=side_image id="facility-gallery-image" style="width:100%;max-width:500px;height:350;")
 						div(class="row")
 							block image-gallery
+						block image-gallery-extra
 				div(class="col-sm-8")
 					div(class="container-fluid")
 						block description
