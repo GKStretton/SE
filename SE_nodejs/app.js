@@ -28,18 +28,31 @@ let mailTransporter = nodemailer.createTransport(mailOptions, mailDefaults);
 function sendConfirmationMail(adminMail,userEmail,bookingText){
     let messageToAdmin = {
         to: adminMail,
-        subject:'test',
-        html:'<p>Booking recieved: </br>' + bookingText + '</p>'
+        subject:'Booking Confirmation',
+        html:'<p>Booking recieved: <br>' + bookingText + '</p>'
     }
 
     let messageToUser = {
         to: userEmail,
-        subject: 'test',
-        html:'<p> Booking confirmation for your booking: </br>'+ bookingText + '</p>'
+        subject: 'Booking Confirmation',
+        html:'<p> Booking confirmation for your booking: <br>'+ bookingText + '</p>'
     }
     //in the below sendMail functions an option callback to catch errors could be added
     mailTransporter.sendMail(messageToAdmin);
     mailTransporter.sendMail(messageToUser);
+}
+
+function sendEnquiryMail(adminMail,name,email,phone,facility,message){
+    let messageToAdmin = {
+        to: adminMail,
+        subject:'Booking Enquiry',
+        html:'<p> Booking enquiry from ' + name + ': </br>'
+        + 'Facility: ' + facility + '<br>' 
+        + 'Message: ' + message + '<br>'
+        + 'Email: ' + email + '<br>'
+        + 'Phone: ' + phone + '<br> </p>'
+    }
+    mailTransporter.sendMail(messageToAdmin);
 }
 
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
@@ -155,6 +168,23 @@ app.get('/payment/success',function(req,res){
 */
 const bookingRouter = express.Router();
 app.use('/booking',bookingRouter); //only requests to '/booking/* will use bookingRouter, this router can therefore handle our requests for booking and payment
+
+//manual booking enquiry
+bookingRouter.post('/enquiry',function(req,res){
+    sendEnquiryMail('group6.se.durham@gmail.com',
+        req.body.facility,
+        req.body.name,
+        req.body.email,
+        req.body.phone,
+        req.body.enquiry
+    )
+    res.sendStatus(200);
+});
+
+bookingRouter.get('/enquiry/success',function(req,res){
+    res.render('facilities/enquiry-success');
+});
+
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking.eventName = req.body.eventName;

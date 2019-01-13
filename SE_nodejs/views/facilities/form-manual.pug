@@ -1,0 +1,23 @@
+div(class="container")
+	form(id="manualForm")
+		div(class="form-group" style="display:none")
+			select(id="facility-input" name="facility" class="form-control")
+				option(value=facility)
+		div(class="form-group")
+			label(for="name-input")
+				| Name:
+			input(id="name-input" name="name" type="text" class="form-control")
+		div(class="form-group")
+			label(for="email-input")
+				| Email:
+			input(id="email-input" name="email" type="email" class="form-control")
+		div(class="form-group")
+			label(for="phone-input")
+				| Phone:
+			input(id="phone-input" name="phone" type="tel" class="form-control")
+		div(class="form-group")
+			label(for="info-input")
+				| Enquiry Information:
+			textarea(id="info-input" name="enquiry" rows="3" class="form-control")
+		button(type="button" id="manualFormSubmit" class="btn btn-primary") Submit
+	p(id="errMsg")
