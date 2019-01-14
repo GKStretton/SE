@@ -1,4 +1,4 @@
-Guide to setting up your work environment for the website:  
+## Guide to setting up your work environment for the website  
 Go to git and create a fork of the main repository  
 Copy your fork's url  
 Clone fork locally, wherever you want  
@@ -7,7 +7,7 @@ run 'git remote add upstream [paste url]'
 run 'git remote -v' and check your urls are correct  
 follow [Site Setup] instructions to get the website running with node  
   
-Commit process:  
+## Commit process  
 'git fetch upstream'  
 'git merge upstream/master'  
 you may have merge conflicts - resolve them as git instructs  
@@ -22,7 +22,7 @@ type in the chat that you have created a pull request so someone else can check 
 
 Nodejs app (mainly back end stuff right now):
 
-[Site Setup]
+## [Site Setup]
 
 Install dependencies with npm install.
 
