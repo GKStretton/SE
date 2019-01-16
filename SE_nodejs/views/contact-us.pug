@@ -44,22 +44,23 @@ block content
 				|  7am - 10pm<br />
 				b Sunday
 				|  9am - 5pm
-				
+
 		div(class="col-sm-4")
 			h2 GET IN TOUCH
-			form(action='/contact-us/send/',method='POST')
+			form(id="contactForm")
 				p
 					| Your name<br />
-					input(type='text',name='name')
+					input(type="text",name="name")
 				p
 					| Your Email<br />
-					input(type='text',name='email')
+					input(type="text",name="email")
 				p
 					| Your Telephone<br />
-					input(type='text',name='telephone')
+					input(type="text",name="phone")
 				p
 					| How Can We Help?<br />
-					input(type='text',name='message')
+					input(type="text",name="message")
 				p
-					input(type='submit', value='Send')
+			button(type="button", id="contactSubmit") Send
+			span(id="feedback", class="text-success")
 		div(class="col-sm-2")

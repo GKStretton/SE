@@ -55,6 +55,18 @@ function sendEnquiryMail(adminMail,facility,name,email,phone,message){
     mailTransporter.sendMail(messageToAdmin);
 }
 
+function sendContactMail(adminMail, name, email, phone, message) {
+    let messageToAdmin = {
+        to: adminMail,
+        subject: 'General Enquiry',
+        html: '<p> General enquiry from ' + name + ': <br />'
+            + 'Message: ' + message + '<br />' 
+            + 'Email: ' + email + '<br />'
+            + 'Phone: ' + phone + '<br /> </p>'
+    }
+    mailTransporter.sendMail(messageToAdmin);
+}
+
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
@@ -133,17 +145,21 @@ serveFacility('/classrooms','classrooms');
 
 
 app.get('/about-us',function(req,res){
-	res.render('about-us');
+   res.render('about-us');
 });
 
 app.get('/contact-us',function(req,res){
-	res.render('contact-us');
+   res.render('contact-us');
 });
 
-app.post('/contact-us/send',function(req,res){
-	// TODO Send email
-	// TODO Give confirmation to user
-	res.send(req.body); // placeholder returns json to user
+app.post('/contact-us/submit', function(req,res) {
+    sendContactMail('group6.se.durham@gmail.com',
+	    req.body.name,
+	    req.body.email,
+	    req.body.phone,
+	    req.body.message
+    );
+    res.end();
 });
 
 app.get('/form',function(req,res){
