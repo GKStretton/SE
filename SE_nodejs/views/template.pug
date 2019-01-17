@@ -1,7 +1,7 @@
-//-static layout elements e.g. navbar,footer 
+//-static layout elements e.g. navbar,footer
 html
 	head
-		block head		
+		block head
 		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.min.js")
 		script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js")
@@ -12,14 +12,14 @@ html
 		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
 		script(src="https://cdn.jsdelivr.net/npm/flatpickr")
 		script(src='/scripts/forms.js')
-		//-add scripts here 
+		//-add scripts here
 	body
 		div(class="container-fluid")
 			block navbar
 			div(class="row")
 				nav(class="navbar navbar-expand-sm bg-light fixed-top" style="width:100%")
 					div(class="navbar-brand")
-						a(href='/') 
+						a(href='/')
 							img(src="/img/pvcc_logo.png" height="8%" width="20%")
 					ul(class="nav navbar-nav navbar-right")
 						li(class="nav-item active")
@@ -40,10 +40,10 @@ html
 								a(class="dropdown-item" href='/facility/green-room') The Green Room
 								a(class="dropdown-item" href='/facility/dining-hall') Dining Hall
 								a(class="dropdown-item" href='/facility/it-suite') IT Suite
-								a(class="dropdown-item" href='/facility/classrooms') Classrooms			
+								a(class="dropdown-item" href='/facility/classrooms') Classrooms
 						li(class="nav-item")
-							a(class="nav-link" href='/contact-us') Contact Us	
-						
+							a(class="nav-link" href='/contact-us') Contact Us
+
 		div(class="container-fluid" style="min-height:100vh;margin-top:100px;")
 			block content
 		div(class="container-fluid")
@@ -66,4 +66,4 @@ html
 						li(class="nav-link" class="nav-item")
 							a(href='/facility') Our Facilities
 						li(class="nav-item")
-							a(class="nav-link" href='#') Contact Us	
+							a(class="nav-link" href='#') Contact Us
