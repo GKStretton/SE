@@ -145,21 +145,25 @@ serveFacility('/classrooms','classrooms');
 
 
 app.get('/about-us',function(req,res){
-   res.render('about-us');
+	res.render('about-us');
+});
+
+app.get('/whats-on', function(req, res) {
+	res.render('whats-on');
 });
 
 app.get('/contact-us',function(req,res){
-   res.render('contact-us');
+	res.render('contact-us');
 });
 
 app.post('/contact-us/submit', function(req,res) {
-    sendContactMail('group6.se.durham@gmail.com',
-	    req.body.name,
-	    req.body.email,
-	    req.body.phone,
-	    req.body.message
-    );
-    res.end();
+	sendContactMail('group6.se.durham@gmail.com',
+		req.body.name,
+		req.body.email,
+		req.body.phone,
+		req.body.message
+	);
+	res.end();
 });
 
 app.get('/form',function(req,res){
