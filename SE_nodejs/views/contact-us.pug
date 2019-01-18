@@ -1,66 +1,59 @@
 extends template
 
 block content
+	iframe(class="bb-brand-thin embed-map w-100" src="https://www.openstreetmap.org/export/embed.html?bbox=-1.5723109245300293%2C54.8530817267289%2C-1.5643072128295898%2C54.856774998772146&amp;layer=mapnik&amp;marker=54.85492840502175%2C-1.5683090686798096")
 	div(class="row")
-		<iframe width="100%" height="250" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://www.openstreetmap.org/export/embed.html?bbox=-1.5723109245300293%2C54.8530817267289%2C-1.5643072128295898%2C54.856774998772146&amp;layer=mapnik&amp;marker=54.85492840502175%2C-1.5683090686798096" style="border: 1px solid black"></iframe>
-	<br />
-	div(class="row")
-		div(class="col-sm-2")
-		div(class="col-sm-4")
-			h2 CONTACT US
-			p
-				b Park View Community Association<br />
-				| Church Chare<br />
-				| Chester-le-Street<br />
-				| Co. Durham<br />
-				| DH3 3PZ
-			
-			p
-				b Telephone:
-				|  0191 388 10 43<br />
-
-				// Email is hyperlink on original site
-				b Email:
-				|  info@pvcc.co.uk
-
-			p
-				// "Get Directions" is hyperlink on original site
-				The Community Centre is located off Junction 63 of the A1M (A167) within the grounds of Park View Academy. Get Directions
-
-			h3 Centre Opening Times
-
-			p
-				b Monday
-				|  4:30pm - 10pm<br />
-				b Tuesday
-				|  4:30pm - 10pm<br />
-				b Wednesday
-				|  4:30pm - 10pm<br />
-				b Thursday
-				|  4:30pm - 10pm<br />
-				b Friday
-				|  4:30pm - 10pm<br />
-				b Saturday
-				|  7am - 10pm<br />
-				b Sunday
-				|  9am - 5pm
-
-		div(class="col-sm-4")
-			h2 GET IN TOUCH
-			form(id="contactForm")
+		//extra row col-8 to center the three columns 8//3!=0
+		div(class="row col-8 mx-auto")
+			div(class="col-lg-4")
+				h4 Contact Us
+				hr
 				p
-					| Your name<br />
-					input(type="text",name="name")
+					b Park View Community Association<br />
+					| Church Chare<br />
+					| Chester-le-Street<br />
+					| Co. Durham<br />
+					| DH3 3PZ
 				p
-					| Your Email<br />
-					input(type="text",name="email")
+					b Telephone:
+					|  0191 388 10 43<br />
+					// Email is hyperlink on original site
+					b Email:
+					|  info@pvcc.co.uk
 				p
-					| Your Telephone<br />
-					input(type="text",name="phone")
+					// "Get Directions" is hyperlink on original site
+					The Community Centre is located off Junction 63 of the A1M (A167) within the grounds of Park View Academy. Get Directions
+			div(class="col-lg-4")
+				h4 Centre Opening Times
+				hr
 				p
-					| How Can We Help?<br />
-					input(type="text",name="message")
-				p
-			button(type="button", id="contactSubmit") Send
-			span(id="feedback", class="text-success")
-		div(class="col-sm-2")
+					b Monday
+					|  4:30pm - 10pm<br />
+					b Tuesday
+					|  4:30pm - 10pm<br />
+					b Wednesday
+					|  4:30pm - 10pm<br />
+					b Thursday
+					|  4:30pm - 10pm<br />
+					b Friday
+					|  4:30pm - 10pm<br />
+					b Saturday
+					|  7am - 10pm<br />
+					b Sunday
+					|  9am - 5pm
+			div(class="col-lg-4")
+				h4 Get In Touch
+				hr
+				form(id="contactForm")
+					div(class="form-group")
+						input(type="text" class="form-control" name="name" placeholder="Your Name")
+					div(class="form-group")
+						input(type="email" class="form-control" name="email" placeholder="Your E-mail")
+					div(class="form-group")
+						input(type="tel" class="form-control" name="phone" placeholder="Your Phone")
+					div(class="form-group")
+						textarea(class="form-control" name="message" rows="3" placeholder="How Can We Help?")
+					button(id="contactSubmit" class="btn w-100" type="submit" name="button")
+						|Submit
+						span(class="fa fa-paper-plane-o" aria-hidden="true")
+					span(id="feedback", class="text-success")

@@ -2,11 +2,123 @@ html, body {
     height: 100%;
     width: 100%;
     margin: 0;
+    background-color:#eee;
 }
 
-#padding{  
+#padding {
 	position: absolute;
     top: 100px;
     bottom: 0;
-    width: 100%; 
+    width: 100%;
+}
+
+.ls-1 {
+    letter-spacing: 0.075ch
+}
+
+/* Text Color Styles */
+.text-grey {
+    color: #444;
+}
+
+.text-brand-yellow {
+    color: #ffcc27;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+    color: #d35429;
+    margin-bottom: 0.15em;
+}
+
+hr {
+    border-color: #d35429;
+    margin-top: 0;
+}
+
+/* Background Styles */
+
+.bg-alpha, #home-photo-carousel .carousel-caption{
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.bg-brand-yellow {
+    background-color: #ffcc27;
+}
+
+.bg-brand-grey {
+    background-color: #222222;
+}
+
+
+/* Border Styles */
+
+.br-brand, .bx-brand, .b-brand {
+    border-right: 8px solid #ffcc27;
+}
+
+.bl-brand, .bx-brand, .b-brand{
+    border-left: 8px solid #ffcc27;
+}
+
+.bt-brand, .by-brand, .b-brand {
+    border-top: 8px solid #ffcc27;
+}
+
+.bb-brand, .by-brand, .b-brand {
+    border-bottom: 8px solid #ffcc27;
+}
+
+.br-brand-thin, .bx-brand-thin, .b-brand-thin {
+    border-right: 3px solid #ffcc27;
+}
+
+.bl-brand-thin, .bx-brand-thin, .b-brand-thin{
+    border-left: 3px solid #ffcc27;
+}
+
+.bt-brand-thin, .by-brand-thin, .b-brand-thin{
+    border-top: 3px solid #ffcc27;
+}
+
+.bb-brand-thin, .by-brand-thin, .b-brand-thin {
+    border-bottom: 3px solid #ffcc27;
+}
+
+
+/* Style for arrow jumbotron on homepage */
+
+.arrow-down-box {
+	position: relative;
+}
+.arrow-down-box:after {
+    position: absolute;
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: "";
+	border-top-color: #ffcc27;
+	border-width: 30px;
+	margin-left: -30px;
+}
+
+/* Style for embedded map */
+.embed-map {
+    min-height: 250px;
+    height: 40vh;
+}
+
+.form-control {
+    border: 1px solid #d35429
+}
+
+.btn {
+    background-color: #d35429;
+    color: #eee;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    color: #aaa;
+    background-color: #c33419
 }

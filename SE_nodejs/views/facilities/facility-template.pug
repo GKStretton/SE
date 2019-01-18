@@ -1,13 +1,12 @@
 extends ../template
-//- TODO: add image view for the side images of the page 
+//- TODO: add image view for the side images of the page
 
 block content
 	div(class="row")
 		div(class="col-sm-12")
 		img(src=top_image class="img-fluid " style="width:100%;height:250px;object-fit:cover;")
 	div(class="row")
-		div(class="col-sm-2")
-		div(class="col-sm-8")
+		div(class="col-sm-8 mx-auto")
 			p #{page_name}
 			hr
 			div(class="row")
@@ -24,7 +23,7 @@ block content
 					div(class="container-fluid")
 						block description
 						//- add onclick js to hide.show form
-						input(type="button" class="btn" id="btn-signup" value=button_name onclick="toggleVisability('form-div')") 
+						input(type="button" class="btn" id="btn-signup" value=button_name onclick="toggleVisability('form-div')")
 						div(id="form-div" class="container-fluid" style="display:none;")
 							if button_name === 	"Book Now"
 								include form-automated
@@ -37,6 +36,5 @@ block content
 								block availability
 							div(class="col-sm-6")
 								p Pricing
-								block pricing 
-		div(class="col-sm-2")
+								block pricing
 	//-iframe(src="https://calendar.google.com/calendar/embed?src=gen9kai518437ib6jc8sq2dsfg%40group.calendar.google.com&ctz=Europe%2FLondon" width="600" height="400" frameborder="0" scrolling="no")
