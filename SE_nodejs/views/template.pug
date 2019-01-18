@@ -12,40 +12,41 @@ html
 		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
 		script(src="https://cdn.jsdelivr.net/npm/flatpickr")
 		script(src='/scripts/forms.js')
+		link(rel="stylesheet" href="/css/style.css")
 		//-add scripts here
 	body
 		div(class="container-fluid")
 			block navbar
-			div(class="row")
-				nav(class="navbar navbar-expand-sm bg-light fixed-top" style="width:100%")
-					div(class="navbar-brand")
-						a(href='/')
-							img(src="/img/pvcc_logo.png" height="8%" width="20%")
-					ul(class="nav navbar-nav navbar-right")
-						li(class="nav-item active")
-							a(class="nav-link" href='/') Home
-						li(class="nav-item")
-							a(class="nav-link" href='/about-us') About Us
-						//li(class="nav-item")
-							// a(class="nav-link" href='#') What's On
-						li(class="nav-item dropdown")
-							a(class="nav-link dropdown-toggle" href='#' id="navbar-facility-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Facilities
-							div(class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink")
-								a(class="dropdown-item" href='/facility/astro-turf') Astro Turf
-								a(class="dropdown-item" href='/facility/sports-hall') Sports Hall
-								a(class="dropdown-item" href='/facility/sports-field') Sports Field
-								a(class="dropdown-item" href='/facility/gymnasium') The Gymnasium
-								a(class="dropdown-item" href='/facility/theatre') Theatre
-								a(class="dropdown-item" href='/facility/performing-arts-room') Performing Arts Room
-								a(class="dropdown-item" href='/facility/green-room') The Green Room
-								a(class="dropdown-item" href='/facility/dining-hall') Dining Hall
-								a(class="dropdown-item" href='/facility/it-suite') IT Suite
-								a(class="dropdown-item" href='/facility/classrooms') Classrooms
-						li(class="nav-item")
-							a(class="nav-link" href='/contact-us') Contact Us
+			nav(class="navbar navbar-expand-sm bg-light fixed-top bb-brand-thin" style="width:100%")
+				div(class="navbar-brand")
+					a(href='/')
+						img(src="/img/pvcc_logo.png" height="8%" width="20%")
+				ul(class="nav navbar-nav navbar-right")
+					li(class="nav-item active")
+						a(class="nav-link" href='/') Home
+					li(class="nav-item")
+						a(class="nav-link" href='/about-us') About Us
+					li(class="nav-item")
+						a(class="nav-link" href='/whats-on') What's On
+					li(class="nav-item dropdown")
+						a(class="nav-link dropdown-toggle" href='#' id="navbar-facility-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false") Facilities
+						div(class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink")
+							a(class="dropdown-item" href='/facility/astro-turf') Astro Turf
+							a(class="dropdown-item" href='/facility/sports-hall') Sports Hall
+							a(class="dropdown-item" href='/facility/sports-field') Sports Field
+							a(class="dropdown-item" href='/facility/gymnasium') The Gymnasium
+							a(class="dropdown-item" href='/facility/theatre') Theatre
+							a(class="dropdown-item" href='/facility/performing-arts-room') Performing Arts Room
+							a(class="dropdown-item" href='/facility/green-room') The Green Room
+							a(class="dropdown-item" href='/facility/dining-hall') Dining Hall
+							a(class="dropdown-item" href='/facility/it-suite') IT Suite
+							a(class="dropdown-item" href='/facility/classrooms') Classrooms
+					li(class="nav-item")
+						a(class="nav-link" href='/contact-us') Contact Us
 
 		div(class="container-fluid" style="min-height:100vh;margin-top:100px;")
 			block content
+
 		div(class="container-fluid")
 			block footer
 			div(class="row" style="bottom:0;width:100%;")
@@ -61,8 +62,8 @@ html
 							a(class="nav-link" href='/') Home
 						li(class="nav-item")
 							a(class="nav-link" href='/about-us') About Us
-						//li(class="nav-item")
-							// a(class="nav-link" href='#') What's On
+						li(class="nav-item")
+							a(class="nav-link" href='/whats-on') What's On
 						li(class="nav-link" class="nav-item")
 							a(href='/facility') Our Facilities
 						li(class="nav-item")
