@@ -15,14 +15,14 @@ html
 		link(rel="stylesheet" href="/css/style.css")
 		//-add scripts here
 	body
-		block navbar
-		nav(class="container-fluid row navbar navbar-expand-sm w-100 bg-light bb-brand-thin")
-			div(class="col-2")
-				div(class="navbar-brand")
-					a(href='/')
-						img(src="/img/pvcc_logo.png" class="img-fluid" height="5%")
-			div(class="col-6 offset-4")
-				ul(class="navbar-nav nav-fill")
+		block nav
+		nav(id="main-nav" class="navbar navbar-expand-lg fixed-top bg-light-grey navbar-light b-brand-thin p-0")
+			a(class="navbar-brand" href="/")
+				img(src="/img/pvcc_logo.png" class="h-100 ml-5")
+			button(class="navbar-toggler mx-5" type="button" data-toggle="collapse" data-target="#navbar-links")
+				i(class="fa fa-fw fa-bars fa-2x text-brand")
+			div(id="navbar-links" class="navbar-collapse collapse")
+				ul(class="navbar-nav h-100 ml-auto")
 					li(class="nav-item active")
 						a(class="nav-link" href='/') Home
 					li(class="nav-item")
@@ -44,7 +44,7 @@ html
 							a(class="dropdown-item" href='/facility/classrooms') Classrooms
 					li(class="nav-item")
 						a(class="nav-link" href='/contact-us') Contact Us
-		div(class="container-fluid" style="min-height:100vh;margin-top:100px;")
+		div(class="container-fluid offset-navbar" style="min-height:100vh")
 			block content
 
 		div(class="container-fluid")
