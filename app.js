@@ -25,17 +25,26 @@ let mailDefaults = {
 }
 let mailTransporter = nodemailer.createTransport(mailOptions, mailDefaults);
 
-function sendConfirmationMail(adminMail,userEmail,bookingText){
+function sendConfirmationMail(adminMail,userEmail,facility,name,date,time,info){
     let messageToAdmin = {
         to: adminMail,
         subject:'Booking Confirmation',
-        html:'<p>Booking recieved: <br>' + bookingText + '</p>'
+        html:'<p>Booking recieved: <br>'
+        + 'Facility: ' + facility + '<br>'
+        + 'Email: ' + userEmail + '<br>'
+        + 'Name: ' + name + '<br>'
+        + 'At '+ time +' on ' + date + '<br>'
+        + 'Additional info: ' + info + '<p>'
     }
 
     let messageToUser = {
         to: userEmail,
         subject: 'Booking Confirmation',
-        html:'<p> Booking confirmation for your booking: <br>'+ bookingText + '</p>'
+        html:'<p> Booking confirmation for your booking: <br>'
+        + 'Facility: ' + facility + '<br>'
+        + 'Email: ' + userEmail + '<br>'
+        + 'Name: ' + name + '<br>'
+        + 'At '+ time +' on ' + date + '</p>'
     }
     //in the below sendMail functions an option callback to catch errors could be added
     mailTransporter.sendMail(messageToAdmin);
@@ -47,7 +56,7 @@ function sendEnquiryMail(adminMail,facility,name,email,phone,message){
         to: adminMail,
         subject:'Booking Enquiry',
         html:'<p> Booking enquiry from ' + name + ': </br>'
-        + 'Facility: ' + facility + '<br>' 
+        + 'Facility: ' + facility + '<br>'
         + 'Message: ' + message + '<br>'
         + 'Email: ' + email + '<br>'
         + 'Phone: ' + phone + '<br> </p>'
@@ -60,7 +69,7 @@ function sendContactMail(adminMail, name, email, phone, message) {
         to: adminMail,
         subject: 'General Enquiry',
         html: '<p> General enquiry from ' + name + ': <br />'
-            + 'Message: ' + message + '<br />' 
+            + 'Message: ' + message + '<br />'
             + 'Email: ' + email + '<br />'
             + 'Phone: ' + phone + '<br /> </p>'
     }
@@ -88,16 +97,13 @@ app.use(session({
 app.use(function(req,res,next){
     if(typeof req.myCookie.booking == "undefined"){
         req.myCookie.booking = {};
-    }   
-
-    console.log('doing cookies')
-    console.log(req.myCookie);
+    }
     next();
 });
 app.set('view engine','pug');
 
 //private key from google service account, service acc email also has to be added to each calendar manually
-const privatekey = require("./tokens/private-key.json"); 
+const privatekey = require("./tokens/private-key.json");
 // configure a JWT auth client
 var jwtClient = new google.auth.JWT(
     privatekey.client_email,
@@ -121,12 +127,12 @@ app.get('/',function(req,res){
 });
 
 /*
-* This router and function let us easily render multiple facility pages 
+* This router and function let us easily render multiple facility pages
 * Useful for if we want to pass more data to these pages in the future
 */
 const facilityRouter = express.Router();
 app.use('/facility',facilityRouter);
-function serveFacility(uri,facilityName){ 
+function serveFacility(uri,facilityName){
     facilityRouter.get(uri, function(req,res){
         res.render('facilities' + uri,{facility: facilityName});
     });
@@ -207,9 +213,7 @@ bookingRouter.get('/enquiry/success',function(req,res){
 
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
-    req.myCookie.booking.eventName = req.body.eventName;
-    req.myCookie.booking.facility = req.body.facility; 
-    req.myCookie.booking.email = req.body.email;
+    req.myCookie.booking = req.body;
     let time = req.body.time;
     let startTime = req.body.date +'T'+ time + ":00.0z";
     console.log(time.slice(0,1));
@@ -229,7 +233,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                 res.status(400).send('Error: The time slot you chose is already booked'); //if the slot is busy
             }
             else{ // if not busy, we lock the slot, the user still needs to pay though
-                let eventId =  rfc4122.v1(); 
+                let eventId =  rfc4122.v1();
                 eventId = eventId.replace(/-/g,"");
                 console.log(eventId);
                 let lockDate = new Date();
@@ -250,10 +254,10 @@ bookingRouter.post('/lockRequest',function(req,res){
                         res.sendStatus(200); //success
                         setTimeout(function(){calendarFunctions.deleteEvent(lockCalendarId,jwtClient,eventId)},120000); //delete lock on timeout
                     }
-                }); 
+                });
             }
         }
-    }); 
+    });
 });
 
 bookingRouter.post('/cancelBooking',function(req,res){
@@ -269,19 +273,20 @@ bookingRouter.post('/cancelBooking',function(req,res){
 
 //creates a paypal payment and sends the id to front end button script
 bookingRouter.post('/createPayment',function(req,res){
+    console.log("secret:" + paypalId.secret);
     paypalApiFunctions.createPayment(
         paypalId.clientId,
-        '',
+        "",
         '0.01',
-        'http://localhost:5000/form/payment/sucess', 
-        'http://localhost:5000/payment/cancel', 
+        'http://localhost:5000/form/payment/success',
+        'http://localhost:5000/payment/cancel',
         function(err,response){
             if(err){
                 console.log(err);
                 res.send(400);
             }
             else{
-                console.log(response.body.id);
+                console.log(response.body);
                 res.json({
                     id:response.body.id
                 });
@@ -296,13 +301,13 @@ bookingRouter.post('/createPayment',function(req,res){
 */
 bookingRouter.post('/executePayment',function(req,res){
     //check if lock is still in place
-    calendarFunctions.getEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId,function(err,response){ 
+    calendarFunctions.getEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId,function(err,response){
         if(err){ //this means the lock is gone - we have timed out
             console.log(err);
             res.sendStatus(400);
         }
         else{
-            let eventId =  rfc4122.v1(); 
+            let eventId =  rfc4122.v1();
             eventId = eventId.replace(/-/g,"");
             bookingJson = JSON.stringify({"facility":req.myCookie.booking.facility});
             calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.facility,bookingJson,eventId,function(err){
@@ -315,7 +320,7 @@ bookingRouter.post('/executePayment',function(req,res){
                         console.log(req.body);
                         paypalApiFunctions.executePayment(
                             paypalId.clientId,
-                            '',
+                            "",
                             req.body.paymentID,
                             req.body.payerID,
                             function(err,response){
@@ -330,13 +335,14 @@ bookingRouter.post('/executePayment',function(req,res){
                                     console.log('Payment executed');
                                     res.sendStatus(200);
                                     // delete the lock event we no longer need
-                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId); 
-                                    sendConfirmationMail('group6.se.durham@gmail.com',req.myCookie.booking.email,'test');
+                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
+                                    let r = req.myCookie.booking;
+                                    sendConfirmationMail('group6.se.durham@gmail.com',r.email,r.facility,r.name,r.date,r.time,r.info);
                                 }
                             });
                     }
             });
-        }   
+        }
     });
 });
 
