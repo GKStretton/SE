@@ -21,7 +21,7 @@ html, body {
     color: #444;
 }
 
-.text-brand-yellow {
+.text-brand {
     color: #ffcc27;
 }
 
@@ -47,26 +47,30 @@ hr {
 }
 
 .bg-brand-grey {
-    background-color: #222222;
+    background-color: #222;
+}
+
+.bg-light-grey {
+    background-color: #eee
 }
 
 
 /* Border Styles */
 
 .br-brand, .bx-brand, .b-brand {
-    border-right: 8px solid #ffcc27;
+    border-right: 5px solid #ffcc27;
 }
 
 .bl-brand, .bx-brand, .b-brand{
-    border-left: 8px solid #ffcc27;
+    border-left: 5px solid #ffcc27;
 }
 
 .bt-brand, .by-brand, .b-brand {
-    border-top: 8px solid #ffcc27;
+    border-top: 5px solid #ffcc27;
 }
 
 .bb-brand, .by-brand, .b-brand {
-    border-bottom: 8px solid #ffcc27;
+    border-bottom: 5px solid #ffcc27;
 }
 
 .br-brand-thin, .bx-brand-thin, .b-brand-thin {
@@ -121,4 +125,37 @@ hr {
 .btn:hover {
     color: #aaa;
     background-color: #c33419
+}
+
+
+/* Main navbar styles */
+
+#main-nav {
+    min-height: 10vh;
+    box-shadow: 0 -2px 6px 4px #bbb;
+}
+
+#main-nav .navbar-brand {
+    height: 10vh;
+}
+
+#main-nav .nav-item {
+    background: #eee;
+}
+
+#main-nav .nav-link {
+    transition: 350ms;
+    min-height: 10vh;
+    min-width: 14vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-nav .nav-link:hover {
+    background: #e7e7e7;
+}
+
+.offset-navbar {
+    margin-top: 10vh;
 }
