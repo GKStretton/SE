@@ -47,7 +47,11 @@ hr {
 }
 
 .bg-brand-grey {
-    background-color: #222222;
+    background-color: #222;
+}
+
+.bg-light-grey {
+    background-color: #eee
 }
 
 
@@ -121,4 +125,8 @@ hr {
 .btn:hover {
     color: #aaa;
     background-color: #c33419
+}
+
+.navbar {
+    height: 200px;
 }
