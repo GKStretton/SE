@@ -1,5 +1,5 @@
 html, body {
-    height: 100%;
+    min-height: 100vh;
     width: 100%;
     margin: 0;
     background-color:#eee;
@@ -26,7 +26,7 @@ html, body {
 }
 
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5 {
     color: #d35429;
 }
 
@@ -134,12 +134,12 @@ hr {
 /* Main navbar styles */
 
 #main-nav {
-    min-height: 96px;
+    min-height: 80px;
     box-shadow: 0px 0px 20px 5px rgba(26, 26, 45, .3);
 }
 
 #main-nav .navbar-brand {
-    height: 96px;
+    height: 80px;
 }
 
 #main-nav .nav-item {
@@ -149,9 +149,9 @@ hr {
 #main-nav .nav-link {
     color: #222;
     font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     transition: 350ms;
-    min-height: 96px;
+    min-height: 80px;
     min-width: 12vw;
     display: flex;
     justify-content: center;
@@ -174,9 +174,15 @@ hr {
 
 #main-nav .dropdown-item {
     background: #e8e8e8;
+    color: #222;
+    font-size: 1.1rem;
+    font-weight: 500;
     min-width: 12vw;
+    text-align: center;
 }
 
 .offset-navbar {
-    margin-top: 96px;
+    margin-top: 80px;
 }
+
+/* Footer styles */

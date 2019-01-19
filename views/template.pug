@@ -15,56 +15,9 @@ html
 		link(rel="stylesheet" href="/css/style.css")
 		//-add scripts here
 	body
-		block nav
-		nav(id="main-nav" class="navbar navbar-expand-lg fixed-top bg-light-grey b-brand-thin p-0")
-			a(class="navbar-brand pb-0 pt-2 mx-5" href="/")
-				img(src="/img/pvcc_logo.png" class="h-100")
-			button(class="navbar-toggler mx-5" type="button" data-toggle="collapse" data-target="#navbar-links")
-				i(class="fa fa-fw fa-bars fa-2x text-brand")
-			div(id="navbar-links" class="navbar-collapse collapse")
-				ul(class="navbar-nav h-100 ml-auto")
-					li(class="nav-item")
-						a(class="nav-link" href='/') Home
-					li(class="nav-item")
-						a(class="nav-link" href='/about-us') About Us
-					li(class="nav-item")
-						a(class="nav-link" href='/whats-on') What's On
-					li(class="nav-item dropdown")
-						a(class="nav-link dropdown-toggle" href='#' id="navbar-facility-dropdown" data-toggle="dropdown") Facilities
-						div(class="dropdown-menu")
-							a(class="dropdown-item" href='/facility/astro-turf') Astro Turf
-							a(class="dropdown-item" href='/facility/sports-hall') Sports Hall
-							a(class="dropdown-item" href='/facility/sports-field') Sports Field
-							a(class="dropdown-item" href='/facility/gymnasium') The Gymnasium
-							a(class="dropdown-item" href='/facility/theatre') Theatre
-							a(class="dropdown-item" href='/facility/performing-arts-room') Performing Arts Room
-							a(class="dropdown-item" href='/facility/green-room') The Green Room
-							a(class="dropdown-item" href='/facility/dining-hall') Dining Hall
-							a(class="dropdown-item" href='/facility/it-suite') IT Suite
-							a(class="dropdown-item" href='/facility/classrooms') Classrooms
-					li(class="nav-item")
-						a(class="nav-link" href='/contact-us') Contact Us
-		div(class="container-fluid offset-navbar" style="min-height:100%")
+		include navbar
+
+		div(class="container-fluid offset-navbar" style="min-height:100vh")
 			block content
 
-		div(class="container-fluid")
-			block footer
-			div(class="row" style="bottom:0;width:100%;")
-				div(class="col-sm-6")
-					div(class="row")
-						p © Copyright - Park View Community Association
-						//-todo add css to align icons
-						a(class="fa fa-facebook" href="https://www.facebook.com/parkviewcommunitycentre/")
-						a(class="fa fa-twitter" href="https://twitter.com/ParkViewCA")
-				div(class="col-sm-6")
-					ul(class="nav nav-pills")
-						li(class="nav-item active")
-							a(class="nav-link" href='/') Home
-						li(class="nav-item")
-							a(class="nav-link" href='/about-us') About Us
-						li(class="nav-item")
-							a(class="nav-link" href='/whats-on') What's On
-						li(class="nav-link" class="nav-item")
-							a(href='/facility') Our Facilities
-						li(class="nav-item")
-							a(class="nav-link" href='/contact-us') Contact Us
+		include footer
