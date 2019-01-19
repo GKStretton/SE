@@ -25,6 +25,9 @@ let mailDefaults = {
 }
 let mailTransporter = nodemailer.createTransport(mailOptions, mailDefaults);
 
+function repLineBreaks(text){
+  return text.replace(/\r\n/g, '<br>')
+}
 function sendConfirmationMail(adminMail,userEmail,facility,name,date,time,info){
     let messageToAdmin = {
         to: adminMail,
@@ -34,7 +37,7 @@ function sendConfirmationMail(adminMail,userEmail,facility,name,date,time,info){
         + 'Email: ' + userEmail + '<br>'
         + 'Name: ' + name + '<br>'
         + 'At '+ time +' on ' + date + '<br>'
-        + 'Additional info: ' + info + '<p>'
+        + 'Additional info: ' + repLineBreaks(info) + '<p>'
     }
 
     let messageToUser = {
@@ -57,7 +60,7 @@ function sendEnquiryMail(adminMail,facility,name,email,phone,message){
         subject:'Booking Enquiry',
         html:'<p> Booking enquiry from ' + name + ': </br>'
         + 'Facility: ' + facility + '<br>'
-        + 'Message: ' + message + '<br>'
+        + 'Message: ' + repLineBreaks(message) + '<br>'
         + 'Email: ' + email + '<br>'
         + 'Phone: ' + phone + '<br> </p>'
     }
