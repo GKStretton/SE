@@ -276,7 +276,6 @@ bookingRouter.post('/cancelBooking',function(req,res){
 
 //creates a paypal payment and sends the id to front end button script
 bookingRouter.post('/createPayment',function(req,res){
-    console.log("secret:" + paypalId.secret);
     paypalApiFunctions.createPayment(
         paypalId.clientId,
         "",
@@ -286,10 +285,10 @@ bookingRouter.post('/createPayment',function(req,res){
         function(err,response){
             if(err){
                 console.log(err);
-                res.send(400);
+                res.sendStatus(400);
             }
             else{
-                console.log(response.body);
+              console.log(response.body);
                 res.json({
                     id:response.body.id
                 });
@@ -324,6 +323,7 @@ bookingRouter.post('/executePayment',function(req,res){
                         paypalApiFunctions.executePayment(
                             paypalId.clientId,
                             "",
+                            '0.01',
                             req.body.paymentID,
                             req.body.payerID,
                             function(err,response){

@@ -20,7 +20,7 @@ function createPayment(clientId,secret,price,redirectUri,cancelUri,callback){
 			},
 			transactions: [
 			{
-				amount: 
+				amount:
 				{
 					total:price,
 					currency:'GBP'
@@ -38,14 +38,17 @@ function createPayment(clientId,secret,price,redirectUri,cancelUri,callback){
 		if(err){
 			callback(err);
 		}
-		else{
+		else if(response.body.id){
 			callback(false,response);
+		}
+		else{
+			callback("VALIDATION_ERROR");
 		}
 	});
 }
 
 //executes the payment with a request to the paypal api
-function executePayment(clientId,secret,paymentId,payerId,callback){
+function executePayment(clientId,secret,price,paymentId,payerId,callback){
     request.post(PAYPAL_URI + '/v1/payments/payment/' + paymentId + '/execute',
       {
         auth:
@@ -60,6 +63,7 @@ function executePayment(clientId,secret,paymentId,payerId,callback){
           {
             amount:
             {
+							total:price,
               currency: 'GBP'
             }
           }]
@@ -68,11 +72,14 @@ function executePayment(clientId,secret,paymentId,payerId,callback){
       },
       function(err,response){
       	if(err){
-      		callback(err)
+      		callback(err);
       	}
-      	else{
-      		callback(false,response)
+      	else if(response.body.id){
+      		callback(false,response);
       	}
+				else{
+					callback("VALIDATION_ERROR");
+				}
       });
 }
 
