@@ -1,5 +1,5 @@
 html, body {
-    height: 100%;
+    min-height: 100vh;
     width: 100%;
     margin: 0;
     background-color:#eee;
@@ -26,14 +26,16 @@ html, body {
 }
 
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h3, h4, h5 {
     color: #d35429;
-    margin-bottom: 0.15em;
+}
+
+.h-underline {
+    border-bottom: 1px solid #d35429
 }
 
 hr {
     border-color: #d35429;
-    margin-top: 0;
 }
 
 /* Background Styles */
@@ -93,7 +95,7 @@ hr {
 /* Style for arrow jumbotron on homepage */
 
 .arrow-down-box {
-	position: relative;
+    position: relative;
 }
 .arrow-down-box:after {
     position: absolute;
@@ -109,6 +111,7 @@ hr {
 /* Style for embedded map */
 .embed-map {
     min-height: 250px;
+    max-height: 400px;
     height: 40vh;
 }
 
@@ -131,12 +134,12 @@ hr {
 /* Main navbar styles */
 
 #main-nav {
-    min-height: 10vh;
-    box-shadow: 0 -2px 6px 4px #bbb;
+    min-height: 80px;
+    box-shadow: 0px 0px 20px 5px rgba(26, 26, 45, .3);
 }
 
 #main-nav .navbar-brand {
-    height: 10vh;
+    height: 80px;
 }
 
 #main-nav .nav-item {
@@ -144,18 +147,42 @@ hr {
 }
 
 #main-nav .nav-link {
+    color: #222;
+    font-weight: 600;
+    font-size: 1.4rem;
     transition: 350ms;
-    min-height: 10vh;
-    min-width: 14vh;
+    min-height: 80px;
+    min-width: 12vw;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#main-nav .nav-link:hover {
-    background: #e7e7e7;
+#main-nav .nav-link:hover, #main-nav .dropdown-item:hover {
+    background: #ffcc27;
+}
+
+#main-nav .dropdown-menu {
+    padding: 0;
+    margin: 0;
+    border-top: 3px solid #ffcc27;
+    border-bottom: 3px solid #ffcc27;
+    border-left: none;
+    border-right: none;
+    background: #e8e8e8;
+}
+
+#main-nav .dropdown-item {
+    background: #e8e8e8;
+    color: #222;
+    font-size: 1.1rem;
+    font-weight: 500;
+    min-width: 12vw;
+    text-align: center;
 }
 
 .offset-navbar {
-    margin-top: 10vh;
+    margin-top: 80px;
 }
+
+/* Footer styles */
