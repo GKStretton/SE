@@ -1,0 +1,188 @@
+html, body {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    background-color:#eee;
+}
+
+#padding {
+	position: absolute;
+    top: 100px;
+    bottom: 0;
+    width: 100%;
+}
+
+.ls-1 {
+    letter-spacing: 0.075ch
+}
+
+/* Text Color Styles */
+.text-grey {
+    color: #444;
+}
+
+.text-brand {
+    color: #ffcc27;
+}
+
+
+h1, h2, h3, h4, h5 {
+    color: #d35429;
+}
+
+.h-underline {
+    border-bottom: 1px solid #d35429
+}
+
+hr {
+    border-color: #d35429;
+}
+
+/* Background Styles */
+
+.bg-alpha, #home-photo-carousel .carousel-caption{
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.bg-brand-yellow {
+    background-color: #ffcc27;
+}
+
+.bg-brand-grey {
+    background-color: #222;
+}
+
+.bg-light-grey {
+    background-color: #eee
+}
+
+
+/* Border Styles */
+
+.br-brand, .bx-brand, .b-brand {
+    border-right: 5px solid #ffcc27;
+}
+
+.bl-brand, .bx-brand, .b-brand{
+    border-left: 5px solid #ffcc27;
+}
+
+.bt-brand, .by-brand, .b-brand {
+    border-top: 5px solid #ffcc27;
+}
+
+.bb-brand, .by-brand, .b-brand {
+    border-bottom: 5px solid #ffcc27;
+}
+
+.br-brand-thin, .bx-brand-thin, .b-brand-thin {
+    border-right: 3px solid #ffcc27;
+}
+
+.bl-brand-thin, .bx-brand-thin, .b-brand-thin{
+    border-left: 3px solid #ffcc27;
+}
+
+.bt-brand-thin, .by-brand-thin, .b-brand-thin{
+    border-top: 3px solid #ffcc27;
+}
+
+.bb-brand-thin, .by-brand-thin, .b-brand-thin {
+    border-bottom: 3px solid #ffcc27;
+}
+
+
+/* Style for arrow jumbotron on homepage */
+
+.arrow-down-box {
+    position: relative;
+}
+.arrow-down-box:after {
+    position: absolute;
+	top: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: "";
+	border-top-color: #ffcc27;
+	border-width: 30px;
+	margin-left: -30px;
+}
+
+/* Style for embedded map */
+.embed-map {
+    min-height: 250px;
+    max-height: 400px;
+    height: 40vh;
+}
+
+.form-control {
+    border: 1px solid #d35429
+}
+
+.btn {
+    background-color: #d35429;
+    color: #eee;
+    transition: 0.2s;
+}
+
+.btn:hover {
+    color: #aaa;
+    background-color: #c33419
+}
+
+
+/* Main navbar styles */
+
+#main-nav {
+    min-height: 80px;
+    box-shadow: 0px 0px 20px 5px rgba(26, 26, 45, .3);
+}
+
+#main-nav .navbar-brand {
+    height: 80px;
+}
+
+#main-nav .nav-item {
+    background: #eee;
+}
+
+#main-nav .nav-link {
+    color: #222;
+    font-weight: 600;
+    font-size: 1.4rem;
+    transition: 350ms;
+    min-height: 80px;
+    min-width: 12vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-nav .nav-link:hover, #main-nav .dropdown-item:hover {
+    background: #ffcc27;
+}
+
+#main-nav .dropdown-menu {
+    padding: 0;
+    margin: 0;
+    border-top: 3px solid #ffcc27;
+    border-bottom: 3px solid #ffcc27;
+    border-left: none;
+    border-right: none;
+    background: #e8e8e8;
+}
+
+#main-nav .dropdown-item {
+    background: #e8e8e8;
+    color: #222;
+    font-size: 1.1rem;
+    font-weight: 500;
+    min-width: 12vw;
+    text-align: center;
+}
+
+.offset-navbar {
+    margin-top: 80px;
+}
+
+/* Footer styles */

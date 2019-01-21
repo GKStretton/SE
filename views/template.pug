@@ -1,0 +1,23 @@
+//-static layout elements e.g. navbar,footer
+html
+	head
+		block head
+		script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js")
+		script(src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.min.js")
+		script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js")
+		script(src="/scripts/functions.js")
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.5.6/jquery.fancybox.min.css")
+		link(rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css")
+		link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
+		link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css")
+		script(src="https://cdn.jsdelivr.net/npm/flatpickr")
+		script(src='/scripts/forms.js')
+		link(rel="stylesheet" href="/css/style.css")
+		//-add scripts here
+	body
+		include navbar
+
+		div(class="container-fluid offset-navbar" style="min-height:100vh")
+			block content
+
+		include footer

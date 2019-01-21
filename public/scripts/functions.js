@@ -15,3 +15,18 @@ function changeGalleryImage(s){
 $(document).ready(function() {
 	$('.fancybox').fancybox();
 });
+
+// what's on functionality
+$(document).ready(function() {
+	$('#adultTab').hide();
+});
+
+$(document).on("click", "#childTabButton", function() {
+	$('#childTab').show();
+	$('#adultTab').hide();
+});
+
+$(document).on("click", "#adultTabButton", function() {
+	$('#childTab').hide();
+	$('#adultTab').show();
+});

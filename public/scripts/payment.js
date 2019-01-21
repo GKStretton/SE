@@ -9,7 +9,7 @@
                 // Or, if you have an error from your server side, you need to call `reject`, e.g. `reject(err)`
                 jQuery.post('/booking/createPayment')
                     .done(function(data) { resolve(data.id); })
-                    .fail(function(err)  { reject(err); });
+                    .fail(function(err)  { reject('err'); });
             });
         },
         // Pass a function to be called when the customer approves the payment,
@@ -25,8 +25,11 @@
                 .fail(function(err)  { console.log("Failed to execute your payment") }); // go to a payment failure page
         },
         // Pass a function to be called when the customer cancels the payment
-        //onCancel: function(data) {
-        //    console.log('The payment was cancelled!');
-        //    console.log('Payment ID = ', data.paymentID);
-        //ss}
+        onCancel: function(data) {
+            console.log('The payment was cancelled!');
+            console.log('Payment ID = ', data.paymentID);
+        },
+        onError: function(){
+          console.log("Error");//go to some error page
+        }
     }, '#paymentContainer');
