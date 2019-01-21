@@ -8,7 +8,8 @@ general format is function(calendarId,authInput,[parameters],callback)
 //checks if busy at certain time, returns 'busy' or 'notBusy'
 const {google} = require('googleapis');
 const calendar = google.calendar('v3');
-function rejectIfLocked(lockCalendarId, authInput, startTime, endTime,facility){
+
+function rejectIfLocked(lockCalendarId, authInput, startTime, endTime, facility){
     return new Promise(function(resolve,reject) {
         calendar.events.list({ // lists items from the calendar
             auth: authInput,
@@ -35,8 +36,8 @@ function rejectIfLocked(lockCalendarId, authInput, startTime, endTime,facility){
     });
 }
 
-function checkBusy(calendarId,lockCalendarId, authInput, startTime, endTime,facility,callback){
-    rejectIfLocked(lockCalendarId, authInput, startTime, endTime,facility)
+function checkBusy(calendarId, lockCalendarId, authInput, startTime, endTime, facility, callback){
+    rejectIfLocked(lockCalendarId, authInput, startTime, endTime, facility)
         .then(function(){
              calendar.events.list({ // lists items from the calendar
                     auth: authInput,
@@ -82,7 +83,7 @@ function addEvent(calendarId,authInput,startTime,endTime,summary,description,eve
             id: eventId,
             description:description
         }  
-    },function(err,response){
+    },function (err, response) {
         if(err){
             callback(err);
         }
@@ -94,26 +95,26 @@ function addEvent(calendarId,authInput,startTime,endTime,summary,description,eve
 }
 
 //deletes event with given ID
-function deleteEvent(calendarId,authInput,eventId,callback){
+function deleteEvent(calendarId, authInput, eventId, callback){
     calendar.events.delete({
         auth:authInput,
         calendarId:calendarId,
         eventId:eventId
-    },function(err,response){
-        if(err){
-            if(typeof callback === "function"){
+    },function (err, response) {
+        if (err) {
+            if (typeof callback === "function") {
                 callback(err);
             }   
         }
         else{
-            if(typeof callback === "function"){
+            if (typeof callback === "function") {
                 callback(false);
             }
         }
     });
 }
 
-function getEvent(calendarId,authInput,eventId,callback){
+function getEvent(calendarId,authInput,eventId,callback) {
     calendar.events.get({
         auth:authInput,
         calendarId:calendarId,

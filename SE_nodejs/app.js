@@ -67,10 +67,76 @@ function sendContactMail(adminMail, name, email, phone, message) {
     mailTransporter.sendMail(messageToAdmin);
 }
 
+/**** Rowans API Libraries ****/
+
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
 const paypalApiFunctions = require('./paypalApiFunctions.js');
+
+/**** Database Code ****/
+
+const MongoClient = require('mongodb').MongoClient;
+const url = "mongodb://localhost:5000/maindb";
+const dbo = db.db("maindb");
+
+function deleteEntry(tgtDB, keyType, primaryKey, collectionName) {
+    const deleteQuery = { keyType: primaryKey };
+    tgtDB.collection(collectionName).deleteOne({
+        deleteQuery, function (err, db) {
+            if (err) throw err;
+            console.log("Lock " + eventID + " removed.");
+            db.close();
+        }
+    });
+    return 0;
+}
+
+function insertEntry(tgtDB, entry, collectionName) {
+    tgtDB.collection(collectionName).insertOne(entry, function (err, db) {
+        if (err) throw err;
+        console.log("New entry inserted to " + collectionName + ".");
+    });
+    return 0;
+}
+
+MongoClient.connect(url, function (err, db) { //Creates the database and initiallises it with a table for booking info.
+    if (err) throw err;
+    dbo.createCollection("Locks", function (err, res) {
+        if (err) throw err;
+        console.log("Lock table created.");
+    })
+    dbo.createCollection("bookings", function (err, res) {
+        if (err) throw err;
+        console.log("Booking table created.");
+    })
+    let testBooking = { //This exists as a test booking to display the schema of the db **WIP**
+        "eventID": "eventId",
+        "calendarID": "calendarID",
+        "authID": "authID",
+        "startTime": "startTime",
+        "endTime": "endTime",
+        "summary": "SampleText",
+        "description": "NotARealBooking"
+    }
+    let testLock = { //This exists as a test lock to display the schema of the db
+        "eventID": "eventId",
+        "eventName": "eventName",
+        "email": "email@mail.com",
+    }
+    dbo.collection("Locks").insertOne(testLock, function (err, db) {
+        if (err) throw err;
+        console.log("TestLock inserted.");
+    })
+    dbo.collection("bookings").insertOne(testBooking, function (err, db) {
+        if (err) throw err;
+        console.log("TestBooking inserted.");
+    })
+    console.log("Database created.");
+    db.close();
+});
+
+/**** Serverside Code Begins Here ****/
 
 const app = express();
 app.use(bodyParser.json());
@@ -79,13 +145,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,'views')));
-app.use(session({
+app.use( session ({
   cookieName: "myCookie",
   secret: "ucndh34634h48dhsdtywefhsdf7sdf", //some long string used to sign the cookie
   duration: 24 * 60 * 60 * 1000,
   activeDuration: 1000 * 60 * 5 //5 mins
 }));
-app.use(function(req,res,next){
+app.use(function (req, res, next) {
     if(typeof req.myCookie.booking == "undefined"){
         req.myCookie.booking = {};
     }   
@@ -106,7 +172,7 @@ var jwtClient = new google.auth.JWT(
     ['https://www.googleapis.com/auth/calendar']);
 
 //authenticate request
-jwtClient.authorize(function(err, tokens) {
+jwtClient.authorize(function (err, tokens) {
     if (err) {
         console.log(err);
         return;
@@ -116,7 +182,7 @@ jwtClient.authorize(function(err, tokens) {
 });
 
 //serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
-app.get('/',function(req,res){
+app.get('/',function (req, res) {
 	res.render('home');
 });
 
@@ -126,7 +192,7 @@ app.get('/',function(req,res){
 */
 const facilityRouter = express.Router();
 app.use('/facility',facilityRouter);
-function serveFacility(uri,facilityName){ 
+function serveFacility(uri,facilityName) { 
     facilityRouter.get(uri, function(req,res){
         res.render('facilities' + uri,{facility: facilityName});
     });
@@ -144,15 +210,15 @@ serveFacility('/it-suite','it-suite');
 serveFacility('/classrooms','classrooms');
 
 
-app.get('/about-us',function(req,res){
+app.get('/about-us',function (req, res ){
    res.render('about-us');
 });
 
-app.get('/contact-us',function(req,res){
+app.get('/contact-us',function (req, res) {
    res.render('contact-us');
 });
 
-app.post('/contact-us/submit', function(req,res) {
+app.post('/contact-us/submit', function (req, res) {
     sendContactMail('group6.se.durham@gmail.com',
 	    req.body.name,
 	    req.body.email,
@@ -162,19 +228,19 @@ app.post('/contact-us/submit', function(req,res) {
     res.end();
 });
 
-app.get('/form',function(req,res){
+app.get('/form',function (req, res) {
     //res.redirect('form.html');
     res.render('form-automated');
 });
 
-app.get('/payment',function(req,res){
+app.get('/payment',function (req, res) {
     paymentData = {
         facility: req.myCookie.booking.facility
     }
     res.render('payment/payment-page',paymentData);
 });
 
-app.get('/payment/success',function(req,res){
+app.get('/payment/success',function (req, res) {
     res.render('payment/payment-success');
 });
 
@@ -238,13 +304,23 @@ bookingRouter.post('/lockRequest',function(req,res){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
-                        res.status(400).send('Error: We could\'t make your booking'); // some sort of error occurs on google's side
+                        res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on google's side
                     }
                     else{
                         console.log('200');
                         req.myCookie.booking.eventId = eventId;
+                        let lockData = { //This data will be inserted into the DB.
+                            eventId: eventID, //primary key (beware that the row name is eventId not eventID)
+                            eventName: req.body.eventName,
+                            facility: req.body.facility,
+                            email: req.body.email
+                        }
+                        insertEntry(dbo, lockData, "Locks"); //Inserts lock into database.
                         res.sendStatus(200); //success
-                        setTimeout(function(){calendarFunctions.deleteEvent(lockCalendarId,jwtClient,eventId)},120000); //delete lock on timeout
+                        setTimeout(function () {
+                            calendarFunctions.deleteEvent(lockCalendarId, jwtClient, eventId);
+                            deleteEntry(dbo, "eventID", eventID, "Locks"); // Makes sure that the database entry is removed on timeout.
+                        }, 120000); //delete lock on timeout
                     }
                 }); 
             }
@@ -252,7 +328,8 @@ bookingRouter.post('/lockRequest',function(req,res){
     }); 
 });
 
-bookingRouter.post('/cancelBooking',function(req,res){
+//Is this releasing a lock or deleting an actual booking?
+bookingRouter.post('/cancelBooking', function (req, res) {
     deleteEvent(calendarId,jwtClient,req.myCookie.booking.eventId,function(err){
         if(err){
             res.sendStatus(400);
@@ -261,10 +338,18 @@ bookingRouter.post('/cancelBooking',function(req,res){
             res.sendStatus(200);
         }
     });
+    deleteEntry(dbo, "eventID", req.myCookie.booking.eventId, "Locks", function (err) { 
+        if (err) {
+            res.sendStatus(400);
+        }
+        else {
+            res.sendStatus(200);
+        }
+    }); //Again making sure data is consistent
 });
 
 //creates a paypal payment and sends the id to front end button script
-bookingRouter.post('/createPayment',function(req,res){
+bookingRouter.post('/createPayment', function (req, res) {
     paypalApiFunctions.createPayment(
         paypalId.clientId,
         '',
@@ -286,7 +371,7 @@ bookingRouter.post('/createPayment',function(req,res){
 });
 
 /*
-* checks if lock is stil in place, if so, we add the actual booking event
+* checks if lock is still in place, if so, we add the actual booking event
 * The event is added first, before we finalise(execute) the payment, this ensures no user ends up paying without a booking on the calendar
 * In the event a payment fails to execute, we delete the booking from the calendar
 */
@@ -300,7 +385,8 @@ bookingRouter.post('/executePayment',function(req,res){
         else{
             let eventId =  rfc4122.v1(); 
             eventId = eventId.replace(/-/g,"");
-            bookingJson = JSON.stringify({"facility":req.myCookie.booking.facility});
+            bookingJson = JSON.stringify({ "facility": req.myCookie.booking.facility });
+            //Ideally we do something to add the entry to the database here - Erdal.
             calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.facility,bookingJson,eventId,function(err){
                     if(err){
                         console.log(err.code);
@@ -320,13 +406,16 @@ bookingRouter.post('/executePayment',function(req,res){
                                     res.sendStatus(400);
                                     //delete lock event
                                     calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
-                                    calendarFunctions.deleteEvent(calendarId,jwtClient,eventId);
+                                    calendarFunctions.deleteEvent(calendarId, jwtClient, eventId);
+                                    deleteEntry(dbo, "eventID", req.myCookie.booking.eventId, "Locks"); //Do it for the database as well.
+                                    deleteEntry(dbo, "eventID", req.myCookie.booking.eventId, "Bookings");
                                 }
                                 else{//payment achieved successfully
                                     console.log('Payment executed');
                                     res.sendStatus(200);
                                     // delete the lock event we no longer need
-                                    calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId); 
+                                    calendarFunctions.deleteEvent(lockCalendarId, jwtClient, req.myCookie.booking.eventId);
+                                    deleteEntry(dbo, "eventID", req.myCookie.booking.eventId, "Locks"); //Do it for the database as well.
                                     sendConfirmationMail('group6.se.durham@gmail.com',req.myCookie.booking.email,'test');
                                 }
                             });
