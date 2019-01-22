@@ -152,6 +152,11 @@ serveFacility('/dining-hall','dining-hall');
 serveFacility('/it-suite','it-suite');
 serveFacility('/classrooms','classrooms');
 
+/*please change this to use the facilityRouter
+  also relocate the physical file into /facility*/
+app.get('/facility-landing',function(req,res){
+	res.render('facility-landing');
+});
 
 app.get('/about-us',function(req,res){
 	res.render('about-us');
