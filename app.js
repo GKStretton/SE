@@ -161,6 +161,14 @@ app.get('/whats-on', function(req, res) {
 	res.render('whats-on');
 });
 
+app.get('/booking-enquiry', function(req, res) {
+	res.render('booking-enquiry');
+});
+
+app.get('/easy-fundraising', function(req, res) {
+	res.render('easy-fundraising');
+});
+
 app.get('/contact-us',function(req,res){
 	res.render('contact-us');
 });
