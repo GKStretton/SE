@@ -196,3 +196,13 @@ hr {
 }
 
 /* Footer styles */
+
+/* Carousel styles */
+
+#home-photo-carousel .carousel-control-prev, #home-photo-carousel .carousel-control-next {
+    width: 8%;
+}
+
+#home-photo-carousel .carousel-item > img {
+    width: 100%;
+}
