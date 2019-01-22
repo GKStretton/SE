@@ -108,12 +108,22 @@ hr {
 	margin-left: -30px;
 }
 
+.jumbo-text {
+    font-size: calc(16px + 1.4vw);
+    text-transform: uppercase;
+    text-align: center;
+    color: #444;
+    letter-spacing: 0.075ch;
+}
+
 /* Style for embedded map */
 .embed-map {
     min-height: 250px;
     max-height: 400px;
     height: 40vh;
 }
+
+/* Styles for forms */
 
 .form-control {
     border: 1px solid #d35429
