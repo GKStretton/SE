@@ -1,0 +1,30 @@
+extends template
+block content 
+		div(class="row")
+			div(class="col-sm-12")
+			img(src="/img/home/home-banner-1.jpg" class="img-fluid" style="width:100%;height:250px;object-fit:cover;")
+		div(class="col-sm-8 mx-auto")
+			h3(class="h-underline text-uppercase") Make a booking enquiry
+			div(class="container")
+				form(id="enquiryForm")
+					div(class="form-group")
+						label(for="enquiry-input")
+							| Enquiry:
+						input(id="enquiry-input" name="enquiry" type="text" class="form-control")
+					div(class="form-group")
+						label(for="name-input")
+							| Your Name:
+						input(id="name-input" name="name" type="text" class="form-control")
+					div(class="form-group")
+						label(for="phone-input")
+							| Your Phone Number:
+						input(id="phone-input" name="phone" type="phone" class="form-control")
+					div(class="form-group")
+						label(for="email-input")
+							| Your Email:
+						input(id="email-input" name="email" type="email" class="form-control")
+					div(class="form-group")
+						label(for="detail-input")
+							| Your Details:
+						textarea(id="detail-input" rows="6" class="form-control")
+					button(type="button" id="bookingEnquirySubmit" class="btn btn-primary") Submit
