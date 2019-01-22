@@ -184,5 +184,19 @@ hr {
 .offset-navbar {
     margin-top: 80px;
 }
+/* images on facility landing - please improve Jack */
+.image-gallery{
+	position: relative;
+	text-align: center;
+}
+
+.centered{
+	position: absolute;
+    bottom: 0%;
+  	left: 50%;
+ 	transform: translate(-50%, -50%);
+	color: white;
+	background: black;
+}
 
 /* Footer styles */
