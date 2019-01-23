@@ -200,19 +200,23 @@ hr {
     margin-top: 100px;
 }
 
-/* images on facility landing - please improve Jack */
-.image-gallery{
-	position: relative;
-	text-align: center;
+/* Images on facility landing*/
+
+.image-gallery .card {
+    transition: 200ms;
+    box-shadow: 0px 2px 5px 1px rgba(26, 26, 45, .3);
+    background-color: #eee;
 }
 
-.centered{
-	position: absolute;
-    bottom: 0%;
-  	left: 50%;
- 	transform: translate(-50%, -50%);
-	color: white;
-	background: black;
+.image-gallery .card:hover{
+    transform: scale(1.02);
+}
+
+.image-gallery .card-img-top{
+    border-bottom: 5px solid #ffcc27;
+    height:250px;
+    width:100%;
+    object-fit:cover;
 }
 
 /* Footer styles */
