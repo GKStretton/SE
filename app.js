@@ -177,6 +177,15 @@ app.get('/easy-fundraising', function(req, res) {
 app.get('/contact-us',function(req,res){
 	res.render('contact-us');
 });
+//serve event pages template - will need to change
+app.get('/event/:eventPage',function(req,res){
+	res.render(path.join(__dirname,'views','events',req.params.eventPage));
+});
+
+//temp serve event page for testing, Nikesh will remove 
+app.get('/event',function(req,res){
+	res.render(path.join(__dirname,'views','events','Fast Feet Football Academy'));
+});
 
 app.post('/contact-us/submit', function(req,res) {
 	sendContactMail('group6.se.durham@gmail.com',
