@@ -4,6 +4,10 @@ div(class="container")
 			select(id="facility-input" name="facility" class="form-control")
 				option(value=facility)
 		div(class="form-group")
+			label(for="schedule")
+				| Availability:
+			div(id="calendar")
+		div(class="form-group")
 			label(for="name-input")
 				| Name:
 			input(id="name-input" name="name" type="text" class="form-control")

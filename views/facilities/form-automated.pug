@@ -3,10 +3,14 @@ div(class="container")
 		div(class="form-group" style="display:none")
 			select(id="facility-input" name="facility" class="form-control")
 				option(value=facility)
-		div(class="form-group") 
+		div(class="form-group")
 			label(for="date-input")
 				| Date:
 			input(class="form-control" id="date-input" name="date")
+		div(class="form-group")
+			label(for="schedule")
+				| Availability:
+			div(id="calendar")
 		div(class="form-group")
 			label(for="time-input")
 				| Time:
