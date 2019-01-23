@@ -108,12 +108,22 @@ hr {
 	margin-left: -30px;
 }
 
+.jumbo-text {
+    font-size: calc(16px + 1.4vw);
+    text-transform: uppercase;
+    text-align: center;
+    color: #444;
+    letter-spacing: 0.075ch;
+}
+
 /* Style for embedded map */
 .embed-map {
     min-height: 250px;
     max-height: 400px;
     height: 40vh;
 }
+
+/* Styles for forms */
 
 .form-control {
     border: 1px solid #d35429
@@ -134,12 +144,12 @@ hr {
 /* Main navbar styles */
 
 #main-nav {
-    min-height: 80px;
+    min-height: 100px;
     box-shadow: 0px 0px 20px 5px rgba(26, 26, 45, .3);
 }
 
 #main-nav .navbar-brand {
-    height: 80px;
+    height: 100px;
 }
 
 #main-nav .nav-item {
@@ -149,9 +159,9 @@ hr {
 #main-nav .nav-link {
     color: #222;
     font-weight: 600;
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     transition: 350ms;
-    min-height: 80px;
+    min-height: 100px;
     min-width: 12vw;
     display: flex;
     justify-content: center;
@@ -175,28 +185,47 @@ hr {
 #main-nav .dropdown-item {
     background: #e8e8e8;
     color: #222;
-    font-size: 1.1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    height: 60px;
     font-weight: 500;
     min-width: 12vw;
     text-align: center;
+    transition: 250ms;
 }
 
 .offset-navbar {
-    margin-top: 80px;
-}
-/* images on facility landing - please improve Jack */
-.image-gallery{
-	position: relative;
-	text-align: center;
+    margin-top: 100px;
 }
 
-.centered{
-	position: absolute;
-    bottom: 0%;
-  	left: 50%;
- 	transform: translate(-50%, -50%);
-	color: white;
-	background: black;
+/* Images on facility landing*/
+
+.image-gallery .card {
+    transition: 200ms;
+    box-shadow: 0px 2px 5px 1px rgba(26, 26, 45, .3);
+    background-color: #eee;
+}
+
+.image-gallery .card:hover{
+    transform: scale(1.02);
+}
+
+.image-gallery .card-img-top{
+    border-bottom: 5px solid #ffcc27;
+    height:250px;
+    width:100%;
+    object-fit:cover;
 }
 
 /* Footer styles */
+
+/* Carousel styles */
+#home-photo-carousel .carousel-control-prev, #home-photo-carousel .carousel-control-next {
+    width: 8%;
+}
+
+#home-photo-carousel .carousel-item > img {
+    width: 100%;
+}
