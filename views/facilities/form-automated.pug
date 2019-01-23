@@ -3,7 +3,7 @@ div(class="container")
 		div(class="form-group" style="display:none")
 			select(id="facility-input" name="facility" class="form-control")
 				option(value=facility)
-		div(class="form-group") 
+		div(class="form-group")
 			label(for="date-input")
 				| Date:
 			input(class="form-control" id="date-input" name="date")
@@ -25,5 +25,7 @@ div(class="container")
 			label(for="info-input")
 				| Additional info:
 			textarea(id="info-input" name="info" rows="3" class="form-control")
-		button(type="button" id="automatedFormSubmit" class="btn btn-primary") Submit
+		button(type="button" id="automatedFormSubmit" class="btn btn-primary w-100")
+			|Submit
+			span(class="fa fa-paper-plane-o")
 	p(id="errMsg")
