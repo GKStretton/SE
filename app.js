@@ -224,6 +224,12 @@ serveFacility('/dining-hall','dining-hall');
 serveFacility('/it-suite','it-suite');
 serveFacility('/classrooms','classrooms');
 
+/*please change this to use the facilityRouter
+  also relocate the physical file into /facility*/
+app.get('/facility-landing',function(req,res){
+	res.render('facility-landing');
+});
+
 app.get('/about-us',function(req,res){
 	res.render('about-us');
 });
@@ -232,8 +238,30 @@ app.get('/whats-on', function(req, res) {
 	res.render('whats-on');
 });
 
+app.get('/booking-enquiry', function(req, res) {
+	res.render('booking-enquiry');
+});
+
+app.get('/easy-fundraising', function(req, res) {
+	res.render('easy-fundraising');
+});
+
 app.get('/contact-us',function(req,res){
 	res.render('contact-us');
+});
+//serve event pages template - will need to change
+app.get('/event/:eventPage',function(req,res){
+	res.render(path.join(__dirname,'views','events',req.params.eventPage));
+});
+
+//temp serve event page for testing, Nikesh will remove 
+app.get('/event',function(req,res){
+	res.render(path.join(__dirname,'views','events','Fast Feet Football Academy'));
+});
+
+//gdpr notice
+app.get('/GDPR',function(req,res){
+	res.render('GDPR');
 });
 
 app.post('/contact-us/submit', function(req,res) {
