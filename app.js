@@ -1,3 +1,70 @@
+/**** Database Code ****/
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+const dbName = 'testdb';
+const url = "mongodb://178.62.1.100:27017/";
+
+function deleteEntry(tgtDB, primaryKey, collectionName) {
+    const deleteQuery = {
+        "primaryKey": primaryKey
+    };
+    tgtDB.collection(collectionName).deleteOne({
+        deleteQuery,function(err,db){
+            if (err) throw err;
+            console.log("Entry " + primaryKey + " removed.");
+        }
+    });
+    return 0;
+}
+
+function insertEntry(tgtDB, entry, collectionName) {
+    tgtDB.collection(collectionName).insertOne(entry,function(err,db){
+        if (err) throw err;
+        console.log("New entry inserted to " + collectionName + ".");
+    });
+    return 0;
+}
+
+MongoClient.connect(url, function (err, client) {  //Creates the database and initialises it with a table for booking info.
+    assert.equal(null, err);
+    if (err) throw err;
+    var dbo = client.db(dbName);
+    dbo.createCollection("Locks", function (err, res) {
+        if (err) throw err;
+        console.log("Lock table created.");
+    })
+    dbo.createCollection("bookings", function (err, res) {
+        if (err) throw err;
+        console.log("Booking table created.");
+    })
+    let testBooking = { //This exists as a test booking to display the schema of the db **WIP**
+        "eventID": "eventId",
+        "calendarID": "calendarID",
+        "authID": "authID",
+        "startTime": "startTime",
+        "endTime": "endTime",
+        "summary": "SampleText",
+        "description": "NotARealBooking"
+    }
+    let testLock = { //This exists as a test lock to display the schema of the db
+        "eventID": "eventId",
+        "eventName": "eventName",
+        "email": "email@mail.com",
+    }
+    dbo.collection("Locks").insertOne(testLock, function (err, db) {
+        if (err) throw err;
+        console.log("TestLock inserted.");
+    })
+    dbo.collection("bookings").insertOne(testBooking, function (err, db) {
+        if (err) throw err;
+        console.log("TestBooking inserted.");
+    })
+    console.log("Database created.");
+    client.close();
+});
+
+/**** Backend Code ****/
+
 const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
 const pug = require('pug');
 const lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
@@ -6,6 +73,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('client-sessions'); //cookies
+const MongoClient = require('mongodb').MongoClient;
 const RFC4122 = require('rfc4122'); //unique id for calendar event
 let rfc4122 = new RFC4122();
 //mail stuff
@@ -16,7 +84,7 @@ let mailOptions = {
     secure:true,
     auth:{
         user: emailCredentials.username,
-        pass:emailCredentials.password
+        pass: emailCredentials.password
     }
 }
 
@@ -85,68 +153,6 @@ const calendarFunctions = require('./googleApiFunctions'); // functions which ca
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
 const paypalApiFunctions = require('./paypalApiFunctions.js');
-
-/**** Database Code ****/
-
-const MongoClient = require('mongodb').MongoClient;
-const url = "mongodb://localhost:5000/maindb";
-const dbo = db.db("maindb");
-
-function deleteEntry(tgtDB, keyType, primaryKey, collectionName) {
-    const deleteQuery = { keyType: primaryKey };
-    tgtDB.collection(collectionName).deleteOne({
-        deleteQuery, function (err, db) {
-            if (err) throw err;
-            console.log("Lock " + eventID + " removed.");
-            db.close();
-        }
-    });
-    return 0;
-}
-
-function insertEntry(tgtDB, entry, collectionName) {
-    tgtDB.collection(collectionName).insertOne(entry, function (err, db) {
-        if (err) throw err;
-        console.log("New entry inserted to " + collectionName + ".");
-    });
-    return 0;
-}
-
-MongoClient.connect(url, function (err, db) { //Creates the database and initiallises it with a table for booking info.
-    if (err) throw err;
-    dbo.createCollection("Locks", function (err, res) {
-        if (err) throw err;
-        console.log("Lock table created.");
-    })
-    dbo.createCollection("bookings", function (err, res) {
-        if (err) throw err;
-        console.log("Booking table created.");
-    })
-    let testBooking = { //This exists as a test booking to display the schema of the db **WIP**
-        "eventID": "eventId",
-        "calendarID": "calendarID",
-        "authID": "authID",
-        "startTime": "startTime",
-        "endTime": "endTime",
-        "summary": "SampleText",
-        "description": "NotARealBooking"
-    }
-    let testLock = { //This exists as a test lock to display the schema of the db
-        "eventID": "eventId",
-        "eventName": "eventName",
-        "email": "email@mail.com",
-    }
-    dbo.collection("Locks").insertOne(testLock, function (err, db) {
-        if (err) throw err;
-        console.log("TestLock inserted.");
-    })
-    dbo.collection("bookings").insertOne(testBooking, function (err, db) {
-        if (err) throw err;
-        console.log("TestBooking inserted.");
-    })
-    console.log("Database created.");
-    db.close();
-});
 
 /**** Serverside Code Begins Here ****/
 
@@ -329,7 +335,7 @@ bookingRouter.post('/lockRequest',function(req,res){
                         res.sendStatus(200); //success
                         setTimeout(function () {
                             calendarFunctions.deleteEvent(lockCalendarId, jwtClient, eventId);
-                            deleteEntry(dbo, "eventID", eventID, "Locks"); // Makes sure that the database entry is removed on timeout.
+                            deleteEntry(dbo, eventID, "Locks"); // Makes sure that the database entry is removed on timeout.
                         }, 120000); //delete lock on timeout
                     }
                 });
@@ -348,18 +354,18 @@ bookingRouter.post('/cancelBooking', function (req, res) {
             res.sendStatus(200);
         }
     });
-    deleteEntry(dbo, "eventID", req.myCookie.booking.eventId, "Locks", function (err) { 
-        if (err) {
+    deleteEntry(dbo,req.myCookie.booking.eventId,"Locks",function(err){ 
+        if(err){
             res.sendStatus(400);
         }
-        else {
+        else{
             res.sendStatus(200);
         }
     }); //Again making sure data is consistent
 });
 
 //creates a paypal payment and sends the id to front end button script
-bookingRouter.post('/createPayment', function (req, res) {
+bookingRouter.post('/createPayment',function(req,res){
     paypalApiFunctions.createPayment(
         paypalId.clientId,
         "",
@@ -417,16 +423,16 @@ bookingRouter.post('/executePayment',function(req,res){
                                     res.sendStatus(400);
                                     //delete lock event
                                     calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
-                                    calendarFunctions.deleteEvent(calendarId, jwtClient, eventId);
-                                    deleteEntry(dbo, "eventID", req.myCookie.booking.eventId, "Locks"); //Do it for the database as well.
-                                    deleteEntry(dbo, "eventID", req.myCookie.booking.eventId, "Bookings");
+                                    calendarFunctions.deleteEvent(calendarId,jwtClient,eventId);
+                                    deleteEntry(dbo,req.myCookie.booking.eventId,"Locks"); //Do it for the database as well.
+                                    deleteEntry(dbo,req.myCookie.booking.eventId,"Bookings");
                                 }
                                 else{//payment achieved successfully
                                     console.log('Payment executed');
                                     res.sendStatus(200);
                                     // delete the lock event we no longer need
                                     calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
-                                    deleteEntry(dbo, "eventID", req.myCookie.booking.eventId, "Locks"); //Do it for the database as well.
+                                    deleteEntry(dbo,req.myCookie.booking.eventId,"Locks"); //Do it for the database as well.
                                     let r = req.myCookie.booking;
                                     sendConfirmationMail('group6.se.durham@gmail.com',r.email,r.facility,r.name,r.date,r.time,r.info);
                                 }
@@ -437,5 +443,8 @@ bookingRouter.post('/executePayment',function(req,res){
     });
 });
 
+app.listen(5000, function () {
+    console.log("Live at Port 5000");
+});
 
-app.listen(5000);
+//app.listen(5000);
