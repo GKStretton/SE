@@ -187,6 +187,11 @@ app.get('/event',function(req,res){
 	res.render(path.join(__dirname,'views','events','Fast Feet Football Academy'));
 });
 
+//gdpr notice
+app.get('/GDPR',function(req,res){
+	res.render('GDPR');
+});
+
 app.post('/contact-us/submit', function(req,res) {
 	sendContactMail('group6.se.durham@gmail.com',
 		req.body.name,
