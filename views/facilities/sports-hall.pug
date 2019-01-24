@@ -2,8 +2,8 @@ extends facility-template
 block prepend content
 	- var button_name = "Book Now"
 	- var top_image = "/img/sports-hall/sports-hall-top.jpg"
-	- var page_name = "Sports Hall"
-	- var side_image = "/img/sports-hall/sports-hall-side.jpg"
+	- var facility_name = "Sports Hall"
+	- var images = ["/img/sports-hall/sports-hall-side.jpg", "/img/sports-hall/sports-hall-side-2.jpg", "/img/sports-hall/sports-hall-side-3.jpg"]
 
 block description
 	p The size of the Sports Hall makes it incredibly flexible and thus user-friendly. At its largest, it is ideal for 		| sports like indoor football (5 a side and its variants) and hockey but can also be portioned to make
@@ -13,14 +13,6 @@ block description
 		| facility to hire for activities within a children’s party, giving the guests a vast amount of space to burn
 		| some energy off.
 	p Free parking is available on site.
-
-block image-gallery
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/sports-hall/sports-hall-side.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/sports-hall/sports-hall-side-2.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/sports-hall/sports-hall-side-3.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
 
 block availability
 	p

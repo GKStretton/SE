@@ -2,22 +2,13 @@ extends facility-template
 block prepend content
 	- var button_name = "Book Now"
 	- var top_image = "/img/performing-arts-room/performing-arts-room-top.jpg"
-	- var page_name = "Performing Arts Room"
-	- var side_image = "/img/performing-arts-room/performing-arts-room-side.jpg"
+	- var facility_name = "Performing Arts Room"
+	- var images = ["/img/performing-arts-room/performing-arts-room-side.jpg", "/img/performing-arts-room/performing-arts-room-side-2.jpg", "/img/performing-arts-room/performing-arts-room-side-3.jpg"]
 
 block description
 	p A very modern facility, the drama/dance studio provides a comfortable setting which is flexible enough to cater
 		| for a host of activities, both performing arts and fitness-related.
 	p Free parking is available on site.
-
-block image-gallery
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/performing-arts-room/performing-arts-room-side.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/performing-arts-room/performing-arts-room-side-2.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/performing-arts-room/performing-arts-room-side-3.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-
 
 block availability
 	p

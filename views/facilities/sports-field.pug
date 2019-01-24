@@ -2,22 +2,14 @@ extends facility-template
 block prepend content
 	- var button_name = "Book Now"
 	- var top_image = "/img/sports-field/sports-field-top.jpg"
-	- var page_name = "Sports Field"
-	- var side_image = "/img/sports-field/sports-field-side.jpg"
+	- var facility_name = "Sports Field"
+	- var images = ["/img/sports-field/sports-field-side.jpg", "/img/sports-field/sports-field-side-2.jpg", "/img/sports-field/sports-field-side-3.jpg"]
 
 block description
 	p With a long-jump pit and two football pitches of varying size, this is an ideal venue to book for any outdoor
 		| event or field sports. It is spacious, well looked after and sheltered, as well as enjoying easy access to
 		| community facilities.
 	p Free parking is available on site.
-
-block image-gallery
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/sports-field/sports-field-side.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/sports-field/sports-field-side-2.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/sports-field/sports-field-side-3.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
 
 block availability
 	p

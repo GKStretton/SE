@@ -182,7 +182,7 @@ app.get('/event/:eventPage',function(req,res){
 	res.render(path.join(__dirname,'views','events',req.params.eventPage));
 });
 
-//temp serve event page for testing, Nikesh will remove 
+//temp serve event page for testing, Nikesh will remove
 app.get('/event',function(req,res){
 	res.render(path.join(__dirname,'views','events','Fast Feet Football Academy'));
 });

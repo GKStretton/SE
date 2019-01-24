@@ -19,6 +19,7 @@ $(document).on("click","#manualFormSubmit",function(){
 		$('#errMsg').text(res.responseText);
 	})
 });
+
 $(document).ready(function(){
 	flatpickr("#date-input",{
 		minDate: "today",
