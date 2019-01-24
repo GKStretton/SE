@@ -17,12 +17,8 @@ block content
 					div(id="facility-photos" class="carousel slide b-brand-thin" data-ride="carousel")
 						div(class="carousel-inner")
 							each img, index in images
-								if index == 0
-									div(class="carousel-item active")
-										img(src=img style="height:300px; width:100%; object-fit:cover")
-								else
-									div(class="carousel-item")
-										img(src=img style="height:300px; width:100%; object-fit:cover")
+								div(class=(index===0)?"carousel-item active":"carousel-item")
+									img(src=img style="height:300px; width:100%; object-fit:cover")
 						a(class="carousel-control-prev" href="#facility-photos" data-slide="prev" role="button")
 							span(class="fa fa-arrow-left text-brand")
 						a(class="carousel-control-next" href="#facility-photos" data-slide="next" role="button")
