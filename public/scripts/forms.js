@@ -1,4 +1,6 @@
 //form stuff here
+
+//Automated booking submit
 $(document).on("click","#automatedFormSubmit",function(){
 	let formData = $("#automatedForm").serialize();
 		$.post("/booking/lockRequest",formData,function(data){
@@ -10,6 +12,8 @@ $(document).on("click","#automatedFormSubmit",function(){
 	})
 });
 
+
+//Manual form submit
 $(document).on("click","#manualFormSubmit",function(){
 	let formData = $("#manualForm").serialize();
 	$.post("/booking/enquiry",formData,function(data){
@@ -20,12 +24,43 @@ $(document).on("click","#manualFormSubmit",function(){
 	})
 });
 
+
+// Date picker
 $(document).ready(function(){
 	flatpickr("#date-input",{
 		minDate: "today",
 		maxDate: new Date().fp_incr(60), // 60 days from now
 		dateFormat: "Y-m-d",
+		defaultDate: new Date(),
 	});
+});
+
+//From time picker
+$(document).ready(function(){
+	flatpickr("#time-from-input",{
+		enableTime: true,
+		noCalendar: true,
+		dateFormat: "H:i",
+		defaultDate: "12:00"
+	});
+});
+
+//To time picker
+$(document).ready(function(){
+	flatpickr("#time-to-input",{
+		enableTime: true,
+		noCalendar: true,
+		dateFormat: "H:i",
+		defaultDate: "13:00"
+	});
+});
+
+//Facility schedule
+$(document).ready(function(){
+	$('#calendar').fullCalendar({
+		// put your options and callbacks here
+		defaultView:"agendaDay"
+	  })
 });
 
 // contact-us form
