@@ -1,14 +1,17 @@
-form(id="automatedForm")
-	div(id="calendar" class="form-group")
+form(id="automatedForm" class="mt-3")
 	div(class="form-group" style="display:none")
 		select(id="facility-input" name="facility" class="form-control")
 			option(value=facility)
+
 	div(class="form-group")
 		div(class="input-group")
 			div(class="input-group-prepend")
 				span(class="input-group-text" style="width:70px;") Date:
 			//- Date input
 			input(id="date-input" class="form-control" name="date")
+
+	div(id="calendar" class="form-group")
+
 	div(class="form-group")
 		//- Time input
 		div(class="input-group")

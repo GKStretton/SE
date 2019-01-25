@@ -24,8 +24,8 @@ block content
 				div(class="col-lg-7")
 					block description
 					//- add onclick js to hide.show form
-					input(type="button" class="btn w-100" id="btn-signup" value=button_name onclick="toggleVisability('form-div')")
-					div(id="form-div" class="container-fluid" style="display:none;")
+					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{button_name}
+					div(id="book-form" class="collapse")
 						if button_name === 	"Book Now"
 							include form-automated
 						else
