@@ -2,56 +2,49 @@ extends facility-template
 block prepend content
 	- var button_name = "Book Now"
 	- var top_image = "/img/green-room/green-room-top.jpg"
-	- var page_name = "Green Room"
-	- var side_image = "/img/green-room/green-room-side.jpg"
+	- var facility_name = "Green Room"
+	- var images = ["/img/green-room/green-room-side.jpg"]
 
 block description
-	p
-	|This is a smaller performing arts space, often booked by theatre groups as a practice or dressing room. It is large enough to be and ideal setting for gymnastics for the young or as a room for your child’s birthday party.
-	br
-	br
-	|  Free parking is available on site.
-	br
-	br
+	p This is a smaller performing arts space, often booked by theatre groups as a practice or dressing room. It is
+		| large enough to be and ideal setting for gymnastics for the young or as a room for your child’s birthday
+		| party.
+	p Free parking is available on site.
 
-block image-gallery
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/green-room/green-room-side.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-		
 block availability
 	p
-	|Data needed
-	|Monday:
-	strong 6:00 pm – 9:30 pm
-	br
-	|Tuesday:
-	strong 6:00 pm - 9:30 pm
-	br
-	|Wednesday:
-	strong 6:00 pm – 9:30 pm
-	br
-	|Thursday:
-	strong 6:00 pm – 9:30 pm
-	br
-	|Friday:
-	strong 6:00 pm – 9:30 pm
-	br
-	|Saturday:
-	strong 10:00 am – 4:30 pm
-	br
-	|Sunday:
-	strong 10:00 am – 12:30 pm
-	br
+		|Data needed
+		|Monday:
+		strong 6:00 pm – 9:30 pm
+		br
+		|Tuesday:
+		strong 6:00 pm - 9:30 pm
+		br
+		|Wednesday:
+		strong 6:00 pm – 9:30 pm
+		br
+		|Thursday:
+		strong 6:00 pm – 9:30 pm
+		br
+		|Friday:
+		strong 6:00 pm – 9:30 pm
+		br
+		|Saturday:
+		strong 10:00 am – 4:30 pm
+		br
+		|Sunday:
+		strong 10:00 am – 12:30 pm
+		br
 
 
 block pricing
 	p
-	|Per hour:
-	strong £12
-	br
-	|Half day (up to 3 hours):
-	strong £30
-	br
-	|Full day (up to 7 hours):
-	strong £50
-	br
+		|Per hour:
+		strong £12
+		br
+		|Half day (up to 3 hours):
+		strong £30
+		br
+		|Full day (up to 7 hours):
+		strong £50
+		br

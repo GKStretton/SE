@@ -1,35 +1,45 @@
-div(class="container")
-	form(id="automatedForm")
-		div(class="form-group" style="display:none")
-			select(id="facility-input" name="facility" class="form-control")
-				option(value=facility)
-		div(class="form-group")
-			label(for="date-input")
-				| Date:
-			input(class="form-control" id="date-input" name="date")
-		div(class="form-group")
-			label(for="schedule")
-				| Availability:
-			div(id="calendar")
-		div(class="form-group")
-			label(for="time-input")
-				| Time:
-			//- this needs to take in values from back end
-			select(id="time-input" name="time" class="form-control")
-				option(value="12:30") 12:30
-		div(class="form-group")
-			label(for="name-input")
-				| Name:
+form(id="automatedForm" class="mt-3")
+	div(class="form-group" style="display:none")
+		select(id="facility-input" name="facility" class="form-control")
+			option(value=facility)
+
+	div(class="form-group")
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") Date:
+			//- Date input
+			input(id="date-input" class="form-control" name="date")
+
+	div(id="calendar" class="form-group")
+
+	div(class="form-group")
+		//- Time input
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") From:
+			//- From time
+			input(id="time-from-input" type="text" class="form-control" name="timeFrom")
+			div(class="input-group-append")
+				span(class="input-group-text" style="width:50px;") To:
+			//- To time
+			input(id="time-to-input" type="text" class="form-control" name="timeTo")
+	div(class="form-group")
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") Name:
+			//- Name input
 			input(id="name-input" name="name" type="text" class="form-control")
-		div(class="form-group")
-			label(for="email-input")
-				| Email:
+	div(class="form-group")
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") Email:
+			//- Email input
 			input(id="email-input" name="email" type="email" class="form-control")
-		div(class="form-group")
-			label(for="info-input")
-				| Additional info:
+	div(class="form-group")
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") Info:
 			textarea(id="info-input" name="info" rows="3" class="form-control")
-		button(type="button" id="automatedFormSubmit" class="btn btn-primary w-100")
-			|Submit
-			span(class="fa fa-paper-plane-o")
-	p(id="errMsg")
+	button(type="button" id="automatedFormSubmit" class="btn btn-primary w-100") Submit
+		span(class="fa fa-paper-plane-o")
+p(id="errMsg")

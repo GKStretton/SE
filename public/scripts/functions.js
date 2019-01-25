@@ -7,13 +7,9 @@ function toggleVisability(id){
           doc.style.display = 'block';
 };
 
-function changeGalleryImage(s){
-	document.getElementById("facility-gallery-image").src = s;
-	document.getElementById("facility-gallery-fancybox").href = s;
-};
-
+// For facility carousel
 $(document).ready(function() {
-	$('.fancybox').fancybox();
+	$("#facility-photos").carousel({interval: 2000})
 });
 
 // what's on functionality

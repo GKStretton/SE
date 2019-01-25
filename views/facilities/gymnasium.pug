@@ -2,59 +2,50 @@ extends facility-template
 block prepend content
 	- var button_name = "Book Now"
 	- var top_image = "/img/gymnasium/gymnasium-top.jpg"
-	- var page_name = "Gymnasium"
-	- var side_image = "/img/gymnasium/gymnasium-side.jpg"
+	- var facility_name = "Gymnasium"
+	- var images = ["/img/gymnasium/gymnasium-side.jpg", "/img/gymnasium/gymnasium-side-2.jpg", "/img/gymnasium/gymnasium-side-3.jpg"]
 
 block description
-	p 
-	|The heated gymnasium is ideal for either gymnastics, small group games, like dodgeball,trampolining, martial arts and a whole lot more. It would be an excellent facility to hire for activities within a children’s party, giving the guests a space to burn some energy off in. Because of its size, it is also suitable for aerobic, circuit and individual fitness sessions.	
-	br
-	br
-	|  Free parking is available on site.
-	br
-	br
-block image-gallery
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/gymnasium/gymnasium-side.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/gymnasium/gymnasium-side-2.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
-	div(class="col-4 thumbnail-image-container img-fluid")
-		img(src="/img/gymnasium/gymnasium-side-3.jpg" style="width:100%;height:5vw;" onclick="changeGalleryImage(src)")
+	p The heated gymnasium is ideal for either gymnastics, small group games, like dodgeball,trampolining, martial arts
+		|  and a whole lot more. It would be an excellent facility to hire for activities within a children’s party,
+		| giving the guests a space to burn some energy off in. Because of its size, it is also suitable for aerobic,
+		| circuit and individual fitness sessions.
+	p Free parking is available on site.
 
 block availability
 	p
-	|We need data for this one 
-	|Monday:  
-	strong 6:00 pm – 9:30 pm
-	br
-	|Tuesday: 
-	strong 6:00 pm - 9:30 pm
-	br
-	|Wednesday:  
-	strong 6:00 pm – 9:30 pm 
-	br
-	|Thursday: 
-	strong 6:00 pm – 9:30 pm 
-	br
-	|Friday:  
-	strong 6:00 pm – 9:30 pm 
-	br
-	|Saturday:  
-	strong 10:00 am – 4:30 pm
-	br
-	|Sunday:  
-	strong 10:00 am – 12:30 pm 
-	br
+		|We need data for this one
+		|Monday:
+		strong 6:00 pm – 9:30 pm
+		br
+		|Tuesday:
+		strong 6:00 pm - 9:30 pm
+		br
+		|Wednesday:
+		strong 6:00 pm – 9:30 pm
+		br
+		|Thursday:
+		strong 6:00 pm – 9:30 pm
+		br
+		|Friday:
+		strong 6:00 pm – 9:30 pm
+		br
+		|Saturday:
+		strong 10:00 am – 4:30 pm
+		br
+		|Sunday:
+		strong 10:00 am – 12:30 pm
+		br
 
 
 block pricing
 	p
-	|Per hour: 
-	strong £25
-	br
-	|Half day (up to 3 hours): 
-	strong £60
-	br
-	|Full day (up to 7 hours): 
-	strong £110
-	br
+		|Per hour:
+		strong £25
+		br
+		|Half day (up to 3 hours):
+		strong £60
+		br
+		|Full day (up to 7 hours):
+		strong £110
+		br

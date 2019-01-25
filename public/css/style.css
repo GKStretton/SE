@@ -16,7 +16,12 @@ html, body {
     letter-spacing: 0.075ch
 }
 
+p {
+    font-size: 14pt;
+}
+
 /* Text Color Styles */
+
 .text-grey {
     color: #444;
 }
