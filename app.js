@@ -375,6 +375,15 @@ bookingRouter.post('/executePayment',function(req,res){
         }
     });
 });
-
-
+/*testing unavail from now
+calendarFunctions.unavailable(calendarId, jwtClient,7,"astroturf",function(err,response){
+    if(err){
+        console.log(err);
+    }
+    else{
+        console.log("res");
+        console.log(response);
+    }
+});
+*/
 app.listen(5000);
