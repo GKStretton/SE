@@ -50,6 +50,7 @@ MongoClient.connect(url,function(err,client){  //Creates the database and initia
         "email": "email@mail.com",
     }
     console.log("Database created.");
+    client.close(); //Might need to be removed in case this closes the actual connection with the DB.
 });
 
 // END MONGO STUFF
