@@ -4,13 +4,54 @@ const assert = require('assert');
 const url = 'mongodb://localhost:4321';
 const dbName = 'testdb';
 
-MongoClient.connect(url, function(err, client) {
-	assert.equal(null, err);
-	console.log("Connected successfully to server");
 
-	const db = client.db(dbName);
 
-	client.close();
+/** IMPORTANT **/
+/* 
+ * If creating an insertion for a booking for the functions below, for collectionName
+ * use 'Bookings' and for a lock use 'Locks' failure to comply will result in the db
+ * being polluted with a bunch of random collections which is bad juju. 
+ */
+
+function deleteEntry(tgtDB,primaryKey,collectionName){
+    const deleteQuery = {
+        "primaryKey": primaryKey
+    };
+    tgtDB.collection(collectionName).deleteOne({
+        deleteQuery, function(err,db){
+            assert.equal(null, err);
+            console.log("Entry " + primaryKey + " removed.");
+        }
+    });
+    return 0;
+}
+
+function insertEntry(tgtDB,entry,collectionName) {
+    tgtDB.collection(collectionName).insertOne(entry, function (err, db) {
+        assert.equal(null, err);
+        console.log("New entry inserted to " + collectionName + ".");
+    });
+    return 0;
+}
+
+MongoClient.connect(url, function (err, client) {  //Creates the database and initialises it with a table for booking info.
+    assert.equal(null, err);
+    var dbo = client.db(dbName);
+    let testBooking = { //This exists as a test booking to display the schema of the db **WIP**
+        "eventID": "eventId",
+        "calendarID": "calendarID",
+        "authID": "authID",
+        "startTime": "startTime",
+        "endTime": "endTime",
+        "summary": "SampleText",
+        "description": "NotARealBooking"
+    }
+    let testLock = { //This exists as a test lock to display the schema of the db
+        "eventID": "eventId",
+        "eventName": "eventName",
+        "email": "email@mail.com",
+    }
+    console.log("Database created.");
 });
 
 // END MONGO STUFF
