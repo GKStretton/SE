@@ -4,13 +4,53 @@ const assert = require('assert');
 const url = 'mongodb://localhost:4321';
 const dbName = 'testdb';
 
-MongoClient.connect(url, function(err, client) {
-	assert.equal(null, err);
-	console.log("Connected successfully to server");
+/** IMPORTANT **/
+/* 
+ * If creating an insertion for a booking for the functions below, for collectionName
+ * use 'Bookings' and for a lock use 'Locks'. Failure to comply will result in the db
+ * being polluted with a bunch of random collections which is bad juju. 
+ */
 
-	const db = client.db(dbName);
+function deleteEntry(tgtDB,primaryKey,collectionName){
+    const deleteQuery = {
+        "primaryKey": primaryKey
+    };
+    tgtDB.collection(collectionName).deleteOne({
+        deleteQuery,function(err,client){
+            assert.equal(null,err);
+            console.log("Entry " + primaryKey + " removed.");
+        }
+    });
+    return 0;
+}
 
-	client.close();
+function insertEntry(tgtDB,entry,collectionName){
+    tgtDB.collection(collectionName).insertOne(entry,function(err,client){
+        assert.equal(null,err);
+        console.log("New entry inserted to " + collectionName + ".");
+    });
+    return 0;
+}
+
+MongoClient.connect(url,function(err,client){  //Creates the database and initialises it with a table for booking info.
+    assert.equal(null,err);
+    var dbo = client.db(dbName);
+    let testBooking = { //This exists as a test booking to display the schema of the db **WIP**
+        "eventID": "eventId",
+        "calendarID": "calendarID",
+        "authID": "authID",
+        "startTime": "startTime",
+        "endTime": "endTime",
+        "summary": "SampleText",
+        "description": "NotARealBooking"
+    }
+    let testLock = { //This exists as a test lock to display the schema of the db
+        "eventID": "eventId",
+        "eventName": "eventName",
+        "email": "email@mail.com",
+    }
+    console.log("Database created.");
+    client.close(); //Might need to be removed in case this closes the actual connection with the DB.
 });
 
 // END MONGO STUFF
@@ -33,9 +73,10 @@ keystone.init({
 keystone.import('models');
 
 keystone.start();
+
 // END KEYSTONE STUFF
 
-
+// BACKEND STUFF
 const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
 const pug = require('pug');
 const lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
@@ -54,7 +95,7 @@ let mailOptions = {
     secure:true,
     auth:{
         user: emailCredentials.username,
-        pass:emailCredentials.password
+        pass: emailCredentials.password
     }
 }
 
@@ -117,10 +158,14 @@ function sendContactMail(adminMail, name, email, phone, message) {
     mailTransporter.sendMail(messageToAdmin);
 }
 
+/**** Rowans API Libraries ****/
+
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
 const paypalApiFunctions = require('./paypalApiFunctions.js');
+
+/**** Serverside Code Begins Here ****/
 
 const app = express();
 app.use(bodyParser.json());
@@ -129,13 +174,13 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,'views')));
-app.use(session({
+app.use( session ({
   cookieName: "myCookie",
   secret: "ucndh34634h48dhsdtywefhsdf7sdf", //some long string used to sign the cookie
   duration: 24 * 60 * 60 * 1000,
   activeDuration: 1000 * 60 * 5 //5 mins
 }));
-app.use(function(req,res,next){
+app.use(function (req, res, next) {
     if(typeof req.myCookie.booking == "undefined"){
         req.myCookie.booking = {};
     }
@@ -153,7 +198,7 @@ var jwtClient = new google.auth.JWT(
     ['https://www.googleapis.com/auth/calendar']);
 
 //authenticate request
-jwtClient.authorize(function(err, tokens) {
+jwtClient.authorize(function (err, tokens) {
     if (err) {
         console.log(err);
         return;
@@ -163,7 +208,7 @@ jwtClient.authorize(function(err, tokens) {
 });
 
 //serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
-app.get('/',function(req,res){
+app.get('/',function (req, res) {
 	res.render('home');
 });
 
@@ -174,7 +219,7 @@ app.get('/',function(req,res){
 const facilityRouter = express.Router();
 app.use('/facility',facilityRouter);
 function serveFacility(uri,facilityName){
-    facilityRouter.get(uri, function(req,res){
+    facilityRouter.get(uri, function (req, res) {
         res.render('facilities' + uri,{facility: facilityName});
     });
 }
@@ -240,19 +285,19 @@ app.post('/contact-us/submit', function(req,res) {
 	res.end();
 });
 
-app.get('/form',function(req,res){
+app.get('/form',function (req, res) {
     //res.redirect('form.html');
     res.render('form-automated');
 });
 
-app.get('/payment',function(req,res){
+app.get('/payment',function (req, res) {
     paymentData = {
         facility: req.myCookie.booking.facility
     }
     res.render('payment/payment-page',paymentData);
 });
 
-app.get('/payment/success',function(req,res){
+app.get('/payment/success',function (req, res) {
     res.render('payment/payment-success');
 });
 
@@ -314,13 +359,15 @@ bookingRouter.post('/lockRequest',function(req,res){
                     if(err){
                         console.log(err.code);
                         console.log(err.message);
-                        res.status(400).send('Error: We could\'t make your booking'); // some sort of error occurs on google's side
+                        res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on google's side
                     }
                     else{
                         console.log('200');
                         req.myCookie.booking.eventId = eventId;
                         res.sendStatus(200); //success
-                        setTimeout(function(){calendarFunctions.deleteEvent(lockCalendarId,jwtClient,eventId)},120000); //delete lock on timeout
+                        setTimeout(function () {
+                            calendarFunctions.deleteEvent(lockCalendarId, jwtClient, eventId);
+                        }, 120000); //delete lock on timeout
                     }
                 });
             }
@@ -328,7 +375,8 @@ bookingRouter.post('/lockRequest',function(req,res){
     });
 });
 
-bookingRouter.post('/cancelBooking',function(req,res){
+//Is this releasing a lock or deleting an actual booking?
+bookingRouter.post('/cancelBooking', function (req, res) {
     deleteEvent(calendarId,jwtClient,req.myCookie.booking.eventId,function(err){
         if(err){
             res.sendStatus(400);
@@ -362,7 +410,7 @@ bookingRouter.post('/createPayment',function(req,res){
 });
 
 /*
-* checks if lock is stil in place, if so, we add the actual booking event
+* checks if lock is still in place, if so, we add the actual booking event
 * The event is added first, before we finalise(execute) the payment, this ensures no user ends up paying without a booking on the calendar
 * In the event a payment fails to execute, we delete the booking from the calendar
 */
@@ -376,7 +424,8 @@ bookingRouter.post('/executePayment',function(req,res){
         else{
             let eventId =  rfc4122.v1();
             eventId = eventId.replace(/-/g,"");
-            bookingJson = JSON.stringify({"facility":req.myCookie.booking.facility});
+            bookingJson = JSON.stringify({ "facility": req.myCookie.booking.facility });
+            //Ideally we do something to add the entry to the database here - Erdal.
             calendarFunctions.addEvent(calendarId, jwtClient,response.data.start.dateTime, response.data.end.dateTime,req.myCookie.booking.facility,bookingJson,eventId,function(err){
                     if(err){
                         console.log(err.code);
@@ -414,5 +463,6 @@ bookingRouter.post('/executePayment',function(req,res){
     });
 });
 
-
-app.listen(5000);
+app.listen(5000, function () {
+    console.log("Live at Port 5000");
+});
