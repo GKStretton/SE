@@ -1,16 +1,16 @@
 /**** Database Code ****/
-const MongoClient = require('mongodb').MongoClient;
+const mongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const dbName = 'testdb';
-const url = "mongodb://178.62.1.100:27017/";
+const url = "mongodb://localhost:4321";
 
-function deleteEntry(tgtDB, primaryKey, collectionName) {
+function deleteEntry(tgtDB,primaryKey,collectionName){
     const deleteQuery = {
         "primaryKey": primaryKey
     };
     tgtDB.collection(collectionName).deleteOne({
         deleteQuery,function(err,db){
-            if (err) throw err;
+            assert.equal(null,err);
             console.log("Entry " + primaryKey + " removed.");
         }
     });
@@ -19,22 +19,21 @@ function deleteEntry(tgtDB, primaryKey, collectionName) {
 
 function insertEntry(tgtDB, entry, collectionName) {
     tgtDB.collection(collectionName).insertOne(entry,function(err,db){
-        if (err) throw err;
+        assert.equal(null,err);
         console.log("New entry inserted to " + collectionName + ".");
     });
     return 0;
 }
 
-MongoClient.connect(url, function (err, client) {  //Creates the database and initialises it with a table for booking info.
-    assert.equal(null, err);
-    if (err) throw err;
+mongoClient.connect(url, function(err,client){  //Creates the database and initialises it with a table for booking info.
+    assert.equal(null,err);
     var dbo = client.db(dbName);
-    dbo.createCollection("Locks", function (err, res) {
-        if (err) throw err;
+    dbo.createCollection("Locks", function(err,res){
+        assert.equal(null,err);
         console.log("Lock table created.");
     })
-    dbo.createCollection("bookings", function (err, res) {
-        if (err) throw err;
+    dbo.createCollection("bookings", function(err,res){
+        assert.equal(null,err);
         console.log("Booking table created.");
     })
     let testBooking = { //This exists as a test booking to display the schema of the db **WIP**
@@ -52,11 +51,11 @@ MongoClient.connect(url, function (err, client) {  //Creates the database and in
         "email": "email@mail.com",
     }
     dbo.collection("Locks").insertOne(testLock, function (err, db) {
-        if (err) throw err;
+        assert.equal(null, err);
         console.log("TestLock inserted.");
     })
     dbo.collection("bookings").insertOne(testBooking, function (err, db) {
-        if (err) throw err;
+        assert.equal(null, err);
         console.log("TestBooking inserted.");
     })
     console.log("Database created.");
@@ -73,7 +72,6 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const session = require('client-sessions'); //cookies
-const MongoClient = require('mongodb').MongoClient;
 const RFC4122 = require('rfc4122'); //unique id for calendar event
 let rfc4122 = new RFC4122();
 //mail stuff
