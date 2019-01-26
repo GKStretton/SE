@@ -368,17 +368,9 @@ bookingRouter.post('/lockRequest',function(req,res){
                     else{
                         console.log('200');
                         req.myCookie.booking.eventId = eventId;
-                        let lockData = { //This data will be inserted into the DB.
-                            eventId: eventID, //primary key (beware that the row name is eventId not eventID)
-                            eventName: req.body.eventName,
-                            facility: req.body.facility,
-                            email: req.body.email
-                        }
-                        insertEntry(dbo, lockData, "Locks"); //Inserts lock into database.
                         res.sendStatus(200); //success
                         setTimeout(function () {
                             calendarFunctions.deleteEvent(lockCalendarId, jwtClient, eventId);
-                            deleteEntry(dbo, eventID, "Locks"); // Makes sure that the database entry is removed on timeout.
                         }, 120000); //delete lock on timeout
                     }
                 });
@@ -397,14 +389,6 @@ bookingRouter.post('/cancelBooking', function (req, res) {
             res.sendStatus(200);
         }
     });
-    deleteEntry(dbo,req.myCookie.booking.eventId,"Locks",function(err){ 
-        if(err){
-            res.sendStatus(400);
-        }
-        else{
-            res.sendStatus(200);
-        }
-    }); //Again making sure data is consistent
 });
 
 //creates a paypal payment and sends the id to front end button script
@@ -467,15 +451,12 @@ bookingRouter.post('/executePayment',function(req,res){
                                     //delete lock event
                                     calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
                                     calendarFunctions.deleteEvent(calendarId,jwtClient,eventId);
-                                    deleteEntry(dbo,req.myCookie.booking.eventId,"Locks"); //Do it for the database as well.
-                                    deleteEntry(dbo,req.myCookie.booking.eventId,"Bookings");
                                 }
                                 else{//payment achieved successfully
                                     console.log('Payment executed');
                                     res.sendStatus(200);
                                     // delete the lock event we no longer need
                                     calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
-                                    deleteEntry(dbo,req.myCookie.booking.eventId,"Locks"); //Do it for the database as well.
                                     let r = req.myCookie.booking;
                                     sendConfirmationMail('group6.se.durham@gmail.com',r.email,r.facility,r.name,r.date,r.time,r.info);
                                 }
@@ -489,5 +470,3 @@ bookingRouter.post('/executePayment',function(req,res){
 app.listen(5000, function () {
     console.log("Live at Port 5000");
 });
-
-//app.listen(5000);
