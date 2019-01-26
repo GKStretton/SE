@@ -11,11 +11,6 @@ const dbName = 'testdb';
  * being polluted with a bunch of random collections which is bad juju. 
  */
 
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const dbName = 'testdb';
-const url = "mongodb://localhost:4321";
-
 function deleteEntry(tgtDB,primaryKey,collectionName){
     const deleteQuery = {
         "primaryKey": primaryKey
