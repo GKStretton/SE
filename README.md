@@ -57,3 +57,18 @@ Pay using the sandbox account (it will transfer £0.01 of fake money)
 The page should refresh and the event should be visible with your name.
 
 
+### MONGO SETUP
+
+##### TODO: check security on this if they actually use it because this was done quickly
+
+1. generate ssh keypair
+
+2. get someone to add your public key to the mongo server
+
+3. Bind the dig ocean server locally
+
+```ssh -L 4321:localhost:27017 root@206.189.245.219 -f -N```
+
+if it stops working (hangs on npm start), restart the ssh -L (ps aux | grep 4321, kill the pids, run ^ again)
+
+If it's really broken check that mongod is running on 206.18.... , if not `mongod --fork --logpath ~/log/mongodb.log`

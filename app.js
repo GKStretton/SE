@@ -1,3 +1,41 @@
+// MONGO STUFF
+const MongoClient = require('mongodb').MongoClient;
+const assert = require('assert');
+const url = 'mongodb://localhost:4321';
+const dbName = 'testdb';
+
+MongoClient.connect(url, function(err, client) {
+	assert.equal(null, err);
+	console.log("Connected successfully to server");
+
+	const db = client.db(dbName);
+
+	client.close();
+});
+
+// END MONGO STUFF
+
+// KEYSTONE STUFF
+var keystone = require('keystone');
+
+keystone.init({
+	'cookie secret': 'helloworld',
+	'mongo': url,
+	'name': 'keystoneDB',
+	'user model': 'User',
+	'auto update': true,
+	'auth': true,
+
+	'views': 'views',
+	'view engine':'pug',
+});
+
+keystone.import('models');
+
+keystone.start();
+// END KEYSTONE STUFF
+
+
 const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
 const pug = require('pug');
 const lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
