@@ -68,12 +68,12 @@ $(document).ready(function(){
 		slotLabelInterval: "01:00",
 		events:[
 			{
-				title: 'Example Event 1',
+				title: 'Unavailable',
 				start: '2019-01-25T11:00:00',
 				end: '2019-01-25T17:00:00'
 			},
 			{
-				title: 'Example Event 2',
+				title: 'Unavailable',
 				start: '2019-01-25T06:00:00',
 				end: '2019-01-25T07:00:00'
 			}]
