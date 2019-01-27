@@ -81,6 +81,7 @@ const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // te
 const pug = require('pug');
 const lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
 const {google} = require('googleapis');
+const showdown = require('showdown'); //Showdown for parsing markdown in facility pages
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -216,11 +217,14 @@ app.get('/',function (req, res) {
 * This router and function let us easily render multiple facility pages
 * Useful for if we want to pass more data to these pages in the future
 */
+
+
+const converter = new showdown.Converter()
 const facilityRouter = express.Router();
 app.use('/facility',facilityRouter);
 function serveFacility(uri,facilityName){
     facilityRouter.get(uri, function (req, res) {
-        res.render('facilities' + uri,{facility: facilityName});
+        res.render('facilities' + uri,{facility: facilityName, showdown:converter});
     });
 }
 //now serving facilities dropdown menu pages ˅˅˅˅

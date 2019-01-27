@@ -8,12 +8,14 @@
     "client-sessions": "^0.8.0",
     "express": "^4.16.4",
     "googleapis": "^27.0.0",
+    "jstransformer-markdown-it": "^2.1.0",
     "keystone": "^4.0.0",
     "mongodb": "^3.1.13",
     "nodemailer": "^5.0.0",
     "pug": "^2.0.3",
     "request": "^2.88.0",
-    "rfc4122": "^1.0.5"
+    "rfc4122": "^1.0.5",
+    "showdown": "^1.9.0"
   },
   "devDependencies": {},
   "scripts": {
