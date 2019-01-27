@@ -1,5 +1,4 @@
 extends ../template
-
 //-showdown converter is passed in by the render function on the server
 block content
 	div(class="row")
@@ -8,9 +7,7 @@ block content
 	div(class="row mt-5")
 		div(class="col-lg-8 mx-auto")
 			h3(class="h-underline") #{title}
-
 			div(class="row")
-
 				div(class="col-lg-5")
 					//-Has a corresponding function in functions.js for carousel options
 					div(id="facility-photos" class="carousel slide b-brand-thin" data-ride="carousel")
@@ -22,11 +19,11 @@ block content
 							span(class="fa fa-arrow-left text-brand")
 						a(class="carousel-control-next" href="#facility-photos" data-slide="next" role="button")
 							span(class="fa fa-arrow-right text-brand")
-					br
-					div !{showdown.makeHtml(additional)}
+					div !{availability?showdown.makeHtml(availability):"No availability info, please enquire."}
+					div !{pricing?showdown.makeHtml(pricing):"No pricing info, please enquire."}
 
 				div(class="col-lg-7")
-					div !{showdown.makeHtml(description)}
+					div !{description?showdown.makeHtml(description):"No description, please enquire."}
 					//- add onclick js to hide.show form
 					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{automated?"Book Now ":"Enquire Now "}
 						i(class=automated?"fa fa-book":"fa fa-question")
