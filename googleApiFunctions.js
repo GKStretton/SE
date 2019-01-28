@@ -34,8 +34,8 @@ function rejectIfLocked(lockCalendarId, authInput, startTime, endTime,facility){
     });
 }
 
-function checkBusy(calendarId,lockCalendarId, authInput, startTime, endTime,facility,callback){
-    rejectIfLocked(lockCalendarId, authInput, startTime, endTime,facility)
+function checkBusy(calendarId, lockCalendarId, authInput, startTime, endTime, facility, callback){
+    rejectIfLocked(lockCalendarId, authInput, startTime, endTime, facility)
         .then(function(){
              calendar.events.list({ // lists items from the calendar
                     auth: authInput,
@@ -93,26 +93,26 @@ function addEvent(calendarId,authInput,startTime,endTime,summary,description,eve
 }
 
 //deletes event with given ID
-function deleteEvent(calendarId,authInput,eventId,callback){
+function deleteEvent(calendarId, authInput, eventId, callback){
     calendar.events.delete({
         auth:authInput,
         calendarId:calendarId,
         eventId:eventId
-    },function(err,response){
-        if(err){
-            if(typeof callback === "function"){
+    },function (err, response) {
+        if (err) {
+            if (typeof callback === "function") {
                 callback(err);
             }
         }
         else{
-            if(typeof callback === "function"){
+            if (typeof callback === "function") {
                 callback(false);
             }
         }
     });
 }
 
-function getEvent(calendarId,authInput,eventId,callback){
+function getEvent(calendarId,authInput,eventId,callback) {
     calendar.events.get({
         auth:authInput,
         calendarId:calendarId,
