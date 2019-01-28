@@ -87,79 +87,10 @@ const path = require('path');
 const session = require('client-sessions'); //cookies
 const RFC4122 = require('rfc4122'); //unique id for calendar event
 let rfc4122 = new RFC4122();
-//mail stuff
-const nodemailer = require('nodemailer');
-const emailCredentials = require('./tokens/emailCredentials.json');
-let mailOptions = {
-    service : 'gmail',
-    secure:true,
-    auth:{
-        user: emailCredentials.username,
-        pass: emailCredentials.password
-    }
-}
-
-let mailDefaults = {
-    from: 'group6.se.durham@gmail.com'
-}
-let mailTransporter = nodemailer.createTransport(mailOptions, mailDefaults);
-
-function repLineBreaks(text){
-  return text.replace(/\r\n/g, '<br>')
-}
-function sendConfirmationMail(adminMail,userEmail,facility,name,date,time,info){
-    let messageToAdmin = {
-        to: adminMail,
-        subject:'Booking Confirmation',
-        html:'<p>Booking recieved: <br>'
-        + 'Facility: ' + facility + '<br>'
-        + 'Email: ' + userEmail + '<br>'
-        + 'Name: ' + name + '<br>'
-        + 'At '+ time +' on ' + date + '<br>'
-        + 'Additional info: ' + repLineBreaks(info) + '<p>'
-    }
-
-    let messageToUser = {
-        to: userEmail,
-        subject: 'Booking Confirmation',
-        html:'<p> Booking confirmation for your booking: <br>'
-        + 'Facility: ' + facility + '<br>'
-        + 'Email: ' + userEmail + '<br>'
-        + 'Name: ' + name + '<br>'
-        + 'At '+ time +' on ' + date + '</p>'
-    }
-    //in the below sendMail functions an option callback to catch errors could be added
-    mailTransporter.sendMail(messageToAdmin);
-    mailTransporter.sendMail(messageToUser);
-}
-
-function sendEnquiryMail(adminMail,facility,name,email,phone,message){
-    let messageToAdmin = {
-        to: adminMail,
-        subject:'Booking Enquiry',
-        html:'<p> Booking enquiry from ' + name + ': </br>'
-        + 'Facility: ' + facility + '<br>'
-        + 'Message: ' + repLineBreaks(message) + '<br>'
-        + 'Email: ' + email + '<br>'
-        + 'Phone: ' + phone + '<br> </p>'
-    }
-    mailTransporter.sendMail(messageToAdmin);
-}
-
-function sendContactMail(adminMail, name, email, phone, message) {
-    let messageToAdmin = {
-        to: adminMail,
-        subject: 'General Enquiry',
-        html: '<p> General enquiry from ' + name + ': <br />'
-            + 'Message: ' + message + '<br />'
-            + 'Email: ' + email + '<br />'
-            + 'Phone: ' + phone + '<br /> </p>'
-    }
-    mailTransporter.sendMail(messageToAdmin);
-}
 
 /**** Rowans API Libraries ****/
-
+//contains functions for automated emails
+const Mailer = require('./mailer');
 const calendarFunctions = require('./googleApiFunctions'); // functions which call google calendar api
 //const paypalSecret = require("./tokens/paypalSecret.json");
 const paypalId = require("./tokens/paypalId.json");
@@ -276,7 +207,7 @@ app.get('/GDPR',function(req,res){
 });
 
 app.post('/contact-us/submit', function(req,res) {
-	sendContactMail('group6.se.durham@gmail.com',
+	Mailer.sendContactMail('group6.se.durham@gmail.com',
 		req.body.name,
 		req.body.email,
 		req.body.phone,
@@ -310,7 +241,7 @@ app.use('/booking',bookingRouter); //only requests to '/booking/* will use booki
 
 //manual booking enquiry
 bookingRouter.post('/enquiry',function(req,res){
-    sendEnquiryMail('group6.se.durham@gmail.com',
+    Mailer.sendEnquiryMail('group6.se.durham@gmail.com',
         req.body.facility,
         req.body.name,
         req.body.email,
@@ -327,13 +258,10 @@ bookingRouter.get('/enquiry/success',function(req,res){
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking = req.body;
-    let time = req.body.time;
-    let startTime = req.body.date +'T'+ time + ":00.0z";
-    console.log(time.slice(0,1));
-    let incTime = (parseInt(time.slice(0,2)) + 1).toString() + time.slice(2,5);
-    let endTime = req.body.date +'T'+ incTime + ":00.0z";
-    console.log(startTime);
-    console.log(endTime);
+    let timeFrom = req.body.timeFrom;
+    let timeTo = req.body.timeTo;
+    let startTime = req.body.date +'T'+ timeFrom + ":00.0z";
+    let endTime = req.body.date +'T'+ timeTo + ":00.0z";
     calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,startTime,endTime,req.body.facility,function(err,response){
         if(err){
             console.log(err.code);
@@ -454,7 +382,7 @@ bookingRouter.post('/executePayment',function(req,res){
                                     // delete the lock event we no longer need
                                     calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
                                     let r = req.myCookie.booking;
-                                    sendConfirmationMail('group6.se.durham@gmail.com',r.email,r.facility,r.name,r.date,r.time,r.info);
+                                    Mailer.sendConfirmationMail('group6.se.durham@gmail.com',r.email,r.facility,r.name,r.date,r.time,r.info);
                                 }
                             });
                     }
