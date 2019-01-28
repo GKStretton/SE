@@ -3,48 +3,48 @@ const request = require('request');
 const PAYPAL_URI = "https://api.sandbox.paypal.com";
 //creates a paypal payment by making a request to the api
 function createPayment(clientId,secret,price,redirectUri,cancelUri,callback){
-	request.post({
-		uri:PAYPAL_URI + "/v1/payments/payment",
-		headers:{
-        	"Accept": "application/json",
-        	"Accept-Language": "en_US"
-		},
-		auth:{
-			'user': clientId,
-			'pass': secret
-		},
-		body:{
-			intent:'sale',
-			payer:{
-				payment_method:'paypal'
-			},
-			transactions: [
-			{
-				amount:
-				{
-					total:price,
-					currency:'GBP'
-				}
-			}],
-			redirect_urls:
-			{
-				return_url: redirectUri,
-				cancel_url: cancelUri
-			}
-		},
-		json: true
-	},function(err,response)
-	{
-		if(err){
-			callback(err);
-		}
-		else if(response.body.id){
-			callback(false,response);
-		}
-		else{
-			callback("VALIDATION_ERROR");
-		}
-	});
+    request.post({
+        uri:PAYPAL_URI + "/v1/payments/payment",
+        headers:{
+            "Accept": "application/json",
+            "Accept-Language": "en_US"
+        },
+        auth:{
+            'user': clientId,
+            'pass': secret
+        },
+        body:{
+            intent:'sale',
+            payer:{
+                payment_method:'paypal'
+            },
+            transactions: [
+            {
+                amount:
+                {
+                    total:price,
+                    currency:'GBP'
+                }
+            }],
+            redirect_urls:
+            {
+                return_url: redirectUri,
+                cancel_url: cancelUri
+            }
+        },
+        json: true
+    },function(err,response)
+    {
+        if(err){
+            callback(err);
+        }
+        else if(response.body.id){
+            callback(false,response);
+        }
+        else{
+            callback("VALIDATION_ERROR");
+        }
+    });
 }
 
 //executes the payment with a request to the paypal api
@@ -63,7 +63,7 @@ function executePayment(clientId,secret,price,paymentId,payerId,callback){
           {
             amount:
             {
-							total:price,
+                            total:price,
               currency: 'GBP'
             }
           }]
@@ -71,15 +71,15 @@ function executePayment(clientId,secret,price,paymentId,payerId,callback){
         json: true
       },
       function(err,response){
-      	if(err){
-      		callback(err);
-      	}
-      	else if(response.body.id){
-      		callback(false,response);
-      	}
-				else{
-					callback("VALIDATION_ERROR");
-				}
+          if(err){
+              callback(err);
+          }
+          else if(response.body.id){
+              callback(false,response);
+          }
+                else{
+                    callback("VALIDATION_ERROR");
+                }
       });
 }
 
