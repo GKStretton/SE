@@ -5,10 +5,10 @@ const url = 'mongodb://localhost:4321';
 const dbName = 'testdb';
 
 /** IMPORTANT **/
-/* 
+/*
  * If creating an insertion for a booking for the functions below, for collectionName
  * use 'Bookings' and for a lock use 'Locks'. Failure to comply will result in the db
- * being polluted with a bunch of random collections which is bad juju. 
+ * being polluted with a bunch of random collections which is bad juju.
  */
 
 function deleteEntry(tgtDB,primaryKey,collectionName){

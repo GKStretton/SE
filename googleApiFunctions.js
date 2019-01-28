@@ -4,12 +4,11 @@ these all require an auth object
 in our case, the auth object is our jwtclient(service account)
 general format is function(calendarId,authInput,[parameters],callback)
 */
-
 //checks if busy at certain time, returns 'busy' or 'notBusy'
 const {google} = require('googleapis');
 const calendar = google.calendar('v3');
-
-function rejectIfLocked(lockCalendarId, authInput, startTime, endTime, facility){
+const datetime = require('node-datetime');
+function rejectIfLocked(lockCalendarId, authInput, startTime, endTime,facility){
     return new Promise(function(resolve,reject) {
         calendar.events.list({ // lists items from the calendar
             auth: authInput,
@@ -27,7 +26,6 @@ function rejectIfLocked(lockCalendarId, authInput, startTime, endTime, facility)
                         if((currentTime.getTime() - parseInt(lockObject.time)) > 1000 * 60 * 15){
                             reject('busy');
                         }
-                        
                     }
                 }
                 resolve();
@@ -56,7 +54,7 @@ function checkBusy(calendarId, lockCalendarId, authInput, startTime, endTime, fa
                                     return;
                                 }
                         }
-                    callback(false,'notBusy');  
+                    callback(false,'notBusy');
                     }
 
             })
@@ -71,7 +69,7 @@ function checkBusy(calendarId, lockCalendarId, authInput, startTime, endTime, fa
         });
 }
 
-            
+
 function addEvent(calendarId,authInput,startTime,endTime,summary,description,eventId,callback){
     calendar.events.insert({
         auth: authInput,
@@ -82,8 +80,8 @@ function addEvent(calendarId,authInput,startTime,endTime,summary,description,eve
             summary:summary,
             id: eventId,
             description:description
-        }  
-    },function (err, response) {
+        }
+    },function(err,response){
         if(err){
             callback(err);
         }
@@ -104,7 +102,7 @@ function deleteEvent(calendarId, authInput, eventId, callback){
         if (err) {
             if (typeof callback === "function") {
                 callback(err);
-            }   
+            }
         }
         else{
             if (typeof callback === "function") {
@@ -128,7 +126,40 @@ function getEvent(calendarId,authInput,eventId,callback) {
         }
     });
 }
+//lists events x days out from the current date
+function unavailable(calendarId,authInput,days,facility,callback){
+    tomorrow = datetime.create();
+    tomorrow.offsetInDays(1);
+    endTime = datetime.create();
+    endTime.offsetInDays(1 + days)
+    calendar.events.list({ // lists items from the calendar
+        auth: authInput,
+        calendarId: calendarId,
+        timeMin: tomorrow.now,
+        timeMax:endTime.now,
+    }, function(err, response) {
+        if (err) {
+            callback(err);
+        }
+        else{
+            let busySlots = [];
+            for(i = 0; i < response.data.items.length; i++){
+                let item = response.data.items[i];
+                let event = JSON.parse(item.description);
+                if (event.facility == facility){
+                    busySlots.push(
+                    {title:"Unavailable",
+                    start: item.start.dateTime,
+                    end: item.end.dateTime
+                    });
+                }
+            }
+            callback(false,busySlots);
+        }
+    });
+}
 module.exports.checkBusy = checkBusy;
 module.exports.addEvent = addEvent;
 module.exports.deleteEvent = deleteEvent;
 module.exports.getEvent  = getEvent;
+module.exports.unavailable = unavailable;
