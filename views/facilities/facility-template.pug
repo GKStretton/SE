@@ -24,9 +24,10 @@ block content
 				div(class="col-lg-7")
 					block description
 					//- add onclick js to hide.show form
-					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{button_name}
+					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{automated?"Book Now ":"Enquire Now "}
+						i(class=automated?"fa fa-book":"fa fa-question")
 					div(id="book-form" class="collapse")
-						if button_name === 	"Book Now"
+						if automated
 							include form-automated
 						else
 							include form-manual
