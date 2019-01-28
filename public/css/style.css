@@ -45,7 +45,7 @@ hr {
 
 /* Background Styles */
 
-.bg-alpha, #home-photo-carousel .carousel-caption{
+.bg-alpha{
     background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -237,4 +237,31 @@ hr {
 
 #home-photo-carousel .carousel-item > img {
     width: 100%;
+}
+
+#home-photo-carousel .carousel-caption{
+    top: 20%;
+    bottom: auto;
+}
+
+#home-photo-carousel .carousel-caption .btn{
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 0;
+    border: 3px solid #ffcc27;
+    transition: 300ms;
+    color: #eee;
+    width: 100%;
+    font-weight: 600;
+}
+
+#home-photo-carousel .carousel-caption .btn:hover{
+    background: #ffcc27;
+    color: #444;
+}
+
+#home-photo-carousel .carousel-caption .main{
+    min-height: 40%;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.4);
+    border-left: 3px solid #ffcc27;
 }
