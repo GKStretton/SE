@@ -1,30 +1,39 @@
-div(class="container")
-	form(id="manualForm")
-		div(class="form-group" style="display:none")
-			select(id="facility-input" name="facility" class="form-control")
-				option(value=facility)
-		div(class="form-group")
-			//-may not need availability for manual form 
-			label(for="schedule")
-				| Availability:
-			div(id="calendar")
-		div(class="form-group")
-			label(for="name-input")
-				| Name:
+form(id="manualForm" class="mt-3")
+	div(class="form-group" style="display:none")
+		select(id="facility-input" name="facility" class="form-control")
+			option(value=facility)
+
+	//-may not need availability for manual form
+	div(id="calendar" class="form-group")
+
+	div(class="form-group")
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") Name:
+			//- Name input
 			input(id="name-input" name="name" type="text" class="form-control")
-		div(class="form-group")
-			label(for="email-input")
-				| Email:
+
+	div(class="form-group")
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") Email:
+			//- Email input
 			input(id="email-input" name="email" type="email" class="form-control")
-		div(class="form-group")
-			label(for="phone-input")
-				| Phone:
+
+	div(class="form-group")
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") Phone:
+			//- Phone input
 			input(id="phone-input" name="phone" type="tel" class="form-control")
-		div(class="form-group")
-			label(for="info-input")
-				| Enquiry Information:
+
+	div(class="form-group")
+		div(class="input-group")
+			div(class="input-group-prepend")
+				span(class="input-group-text" style="width:70px;") Info:
 			textarea(id="info-input" name="enquiry" rows="3" class="form-control")
-		button(type="button" id="manualFormSubmit" class="btn btn-primary w-100")
-			|Submit
-			span(class="fa fa-paper-plane-o")
-	p(id="errMsg")
+
+	button(type="button" id="manualFormSubmit" class="btn btn-primary w-100") Submit
+		span(class="fa fa-paper-plane-o")
+
+p(id="errMsg")
