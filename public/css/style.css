@@ -239,6 +239,25 @@ hr {
     width: 100%;
 }
 
+/* Table Styles */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid black;
+  text-align: center;
+  padding: 8px;
+}
+
+td.name{
+	text-align: right;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+
 #home-photo-carousel .carousel-caption{
     top: 20%;
     bottom: auto;
