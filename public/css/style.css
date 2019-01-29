@@ -257,6 +257,7 @@ td.name{
 
 tr:nth-child(even) {
   background-color: #dddddd;
+}
 
 #home-photo-carousel .carousel-caption{
     top: 20%;
