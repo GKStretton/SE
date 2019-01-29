@@ -1,15 +1,15 @@
 //can change this to a button listener if you want
 function toggleVisability(id){
 	var doc = document.getElementById(id);
-       if(doc.style.display == 'block')
-          doc.style.display = 'none';
-       else
-          doc.style.display = 'block';
+		if(doc.style.display == 'block')
+			doc.style.display = 'none';
+		else
+			doc.style.display = 'block';
 };
 
-// For facility carousel
+// For facility carousel and rss div
 $(document).ready(function() {
-	$("#facility-photos").carousel({interval: 2000})
+	$("#facility-photos").carousel({interval: 2000});
 });
 
 // what's on functionality
