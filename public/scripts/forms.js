@@ -3,13 +3,23 @@
 //Automated booking submit
 $(document).on("click","#automatedFormSubmit",function(){
 	let formData = $("#automatedForm").serialize();
-		$.post("/booking/lockRequest",formData,function(data){
-			location.assign("/payment");
-	})
-	.fail(function(res){
-		console.log(res);
-		$('#errMsg').text(res.responseText);
-	})
+	let tab = window.open("","_blank");
+	$.ajax({
+		url:"/booking/lockRequest",
+		type:"POST",
+		data:formData,
+		async:false,
+		beforeSend:function(data){
+			tab.location.assign("/payment");
+		},
+		success: function(data){
+			location.reload();
+		},
+		error: function(error){
+			console.log(res);
+			$('#errMsg').text(res.responseText);
+		}
+	});
 });
 
 

@@ -10,7 +10,7 @@
 			jQuery.post('/booking/createPayment')
 				.done(function(data) { resolve(data.id); })
 				.fail(function(err)  { reject('err'); });
-		);
+		});
 	},
 	// Pass a function to be called when the customer approves the payment,
 	// then call execute payment on your server:
