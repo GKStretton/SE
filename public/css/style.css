@@ -1,5 +1,5 @@
 html, body {
-    min-height: 100vh;
+min-height: 100vh;
     width: 100%;
     margin: 0;
     background-color:#eee;
@@ -149,12 +149,12 @@ hr {
 /* Main navbar styles */
 
 #main-nav {
-    min-height: 100px;
+    min-height: 80px;
     box-shadow: 0px 0px 20px 5px rgba(26, 26, 45, .3);
 }
 
 #main-nav .navbar-brand {
-    height: 100px;
+    height: 80px;
 }
 
 #main-nav .nav-item {
@@ -166,11 +166,19 @@ hr {
     font-weight: 600;
     font-size: 1.6rem;
     transition: 350ms;
-    min-height: 100px;
+    height: 80px;
     min-width: 12vw;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#main-nav .collapsing .nav-link {
+	height: 50px;
+}
+
+#main-nav .collapse.show .nav-link {
+	height: 50px;
 }
 
 #main-nav .nav-link:hover, #main-nav .dropdown-item:hover {
@@ -194,7 +202,7 @@ hr {
     justify-content: center;
     align-items: center;
     font-size: 1.4rem;
-    height: 60px;
+    height: 40px;
     font-weight: 500;
     min-width: 12vw;
     text-align: center;
@@ -202,7 +210,7 @@ hr {
 }
 
 .offset-navbar {
-    margin-top: 100px;
+    margin-top: 80px;
 }
 
 /* Images on facility landing*/
