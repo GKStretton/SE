@@ -247,6 +247,10 @@ hr {
 
 #home-photo-carousel .carousel-caption {
 	top: 40px;
+}
+
+#home-photo-carousel .carousel-caption{
+    top: 20%;
     bottom: auto;
 }
 
@@ -266,8 +270,28 @@ hr {
 }
 
 #home-photo-carousel .carousel-caption .main {
-    min-height: 120px;
-    text-align: left;
-    background: rgba(0, 0, 0, 0.4);
-    border-left: 3px solid #ffcc27;
+	min-height: 120px;
+	text-align: left;
+	background: rgba(0, 0, 0, 0.4);
+	border-left: 3px solid #ffcc27;
+}
+
+/* Table Styles */
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td, th {
+	border: 1px solid black;
+	text-align: center;
+	padding: 8px;
+}
+
+td.name{
+	text-align: right;
+}
+
+tr:nth-child(even) {
+	background-color: #dddddd;
 }
