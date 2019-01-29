@@ -159,6 +159,8 @@ function serveFacility(uri,facilityName){
     });
 }
 //now serving facilities dropdown menu pages ˅˅˅˅
+serveFacility('/price-list','price-list');
+serveFacility('/parties','parties');
 serveFacility('/astro-turf','astro-turf');
 serveFacility('/sports-hall','sports-hall');
 serveFacility('/sports-field','sports-field');
