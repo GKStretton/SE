@@ -2,13 +2,10 @@ extends ../template
 block content
 	div(class="row")
 		img(src=top_image class class="by-brand-thin" style="width:100%;height:250px;object-fit:cover;")
-
 	div(class="row mt-5")
 		div(class="col-lg-8 mx-auto")
 			h3(class="h-underline") #{facility_name}
-
 			div(class="row")
-
 				div(class="col-lg-5")
 					//-Has a corresponding function in functions.js for carousel options
 					div(id="facility-photos" class="carousel slide b-brand-thin" data-ride="carousel")
@@ -20,7 +17,6 @@ block content
 							span(class="fa fa-arrow-left text-brand")
 						a(class="carousel-control-next" href="#facility-photos" data-slide="next" role="button")
 							span(class="fa fa-arrow-right text-brand")
-
 				div(class="col-lg-7")
 					block description
 					//- add onclick js to hide.show form
