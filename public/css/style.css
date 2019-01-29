@@ -303,10 +303,3 @@ td.name{
 tr:nth-child(even) {
 	background-color: #dddddd;
 }
-
-.row-eq-height {
-	display:-webkit-box;
-	display:-webkit-flex;
-	display:-ms-flexbox;
-	display:flex;
-}
