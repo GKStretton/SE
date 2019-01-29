@@ -257,6 +257,16 @@ bookingRouter.get('/enquiry/success',function(req,res){
     res.render('facilities/enquiry-success');
 });
 
+bookingRouter.get("/availability/:facility", function(req, res){
+	calendarFunctions.unavailable(calendarId, jwtClient, 60, req.params.facility, function(err, response){
+		if (err){
+			res.status(500).send("Error getting availability for that facility" + err)
+		} else {
+			res.json(response)
+		}
+	})
+})
+
 //query that creates a lock on a slot
 bookingRouter.post('/lockRequest',function(req,res){
     req.myCookie.booking = req.body;
