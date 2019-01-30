@@ -61,16 +61,19 @@ var keystone = require('keystone');
 keystone.init({
 	'cookie secret': 'helloworld',
 	'mongo': url,
-	'name': 'keystoneDB',
 	'user model': 'User',
 	'auto update': true,
 	'auth': true,
+	'name': 'KeystoneDB',
+	'static': 'public',
 
 	'views': 'views',
 	'view engine':'pug',
 });
 
 keystone.import('models');
+
+keystone.set('routes', require('./routes'));
 
 keystone.start();
 
@@ -205,74 +208,6 @@ jwtClient.authorize(function (err, tokens) {
     } else {
         console.log('Calendar api successfully authenticated');
     }
-});
-
-//serve root page - TEMP ACTION, SERVE TEMPLATE (real action is to server homepage)
-app.get('/',function (req, res) {
-	res.render('home');
-});
-
-/*
-* This router and function let us easily render multiple facility pages
-* Useful for if we want to pass more data to these pages in the future
-*/
-const facilityRouter = express.Router();
-app.use('/facility',facilityRouter);
-function serveFacility(uri,facilityName){
-    facilityRouter.get(uri, function (req, res) {
-        res.render('facilities' + uri,{facility: facilityName});
-    });
-}
-//now serving facilities dropdown menu pages ˅˅˅˅
-serveFacility('/astro-turf','astro-turf');
-serveFacility('/sports-hall','sports-hall');
-serveFacility('/sports-field','sports-field');
-serveFacility('/gymnasium','gymnasium');
-serveFacility('/theatre','theatre');
-serveFacility('/performing-arts-room','performing-arts-room');
-serveFacility('/green-room','green-room');
-serveFacility('/dining-hall','dining-hall');
-serveFacility('/it-suite','it-suite');
-serveFacility('/classrooms','classrooms');
-
-/*please change this to use the facilityRouter
-  also relocate the physical file into /facility*/
-app.get('/facility-landing',function(req,res){
-	res.render('facility-landing');
-});
-
-app.get('/about-us',function(req,res){
-	res.render('about-us');
-});
-
-app.get('/whats-on', function(req, res) {
-	res.render('whats-on');
-});
-
-app.get('/booking-enquiry', function(req, res) {
-	res.render('booking-enquiry');
-});
-
-app.get('/easy-fundraising', function(req, res) {
-	res.render('easy-fundraising');
-});
-
-app.get('/contact-us',function(req,res){
-	res.render('contact-us');
-});
-//serve event pages template - will need to change
-app.get('/event/:eventPage',function(req,res){
-	res.render(path.join(__dirname,'views','events',req.params.eventPage));
-});
-
-//temp serve event page for testing, Nikesh will remove
-app.get('/event',function(req,res){
-	res.render(path.join(__dirname,'views','events','Fast Feet Football Academy'));
-});
-
-//gdpr notice
-app.get('/GDPR',function(req,res){
-	res.render('GDPR');
 });
 
 app.post('/contact-us/submit', function(req,res) {
