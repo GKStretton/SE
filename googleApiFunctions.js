@@ -131,7 +131,7 @@ function unavailable(calendarId,authInput,days,facility,callback){
     tomorrow = datetime.create();
     tomorrow.offsetInDays(1);
     endTime = datetime.create();
-    endTime.offsetInDays(1 + days)
+    endTime.offsetInDays(1 + days);
     calendar.events.list({ // lists items from the calendar
         auth: authInput,
         calendarId: calendarId,
