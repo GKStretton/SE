@@ -3,7 +3,6 @@ extends ../template
 block content
 	div(class="row")
 		img(src=top_image class class="by-brand-thin" style="width:100%;height:250px;object-fit:cover;")
-
 	div(class="row mt-5")
 		div(class="col-lg-8 mx-auto")
 			h3(class="h-underline") #{title}
@@ -21,7 +20,6 @@ block content
 							span(class="fa fa-arrow-right text-brand")
 					div !{availability?showdown.makeHtml(availability):"No availability info, please enquire."}
 					div !{pricing?showdown.makeHtml(pricing):"No pricing info, please enquire."}
-
 				div(class="col-lg-7")
 					div !{description?showdown.makeHtml(description):"No description, please enquire."}
 					//- add onclick js to hide.show form

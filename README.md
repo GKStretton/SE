@@ -20,8 +20,6 @@ select your fork
 create pull request  
 type in the chat that you have created a pull request so someone else can check it for conficts and then merge it into the main branch  
 
-Nodejs app (mainly back end stuff right now):
-
 ## [Site Setup]
 
 Install dependencies with npm install.
@@ -37,7 +35,7 @@ How to authenticate paypal stuff:
 Inside the tokens folder, make a file called paypalId.json with the following structure:
 
 {
-"clientId":"[clientId_on_discord]"
+"clientId":"clientId_on_discord"
 }
 
 And when testing the paypal transaction you can use the sandbox account login on discord

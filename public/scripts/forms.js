@@ -3,13 +3,23 @@
 //Automated booking submit
 $(document).on("click","#automatedFormSubmit",function(){
 	let formData = $("#automatedForm").serialize();
-		$.post("/booking/lockRequest",formData,function(data){
-			location.assign("/payment");
-	})
-	.fail(function(res){
-		console.log(res);
-		$('#errMsg').text(res.responseText);
-	})
+	let tab = window.open("","_blank");
+	$.ajax({
+		url:"/booking/lockRequest",
+		type:"POST",
+		data:formData,
+		async:false,
+		beforeSend:function(data){
+			tab.location.assign("/payment");
+		},
+		success: function(data){
+			location.reload();
+		},
+		error: function(error){
+			console.log(res);
+			$('#errMsg').text(res.responseText);
+		}
+	});
 });
 
 
@@ -66,17 +76,10 @@ $(document).ready(function(){
 		maxTime: "24:00:00",
 		slotDuration: "00:30:00",
 		slotLabelInterval: "01:00",
-		events:[
-			{
-				title: 'Unavailable',
-				start: '2019-01-25T11:00:00',
-				end: '2019-01-25T17:00:00'
-			},
-			{
-				title: 'Unavailable',
-				start: '2019-01-25T06:00:00',
-				end: '2019-01-25T07:00:00'
-			}]
+		events:{
+			url: `/booking/availability/${$("#facility-input").val()}`,
+			type: 'GET'
+		}
 	});
 
 	$("#book-form").on("shown.bs.collapse", function () {
