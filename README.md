@@ -70,3 +70,5 @@ The page should refresh and the event should be visible with your name.
 if it stops working (hangs on npm start), restart the ssh -L (ps aux | grep 4321, kill the pids, run ^ again)
 
 If it's really broken check that mongod is running on 206.18.... , if not `mongod --fork --logpath ~/log/mongodb.log`
+
+For bash users: run ./start-tunnel to automatically connect to the database.
