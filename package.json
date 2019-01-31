@@ -11,7 +11,7 @@
     "keystone": "^4.0.0",
     "mongodb": "^3.1.13",
     "node-datetime": "^2.1.2",
-    "nodemailer": "^5.0.0",
+    "nodemailer": "^5.1.1",
     "pug": "^2.0.3",
     "request": "^2.88.0",
     "rfc4122": "^1.0.5"

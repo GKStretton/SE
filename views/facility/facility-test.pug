@@ -1,0 +1,32 @@
+extends ../template
+block content
+	div(class="row")
+		img(src=top_image class class="by-brand-thin" style="width:100%;height:250px;object-fit:cover;")
+
+	div(class="row mt-5")
+		div(class="col-lg-8 mx-auto")
+			h3(class="h-underline") #{facility.title}
+
+			div(class="row")
+
+				div(class="col-lg-5")
+					//-Has a corresponding function in functions.js for carousel options
+
+
+				div(class="col-lg-7")
+					#{facility.description.html}
+					//- add onclick js to hide.show form
+					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{button_name}
+					div(id="book-form" class="collapse")
+						if button_name === 	"Book Now"
+							include form-automated
+						else
+							include form-manual
+					hr
+					div(class="row")
+						div(class="col-sm-6")
+							h5 Availability
+							block availability
+						div(class="col-sm-6")
+							h5 Pricing
+							block pricing
