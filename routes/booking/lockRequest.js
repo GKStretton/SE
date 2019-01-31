@@ -1,6 +1,7 @@
 //query that creates a lock on a slot
 module.exports = (req, res) => {
     req.myCookie.booking = req.body;
+    console.log(req.body);
     let timeFrom = req.body.timeFrom;
     let timeTo = req.body.timeTo;
     let startTime = req.body.date +'T'+ timeFrom + ":00.0z";

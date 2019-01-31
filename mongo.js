@@ -42,20 +42,44 @@ function listEntries(tgtDB,collectionName,startTime,endTime,facilityId){
     })
     return listCursor
 }
-function unavailable(tgtDB,days,facilityID){
+
+function checkBusy(tgtDB,startTime,endTime,facilityId,callback){
+    let lockCursor = listEntries(tgtB,"Locks",startTime,endTime,facilityId);
+    let bookingCursor = listEntries(tgtB,"Bookings",startTime,endTime,facilityId);
+    let current = Date.now();
+    if(bookingCursor.hasNext){
+        callback('busy');
+        return;
+    }
+    while(lockCursor.hasNext){
+        let lock = tojson(lockCursor.next());
+        if (current - lock.timeStamp < (1000 * 60 * 5)){
+            callback('busy');
+            return;
+        }
+    }
+    callback('notBusy');
+}
+function unavailable(tgtDB,days,facilityId){
     //get tomorrow as dateTime
     // get x days from tomorrow as dateTime
     let start = new Date();
     start.setDate(start.getDate + 1); //tomorrow
     let end = new Date();
     end.setDate(end.getDate + 1 + days);
-    bookings = listEntries(tgtDB,"Bookings",)
-
-    [{title: "Unavailable",
-        start: startTime,
-        end: endTime,
-    }]
+    let bookingCursor = listEntries(tgtDB,"Bookings",start,end,facilityId);
+    let bookingList = [];
+    while(bookingCursor.hasNext()){
+        let item = (tojson(bookingCursor.next()));
+        bookingList.push({
+            title:"Unavailable",
+            start: item.startTime,
+            end: item.endTime
+        })
+    }
+    return bookingList
 }
+
 
 MongoClient.connect(url,function(err,client){  //Creates the database and initialises it with a table for booking info.
     assert.equal(null,err);
