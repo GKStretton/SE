@@ -93,6 +93,7 @@ $(document).on("click", "#contactSubmit", function() {
 		$("#feedback").text("Message sent");
 		$("#contactSubmit").remove();
 	}).fail(function(res) { // Not currently used
+		console.log("FAIL");
 		$("#feedback").attr("class", "text-danger");
 		$("#feedback").text("\t" + res.responseText);
 	});

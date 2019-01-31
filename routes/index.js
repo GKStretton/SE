@@ -2,11 +2,11 @@ var keystone = require("keystone");
 var express = require("express");
 var importRoutes = keystone.importer(__dirname);
 
-var apiHandlers = require("./api/test");
 
 var routes = {
 	views: importRoutes("./views"),
 	booking: importRoutes("./booking"),
+	api: importRoutes("./api"),
 };
 
 
@@ -16,36 +16,13 @@ const session = require('client-sessions'); //cookies
 //The order of these is important
 exports = module.exports = function (app) {
 	// TODO clean
-	app.post('/contact-us/submit', function(req,res) {
-		sendContactMail('group6.se.durham@gmail.com',
-			req.body.name,
-			req.body.email,
-			req.body.phone,
-			req.body.message
-		);
-		res.send("ok");
-	});
 	
-	app.get('/form',function (req, res) {
-	    //res.redirect('form.html');
-	    res.render('form-automated');
-	});
-
-	app.get('/payment',function (req, res) {
-	    paymentData = {
-		facility: req.myCookie.booking.facility
-	    }
-	    res.render('payment/payment-page',paymentData);
-	});
-
-	app.get('/payment/success',function (req, res) {
-	    res.render('payment/payment-success');
-	});
 
 
 
 
-	// TODO sort this out
+
+	// Middleware
 	
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({
@@ -70,14 +47,18 @@ exports = module.exports = function (app) {
 	//app.use("/booking", bookingRouter);
 
 	// TODO use router/make nicer
+	app.post('/contact-us/submit', routes.api.contactUs);
 	app.post('/booking/executePayment', routes.booking.executePayment);
 	app.post('/booking/createPayment', routes.booking.createPayment);
 	app.post('/booking/cancelBooking', routes.booking.cancelBooking);
 	app.post('/booking/lockRequest', routes.booking.lockRequest);
-	app.get('/booking/enquiry/success', routes.booking.success);
 	app.post('/booking/enquiry', routes.booking.enquiry);
 
 
+	app.get('/payment',routes.views.payment);
+	app.get('/payment/success',routes.views.paymentsuccess);
+	app.get('/booking/enquiry/success', routes.booking.success);
+	app.get('/form', routes.views.form);
 	app.get("/facilitytest/:name", routes.views.facilitytest);
 	app.get("/facility", routes.views.facilitylanding);
 	app.get("/facility/:name", routes.views.facility);

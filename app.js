@@ -1,5 +1,6 @@
-// KEYSTONE STUFF
 var keystone = require("keystone");
+var mongo = require("./mongo.js");
+var other = require("./calendar-misc.js");
 
 const url = "mongodb://localhost:4321";
 
