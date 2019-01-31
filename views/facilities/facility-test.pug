@@ -14,7 +14,7 @@ block content
 
 
 				div(class="col-lg-7")
-					p #{facility.description}
+					#{facility.description.html}
 					//- add onclick js to hide.show form
 					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{button_name}
 					div(id="book-form" class="collapse")
