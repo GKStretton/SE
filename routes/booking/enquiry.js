@@ -1,6 +1,7 @@
+mailer = require("../../mailer.js")
 //manual booking enquiry
 module.exports = (req, res) => {
-    sendEnquiryMail('group6.se.durham@gmail.com',
+    mailer.sendEnquiryMail('group6.se.durham@gmail.com',
         req.body.facility,
         req.body.name,
         req.body.email,

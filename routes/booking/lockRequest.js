@@ -1,13 +1,10 @@
 //query that creates a lock on a slot
 module.exports = (req, res) => {
     req.myCookie.booking = req.body;
-    let time = req.body.time;
-    let startTime = req.body.date +'T'+ time + ":00.0z";
-    console.log(time.slice(0,1));
-    let incTime = (parseInt(time.slice(0,2)) + 1).toString() + time.slice(2,5);
-    let endTime = req.body.date +'T'+ incTime + ":00.0z";
-    console.log(startTime);
-    console.log(endTime);
+    let timeFrom = req.body.timeFrom;
+    let timeTo = req.body.timeTo;
+    let startTime = req.body.date +'T'+ timeFrom + ":00.0z";
+    let endTime = req.body.date +'T'+ timeTo + ":00.0z";
     calendarFunctions.checkBusy(calendarId,lockCalendarId, jwtClient,startTime,endTime,req.body.facility,function(err,response){
         if(err){
             console.log(err.code);

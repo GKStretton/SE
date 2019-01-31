@@ -51,6 +51,7 @@ exports = module.exports = function (app) {
 	app.get('/payment',routes.views.payment);
 	app.get('/payment/success',routes.views.paymentsuccess);
 	app.get('/booking/enquiry/success', routes.booking.success);
+	app.get("/availability/:facility", routes.booking.availability);
 	app.get('/form', routes.views.form);
 	app.get("/facilitytest/:name", routes.views.facilitytest);
 	app.get("/facility", routes.views.facilitylanding);

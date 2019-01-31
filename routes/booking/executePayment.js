@@ -1,3 +1,4 @@
+mailer = require("../../mailer.js");
 /*
 * checks if lock is still in place, if so, we add the actual booking event
 * The event is added first, before we finalise(execute) the payment, this ensures no user ends up paying without a booking on the calendar
@@ -43,7 +44,7 @@ module.exports = (req, res) => {
                                     // delete the lock event we no longer need
                                     calendarFunctions.deleteEvent(lockCalendarId,jwtClient,req.myCookie.booking.eventId);
                                     let r = req.myCookie.booking;
-                                    sendConfirmationMail('group6.se.durham@gmail.com',r.email,r.facility,r.name,r.date,r.time,r.info);
+                                    mailer.sendConfirmationMail('group6.se.durham@gmail.com',r.email,r.facility,r.name,r.date,r.time,r.info);
                                 }
                             });
                     }
