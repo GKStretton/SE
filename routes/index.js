@@ -23,7 +23,7 @@ exports = module.exports = function (app) {
 			req.body.phone,
 			req.body.message
 		);
-		res.end();
+		res.send("ok");
 	});
 	
 	app.get('/form',function (req, res) {
@@ -84,8 +84,6 @@ exports = module.exports = function (app) {
 
 	app.get("/event", routes.views.eventlanding);
 	app.get("/event/:name", routes.views.event);
-
-	app.get("/api/test", apiHandlers.getTests);
 
 	app.get("/", routes.views.index);
 	app.get("/:name", routes.views.base);
