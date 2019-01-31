@@ -6,7 +6,7 @@ var Facility = new keystone.List('Facility');
 Facility.add({
 	name: {type: String, required:true, initial:true },
 	title: { type: String, required: true, initial: true },
-	description: { type: Types.Textarea, required: true, initial: true},
+	description: { type: Types.Markdown, required: true, initial: true},
 	availability: { type: Types.Textarea, required:true, initial:true},
 	pricing: { type: Types.Textarea, required:true,initial:true},
 });
