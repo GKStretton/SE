@@ -18,8 +18,6 @@ block content
 							span(class="fa fa-arrow-left text-brand")
 						a(class="carousel-control-next" href="#facility-photos" data-slide="next" role="button")
 							span(class="fa fa-arrow-right text-brand")
-					div !{availability?showdown.makeHtml(availability):"No availability info, please enquire."}
-					div !{pricing?showdown.makeHtml(pricing):"No pricing info, please enquire."}
 				div(class="col-lg-7")
 					div !{description?showdown.makeHtml(description):"No description, please enquire."}
 					//- add onclick js to hide.show form
@@ -30,3 +28,9 @@ block content
 							include form-automated
 						else
 							include form-manual
+					hr
+					div(class="row mt-4")
+						div(class="col-6")
+							div !{availability?showdown.makeHtml(availability):"No availability info, please enquire."}
+						div(class="col-6")
+							div !{pricing?showdown.makeHtml(pricing):"No pricing info, please enquire."}
