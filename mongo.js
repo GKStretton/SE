@@ -12,16 +12,8 @@ let exampleId = rfc4122.v1();
  * being polluted with a bunch of random collections which is bad juju.
  */
 
-function deleteEntry(tgtDB,primaryKey,collectionName){
-    const deleteQuery = {
-        "primaryKey": primaryKey
-    };
-    tgtDB.collection(collectionName).deleteOne({
-        deleteQuery,function(err,client){
-            assert.equal(null,err);
-            console.log("Entry " + primaryKey + " removed.");
-        }
-    });
+function deleteEntry(tgtDB, eventID,collectionName){
+    tgtDB.collection(collectionName).deleteOne({eventID: eventID});
     return 0;
 }
 
@@ -33,32 +25,67 @@ function insertEntry(tgtDB,entry,collectionName){
     return 0;
 }
 
+
+function addEntry(collection,tgtDB,startTime,endTime,facilityId,price,name,email,information,callback){
+    let event = {
+        eventID: rfc4122.v1(),
+        startTime: startTime,
+        endTime: endTime,
+        facilityID: facilityId,
+        price: price,
+        email: email,
+        information: information
+    }
+    if (collection === "Locks"){
+        event.timestamp = Date.now();
+    }
+    tgtDB.collection(col).insertOne(lock,function(err,client){
+        if(err){
+            callback(err);
+        }
+        else{
+            callback(false);
+        }
+    });
+    return;
+}
+
+
+
+//returns 'error' if error
 function listEntries(tgtDB,collectionName,startTime,endTime,facilityId){
     //returns cursor of bookings that lie between the two times
     let listCursor = tgtDB.collections(collectionName).find({
         facilityID: {$eq: facilityId},
         endTime: {$gt: startTime},
         startTime: {$lt: endTime}
-    })
+    },function(err,listCursor){
+        if(err){
+            return false
+        }
+    });
     return listCursor
 }
 
 function checkBusy(tgtDB,startTime,endTime,facilityId,callback){
     let lockCursor = listEntries(tgtB,"Locks",startTime,endTime,facilityId);
     let bookingCursor = listEntries(tgtB,"Bookings",startTime,endTime,facilityId);
+    if(lockCursor === 'error' || bookingCursor === 'error'){
+        callback('error');
+    }
     let current = Date.now();
     if(bookingCursor.hasNext){
-        callback('busy');
+        callback(false,'busy');
         return;
     }
     while(lockCursor.hasNext){
         let lock = tojson(lockCursor.next());
         if (current - lock.timeStamp < (1000 * 60 * 5)){
-            callback('busy');
+            callback(false,'busy');
             return;
         }
     }
-    callback('notBusy');
+    callback(false,'notBusy');
 }
 function unavailable(tgtDB,days,facilityId){
     //get tomorrow as dateTime
@@ -77,7 +104,7 @@ function unavailable(tgtDB,days,facilityId){
             end: item.endTime
         })
     }
-    return bookingList
+    return bookingList;
 }
 
 
@@ -92,15 +119,19 @@ MongoClient.connect(url,function(err,client){  //Creates the database and initia
         "price": 0.01,
         "name": "John Doe",
         "email": "email@test.com",
-        "summary": "SampleText",
-        "description": "NotARealBooking"
+        "information": "Some information"
     }
+    //as we are using db to replace cookie, we actually need to add all the form information to the lock too
     let testLock = { //This exists as a test lock to display the schema of the db
         "eventID": rfc4122.v1(),
-        "facilityID": "facilityId",
         "timeStamp": Date.now(),
-        "eventName": "eventName",
+        "startTime": "startTime",
+        "endTime": "endTime",
+        "facilityID": "facilityId",
+        "price": 0.01,
+        "name": "John Doe",
         "email": "email@mail.com",
+        "information": "Some information"
     }
     console.log("Database created.");
     client.close(); //Might need to be removed in case this closes the actual connection with the DB.
