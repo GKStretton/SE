@@ -15,13 +15,6 @@ const session = require('client-sessions'); //cookies
 
 //The order of these is important
 exports = module.exports = function (app) {
-	// TODO clean
-	
-
-
-
-
-
 	// Middleware
 	
 	app.use(bodyParser.json());
@@ -69,3 +62,4 @@ exports = module.exports = function (app) {
 	app.get("/", routes.views.index);
 	app.get("/:name", routes.views.base);
 };
+
