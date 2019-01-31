@@ -1,8 +1,14 @@
 var keystone = require("keystone");
 var mongo = require("./mongo.js");
-var other = require("./calendar-misc.js");
 
 const url = "mongodb://localhost:4321";
+
+// BACKEND STUFF
+const bodyParser = require('body-parser');
+path = require('path');
+const session = require('client-sessions'); //cookies
+const RFC4122 = require('rfc4122'); //unique id for calendar event
+rfc4122 = new RFC4122();
 
 keystone.init({
 	"cookie secret": "helloworld",
@@ -12,7 +18,6 @@ keystone.init({
 	"auth": true,
 	"name": "KeystoneDB",
 	"static": "public",
-
 	"views": "views",
 	"view engine":"pug",
 });
