@@ -26,5 +26,10 @@ keystone.import("models");
 
 keystone.set("routes", require("./routes"));
 
+keystone.set("nav", {
+	"Pricing":["TheatrePrice", "MembershipPrice", "EquipmentPrice", "IndoorActivityPrice", "Facility"],
+	"Facilities":"Facility",
+});
+
 keystone.start();
 

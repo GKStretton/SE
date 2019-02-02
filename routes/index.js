@@ -68,7 +68,6 @@ exports = module.exports = function (app) {
 	    next();
 	});
 
-
 	//app.use("/booking", bookingRouter);
 
 	// TODO use router/make nicer
