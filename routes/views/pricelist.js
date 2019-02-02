@@ -8,6 +8,7 @@ module.exports = function (req, res) {
 	view.query("theatre", keystone.list("TheatrePrice").model.find());
 	view.query("membership", keystone.list("MembershipPrice").model.find());
 	view.query("equipment", keystone.list("EquipmentPrice").model.find());
+	view.query("indoorActivity", keystone.list("IndoorActivityPrice").model.find());
 
 	view.render("facility/price-list");
 }
