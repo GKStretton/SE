@@ -6,5 +6,8 @@ module.exports = function (req, res) {
 	var locals = res.locals;
 	view.query("facility", keystone.list("Facility").model.find());
 	view.query("theatre", keystone.list("TheatrePrice").model.find());
+	view.query("membership", keystone.list("MembershipPrice").model.find());
+	view.query("equipment", keystone.list("EquipmentPrice").model.find());
+
 	view.render("facility/price-list");
 }
