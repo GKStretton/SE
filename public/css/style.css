@@ -32,15 +32,15 @@ p {
 
 
 h1, h2, h3, h4, h5 {
-    color: #d35429;
+    color: black;
 }
 
 .h-underline {
-    border-bottom: 1px solid #d35429
+    border-bottom: 1px solid black
 }
 
 hr {
-    border-color: #d35429;
+    border-color: black;
 }
 
 /* Background Styles */
@@ -131,11 +131,11 @@ hr {
 /* Styles for forms */
 
 .form-control {
-    border: 1px solid #d35429
+    border: 1px solid black
 }
 
 .btn {
-    background-color: #d35429;
+    background-color: black;
     color: #eee;
     transition: 0.2s;
 }
@@ -285,8 +285,10 @@ hr {
 }
 
 /* Table Styles */
+
 table {
 	border-collapse: collapse;
+	table-layout: fixed;
 	width: 100%;
 }
 
@@ -298,6 +300,10 @@ td, th {
 
 td.name{
 	text-align: right;
+}
+
+td.item{
+	text-align: center;
 }
 
 tr:nth-child(even) {
