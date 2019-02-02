@@ -285,8 +285,10 @@ hr {
 }
 
 /* Table Styles */
+
 table {
 	border-collapse: collapse;
+	table-layout: fixed;
 	width: 100%;
 }
 
@@ -300,7 +302,7 @@ td.name{
 	text-align: right;
 }
 
-td.name{
+td.item{
 	text-align: center;
 }
 

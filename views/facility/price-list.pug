@@ -2,6 +2,7 @@ extend ../template
 
 block content
 	div(class="col-lg-8 mx-auto")
+		br
 		h3(class="h-underline text-uppercase") Price List
 		br
 		table
@@ -23,3 +24,13 @@ block content
 					td(class="item") £#{fac.CostPerHalfDay}
 					td(class="item") £#{fac.CostPerFullDay}
 		br 
+		h3(class="h-underline text-uppercase") Theatre Prices
+		table
+			tr
+				th
+				th Hire Cost
+			each row in theatre
+				tr
+					td(class="name") 
+						script document.write(!{JSON.stringify(row.description.html)})
+					td(class="item") #{row.price}
