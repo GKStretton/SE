@@ -16,8 +16,9 @@ block content
 					| Hire Cost Per Full Day
 					br
 					| (Up to 7 hours)
-			tr
-				td(class="name") Theatre
-				td
-				td
-				td
+			each fac in facility
+				tr
+					td(class="name") #{fac.title}
+					td(class="item") #{fac.CostPerHour}
+					td(class="item") #{fac.CostPerHalfDay}
+					td(class="item") #{fac.CostPerFullDay}

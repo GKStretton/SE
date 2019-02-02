@@ -300,6 +300,10 @@ td.name{
 	text-align: right;
 }
 
+td.name{
+	text-align: center;
+}
+
 tr:nth-child(even) {
 	background-color: #dddddd;
 }
