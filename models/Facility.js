@@ -7,8 +7,11 @@ Facility.add({
 	name: {type: String, required:true, initial:true },
 	title: { type: String, required: true, initial: true },
 	description: { type: Types.Markdown, required: true, initial: true},
-	availability: { type: Types.Textarea, required:true, initial:true},
-	pricing: { type: Types.Textarea, required:true,initial:true},
+	availability: { type: Types.Markdown, required:true, initial:true},
+	pricing: { type: Types.Markdown, required:true,initial:true},
+	CostPerHour: { type: Types.Number,initial:true},
+	CostPerHalfDay: { type: Types.Number,initial:true},
+	CostPerFullDay: { type: Types.Number,initial:true},
 });
 
 Facility.schema.virtual('canAccessKeystone').get(function () {
