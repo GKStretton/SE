@@ -17,20 +17,53 @@ block content
 					| Hire Cost Per Full Day
 					br
 					| (Up to 7 hours)
-			each fac in facility
+			each model in facility
 				tr
-					td(class="name") #{fac.title}
-					td(class="item") £#{fac.CostPerHour}
-					td(class="item") £#{fac.CostPerHalfDay}
-					td(class="item") £#{fac.CostPerFullDay}
+					td(class="name") #{model.title}
+					td(class="item") £#{model.CostPerHour}
+					td(class="item") £#{model.CostPerHalfDay}
+					td(class="item") £#{model.CostPerFullDay}
 		br 
 		h3(class="h-underline text-uppercase") Theatre Prices
 		table
 			tr
 				th
 				th Hire Cost
-			each row in theatre
+			each model in theatre
 				tr
 					td(class="name") 
-						script document.write(!{JSON.stringify(row.description.html)})
-					td(class="item") #{row.price}
+						script document.write(!{JSON.stringify(model.description.html)})
+					td(class="item") #{model.price}
+		br 
+		h3(class="h-underline text-uppercase") Annual Membership
+		table
+			tr
+				th
+				th Cost
+			each model in membership
+				tr
+					td(class="name") #{model.description}
+					td(class="item") #{model.price}
+		br 
+		h3(class="h-underline text-uppercase") Additional Equipment
+		table
+			tr
+				th Item
+				th Cost
+			each model in equipment
+				tr
+					td(class="name") #{model.item}
+					td(class="item") #{model.price}
+		br 
+		h3(class="h-underline text-uppercase") Indoor Activity Fees
+		table
+			tr
+				th 
+				th Junior
+				th Senior
+			each model in indoorActivity
+				tr
+					td(class="name") #{model.description}
+					td(class="item") #{model.junior}
+					td(class="item") #{model.senior}
+		br 
