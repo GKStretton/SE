@@ -93,6 +93,7 @@ exports = module.exports = function (app) {
 	app.get("/event", routes.views.eventlanding);
 	app.get("/event/:name", routes.views.event);
 
+	app.get("/whats-on", routes.views.whatson);
 	app.get("/", routes.views.index);
 	app.get("/:name", routes.views.base);
 };
