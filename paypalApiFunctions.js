@@ -41,7 +41,9 @@ function createPayment(clientId,secret,price,redirectUri,cancelUri,callback){
         else if(response.body.id){
             callback(false,response);
         }
-        else{
+        else {
+            console.log(response);
+            console.log(response.body.details);
             callback("VALIDATION_ERROR");
         }
     });
