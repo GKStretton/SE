@@ -1,6 +1,7 @@
 var keystone = require("keystone");
 var express = require("express");
 
+
 // BACKEND STUFF
 calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
 lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
@@ -48,7 +49,7 @@ const session = require('client-sessions'); //cookies
 //The order of these is important
 exports = module.exports = function (app) {
 	// Middleware
-	
+
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({
 		extended: true
@@ -95,4 +96,3 @@ exports = module.exports = function (app) {
 	app.get("/", routes.views.index);
 	app.get("/:name", routes.views.base);
 };
-
