@@ -49,7 +49,6 @@ const session = require('client-sessions'); //cookies
 //The order of these is important
 exports = module.exports = function (app) {
 	// Middleware
-
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({
 		extended: true
@@ -93,6 +92,10 @@ exports = module.exports = function (app) {
 	app.get("/event", routes.views.eventlanding);
 	app.get("/event/:name", routes.views.event);
 
+	app.get("/whats-on", routes.views.whatson);
 	app.get("/", routes.views.index);
+	app.get("/favicon.ico",function(req,res){
+		res.sendFile(path.join(__dirname,"favicon.ico"));
+	});
 	app.get("/:name", routes.views.base);
 };
