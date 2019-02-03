@@ -1,8 +1,6 @@
 var keystone = require("keystone");
-var mongo = require("./mongo.js");
-
-const url = "mongodb://localhost:4321";
-
+mongo = require("./mongo.js");
+const url = 'mongodb://localhost:4321';
 // BACKEND STUFF
 const bodyParser = require('body-parser');
 path = require('path');
@@ -27,4 +25,3 @@ keystone.import("models");
 keystone.set("routes", require("./routes"));
 
 keystone.start();
-

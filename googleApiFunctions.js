@@ -70,14 +70,14 @@ function checkBusy(calendarId, lockCalendarId, authInput, startTime, endTime, fa
 }
 
 
-function addEvent(calendarId,authInput,startTime,endTime,summary,description,eventId,callback){
+function addEvent(calendarId,authInput,startTime,endTime,description,eventId,callback){
     calendar.events.insert({
         auth: authInput,
         calendarId: calendarId,
         resource:{
             start:{dateTime:startTime,timeZone:'Europe/London'},
             end: {dateTime:endTime,timeZone:'Europe/London'},
-            summary:summary,
+            summary:'Booking',
             id: eventId,
             description:description
         }
