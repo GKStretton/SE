@@ -1,4 +1,4 @@
-mailer = require("../../mailer.js");
+var mailer = require("../../mailer.js");
 /*
 * checks if lock is still in place, if so, we add the actual booking event
 * The event is added first, before we finalise(execute) the payment, this ensures no user ends up paying without a booking on the calendar
@@ -27,7 +27,7 @@ module.exports = (req, res) => {
                             res.sendStatus(400); // some sort of error occurs on google's side
                         }
                         else{ //successfully added booking, so we can finalise the payment
-                            console.log(req.body);
+                            //console.log(req.body);
                             paypalApiFunctions.executePayment(
                                 paypalId.clientId,
                                 "",
@@ -46,7 +46,9 @@ module.exports = (req, res) => {
                                         console.log('Payment executed');
                                         res.sendStatus(200);
                                         // delete the lock event we no longer need
-                                        mailer.sendConfirmationMail('group6.se.durham@gmail.com',lock.email,lock.facilityID,lock.name,lock.date,lock.startTime,lock.information);
+                                        let lockDate = lock.startTime.slice(0,10);
+                                        let lockTime = lock.startTime.slice(11,16);
+                                        mailer.sendConfirmationMail('group6.se.durham@gmail.com',lock.email,lock.facilityID,lock.name,lockDate,lockTime,lock.information);
                                         mongo.deleteEntry(dbo, eventID, "Locks");
                                     }
                                 });
