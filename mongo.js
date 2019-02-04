@@ -166,7 +166,7 @@ function unavailable(tgtDB,days,facilityId,callback){
 }
 
 dbo = null;
-MongoClient.connect(url,function(err,client){  //Creates the database and initialises it with a table for booking info.
+MongoClient.connect(url,{useNewUrlParser: true},function(err,client){  //Creates the database and initialises it with a table for booking info.
     assert.equal(null,err);
     dbo = client.db(dbName);
     console.log("Database created.");
