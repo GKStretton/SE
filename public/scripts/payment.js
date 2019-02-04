@@ -21,7 +21,10 @@
 		// At this point, the payment has been authorized, and you will need to call your back-end to complete the
 		// payment. Your back-end should invoke the PayPal Payment Execute api to finalize the transaction.
 		jQuery.post('/booking/executePayment', { paymentID: data.paymentID, payerID: data.payerID })
-			.done(function(data) {location.assign('/payment/success')}) // go to a payment success page
+			.done(function(data) {
+                $('#paymentContainer').hide();
+                $('#paymentText').html('<p><br>Payment success, check your email for confirmation</p>');
+            }) // go to a payment success page
 			.fail(function(err)  { console.log("Failed to execute your payment") }); // go to a payment failure page
 	},
 	// Pass a function to be called when the customer cancels the payment
