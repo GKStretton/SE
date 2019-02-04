@@ -78,10 +78,9 @@ exports = module.exports = function (app) {
 	app.post('/booking/lockRequest', routes.booking.lockRequest);
 	app.post('/booking/enquiry', routes.booking.enquiry);
 
-
+	app.get("/booking/availability/:facility", routes.booking.availability);
 	app.get('/payment',routes.views.payment);
 	app.get('/booking/enquiry/success', routes.booking.success);
-	app.get("/availability/:facility", routes.booking.availability);
 	app.get('/form', routes.views.form);
 	app.get("/facilitytest/:name", routes.views.facilitytest);
 	app.get("/facility/price-list", routes.views.pricelist);

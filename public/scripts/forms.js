@@ -3,21 +3,19 @@
 //Automated booking submit
 $(document).on("click","#automatedFormSubmit",function(){
 	let formData = $("#automatedForm").serialize();
-	let tab = window.open("","_blank");
 	$.ajax({
 		url:"/booking/lockRequest",
 		type:"POST",
 		data:formData,
 		async:false,
-		beforeSend:function(data){
-			tab.location.assign("/payment");
-		},
 		success: function(data){
+			let tab = window.open("","_blank");
+			tab.location.assign("/payment");
 			location.reload();
 		},
 		error: function(error){
-			console.log(res);
-			$('#errMsg').text(res.responseText);
+			console.log(error);
+			$('#errMsg').text(error.responseText);
 		}
 	});
 });
@@ -77,7 +75,7 @@ $(document).ready(function(){
 		slotDuration: "00:30:00",
 		slotLabelInterval: "01:00",
 		events:{
-			url: `/booking/availability/${$("#facility-input").val()}`,
+			url: `/booking/availability/${window.location.pathname.split("/").pop()}`,
 			type: 'GET'
 		}
 	});
