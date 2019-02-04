@@ -16,6 +16,7 @@ let mailTransporter = nodemailer.createTransport(mailOptions, mailDefaults);
 function repLineBreaks(text){
   return text.replace(/\r\n/g, '<br>')
 }
+
 function sendConfirmationMail(adminMail,userEmail,facility,name,date,time,info){
     let messageToAdmin = {
         to: adminMail,
