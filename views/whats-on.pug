@@ -28,32 +28,39 @@ block content
 						tr
 							td
 								if child[0].activities[count]
-									a(href="/event/") #{child[0].activities[count]}
+									- var activityName = getActivityName(child[0].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
 									p #{child[0].times[count]}
 							td
 								if child[1].activities[count]
-									a(href="/event/") #{child[0].activities[count]}
-									p #{child[0].times[count]}
+									- var activityName = getActivityName(child[1].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{child[1].times[count]}
 							td
 								if child[2].activities[count]
-									a(href="/event/") #{child[0].activities[count]}
-									p #{child[0].times[count]}
+									- var activityName = getActivityName(child[2].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{child[2].times[count]}
 							td
 								if child[3].activities[count]
-									a(href="/event/") #{child[0].activities[count]}
-									p #{child[0].times[count]}
+									- var activityName = getActivityName(child[3].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{child[3].times[count]}
 							td
 								if child[4].activities[count]
-									a(href="/event/") #{child[0].activities[count]}
-									p #{child[0].times[count]}
+									- var activityName = getActivityName(child[4].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{child[4].times[count]}
 							td
 								if child[5].activities[count]
-									a(href="/event/") #{child[0].activities[count]}
-									p #{child[0].times[count]}
+									- var activityName = getActivityName(child[5].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{child[5].times[count]}
 							td
 								if child[6].activities[count]
-									a(href="/event/") #{child[0].activities[count]}
-									p #{child[0].times[count]}
+									- var activityName = getActivityName(child[6].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{child[6].times[count]}
 						- count += 1;
 
 			div(id="adultTab")
