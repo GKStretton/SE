@@ -10,7 +10,7 @@ AdultWhatsOn.add({
 });
 
 AdultWhatsOn.schema.virtual('canAccessKeystone').get(function () {
-  return true;
+	return true;
 });
 
 AdultWhatsOn.defaultColumns = 'day';

@@ -23,7 +23,7 @@ Activity.add({
 });
 
 Activity.schema.virtual('canAccessKeystone').get(function () {
-  return true;
+	return true;
 });
 
 Activity.defaultColumns = 'name';
