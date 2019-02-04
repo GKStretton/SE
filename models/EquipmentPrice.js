@@ -1,7 +1,7 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var EquipmentPrice= new keystone.List('EquipmentPrice');
+var EquipmentPrice= new keystone.List('EquipmentPrice', {map:{name:"item"}});
 
 EquipmentPrice.add({
 	item: {type: String, required:true, initial:true },
@@ -11,6 +11,6 @@ EquipmentPrice.add({
 EquipmentPrice.schema.virtual('canAccessKeystone').get(function () {
   return true;
 });
-
+EquipmentPrice.relationship({path:"facilities", ref: "Facility", refPath:"equiptment"})
 EquipmentPrice.defaultColumns = 'item';
 EquipmentPrice.register();
