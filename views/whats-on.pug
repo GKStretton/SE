@@ -74,27 +74,47 @@ block content
 						th Friday
 						th Saturday
 						th Sunday
-					tr
-						td m
-						td t
-						td w
-						td t
-						td f
-						td s
-						td s
-					tr
-						td m
-						td t
-						td w
-						td t
-						td f
-						td s
-						td s
-					tr
-						td m
-						td t
-						td w
-						td t
-						td f
-						td s
-						td s
+
+					- var rows = 0;
+					each day in adult
+						if rows < day.activities.length
+							- rows = day.activities.length
+					- var count = 0;
+					while count < rows
+						tr
+							td
+								if adult[0].activities[count]
+									- var activityName = getActivityName(adult[0].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{adult[0].times[count]}
+							td
+								if adult[1].activities[count]
+									- var activityName = getActivityName(adult[1].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{adult[1].times[count]}
+							td
+								if adult[2].activities[count]
+									- var activityName = getActivityName(adult[2].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{adult[2].times[count]}
+							td
+								if adult[3].activities[count]
+									- var activityName = getActivityName(adult[3].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{adult[3].times[count]}
+							td
+								if adult[4].activities[count]
+									- var activityName = getActivityName(adult[4].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{adult[4].times[count]}
+							td
+								if adult[5].activities[count]
+									- var activityName = getActivityName(adult[5].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{adult[5].times[count]}
+							td
+								if adult[6].activities[count]
+									- var activityName = getActivityName(adult[6].activities[count],activity)
+									a(href="/event/"+activityName) #{activityName}
+									p #{adult[6].times[count]}
+						- count += 1;
