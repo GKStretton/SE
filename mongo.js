@@ -16,25 +16,25 @@ function deleteEntry(tgtDB, eventID,collectionName){
     return 0;
 }
 
-function getLock(tgtDB, eventId,cb){
+function getLock(tgtDB, eventId, callback) {
     tgtDB.collection("Locks").find({eventID: eventId},function(err,resCursor){
         if(err){
-            cb(err);
+            callback(err);
         }
         else{
             resCursor.count(function(err,count){
                 if(err){
-                    cb('Error');
+                    callback('Error');
                 }
                 else{
                     if (count > 0){
                         resCursor.forEach(function(lock){
-                            cb(false,lock);
+                            callback(false,lock);
                             return;
                         });
                     }
                     else{
-                        cb('Timed out');
+                        callback('Timed out');
                     }
                 }
             });
@@ -51,7 +51,8 @@ function addEntry(collection,tgtDB,eventId,startTime,endTime,facilityId,price,na
         facilityID: facilityId,
         price: price,
         email: email,
-        information: information
+        information: information,
+        name: name
     }
     if (collection === "Locks"){
         ev.timestamp = Date.now();
@@ -135,7 +136,7 @@ function checkBusy(tgtDB,startTime,endTime,facilityId,callback){
     });
 
 }
-function unavailable(tgtDB,days,facilityId,cb){
+function unavailable(tgtDB,days,facilityId,callback){
     //get tomorrow as dateTime
     // get x days from tomorrow as dateTime
     let start = new Date();
@@ -144,7 +145,7 @@ function unavailable(tgtDB,days,facilityId,cb){
     end.setDate(end.getDate + 1 + days);
     listEntries(tgtDB,"Bookings",start,end,facilityId,function(bookingCursor){
         if (bookingCursor === 'error'){
-            cb('error');
+            callback('error');
             return 0;
         }
         let bookingList = [];
@@ -156,7 +157,7 @@ function unavailable(tgtDB,days,facilityId,cb){
                 end: item.endTime
             })
         }
-        cb(false,bookingList);
+        callback(false,bookingList);
     })
 
 }
