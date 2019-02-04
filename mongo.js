@@ -40,7 +40,6 @@ function getLock(tgtDB, eventId, callback) {
             });
         }
     });
-
 }
 
 function addEntry(collection,tgtDB,eventId,startTime,endTime,facilityId,price,name,email,information,callback){
@@ -131,35 +130,39 @@ function checkBusy(tgtDB,startTime,endTime,facilityId,callback){
                 }
             });
         });
-
         }
     });
-
 }
+
 function unavailable(tgtDB,days,facilityId,callback){
     //get tomorrow as dateTime
     // get x days from tomorrow as dateTime
     let start = new Date();
-    start.setDate(start.getDate + 1); //tomorrow
+    start.setTime(start.getTime() + (0 * 86400000)); //tomorrow
+    start.setHours(0,0,0,0);
     let end = new Date();
-    end.setDate(end.getDate + 1 + days);
-    listEntries(tgtDB,"Bookings",start,end,facilityId,function(bookingCursor){
+    end.setTime(end.getTime() + ((1 + days) * 86400000));
+    end.setHours(0,0,0,0);
+    listEntries(tgtDB,"Bookings",start.toISOString(),end.toISOString(),facilityId,function(bookingCursor){
         if (bookingCursor === 'error'){
             callback('error');
             return 0;
         }
-        let bookingList = [];
-        while(bookingCursor.hasNext()){
-            let item = bookingCursor.next();
-            bookingList.push({
-                title:"Unavailable",
-                start: item.startTime,
-                end: item.endTime
-            })
-        }
-        callback(false,bookingList);
-    })
-
+        let resultsList = [];
+        let i = 0;
+        bookingCursor.toArray()
+        .then(function(bookingArr){
+            while(i<bookingArr.length){
+                resultsList.push({
+                    title:"Unavailable",
+                    start: bookingArr[i].startTime,
+                    end: bookingArr[i].endTime
+                })
+                i ++;
+            }
+            callback(false,resultsList);
+        });
+    });
 }
 
 dbo = null;
