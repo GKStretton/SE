@@ -10,7 +10,7 @@ ChildWhatsOn.add({
 });
 
 ChildWhatsOn.schema.virtual('canAccessKeystone').get(function () {
-  return true;
+	return true;
 });
 
 ChildWhatsOn.defaultColumns = 'day';
