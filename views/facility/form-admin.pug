@@ -1,6 +1,8 @@
-form(id="automatedForm" class="mt-3" target="_blank")
-	input( class="d-none" name="facility" id="facility-input" value=facility._id)
-	
+form(id="adminForm" class="mt-3" target="_blank")
+	div(class="form-group")
+		select(name="facility" class="form-control")
+			each fac in facility
+				option(value=facility.title) #{fac.title}
 	div(class="form-group")
 		div(class="input-group")
 			div(class="input-group-prepend")
@@ -8,7 +10,6 @@ form(id="automatedForm" class="mt-3" target="_blank")
 			//- Date input
 			input(id="date-input" class="form-control" name="date")
 
-	div(id="calendar" class="form-group")
 
 	div(class="form-group")
 		//- Time input
@@ -39,7 +40,7 @@ form(id="automatedForm" class="mt-3" target="_blank")
 				span(class="input-group-text" style="width:70px;") Info:
 			textarea(id="info-input" name="info" rows="3" class="form-control")
 
-	button(type="button" id="automatedFormSubmit" class="btn btn-primary w-100") Submit
+	button(type="button" id="adminFormSubmit" class="btn btn-primary w-100") Submit
 		span(class="fa fa-paper-plane-o")
 
 p(id="errMsg")

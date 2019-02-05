@@ -18,19 +18,19 @@ paypalApiFunctions = require('../paypalApiFunctions.js');
 privatekey = require("../tokens/private-key.json");
 // configure a JWT auth client
 jwtClient = new google.auth.JWT(
-    privatekey.client_email,
-    null,
-    privatekey.private_key,
-    ['https://www.googleapis.com/auth/calendar']);
+	privatekey.client_email,
+	null,
+	privatekey.private_key,
+	['https://www.googleapis.com/auth/calendar']);
 
 //authenticate request
 jwtClient.authorize(function (err, tokens) {
-    if (err) {
-        console.log(err);
-        return;
-    } else {
-        console.log('Calendar api successfully authenticated');
-    }
+	if (err) {
+		console.log(err);
+		return;
+	} else {
+		console.log('Calendar api successfully authenticated');
+	}
 });
 
 var importRoutes = keystone.importer(__dirname);
@@ -62,10 +62,10 @@ exports = module.exports = function (app) {
 	}));
 
 	app.use(function (req, res, next) {
-	    if(typeof req.myCookie.booking == "undefined"){
+		if(typeof req.myCookie.booking == "undefined"){
 		req.myCookie.booking = {};
-	    }
-	    next();
+		}
+		next();
 	});
 
 	//app.use("/booking", bookingRouter);
@@ -77,7 +77,7 @@ exports = module.exports = function (app) {
 	app.post('/booking/cancelBooking', routes.booking.cancelBooking);
 	app.post('/booking/lockRequest', routes.booking.lockRequest);
 	app.post('/booking/enquiry', routes.booking.enquiry);
-
+	app.post('/booking/adminRequest',routes.booking.adminRequest);
 	app.get("/booking/availability/:facility", routes.booking.availability);
 	app.get('/payment',routes.views.payment);
 	app.get('/booking/enquiry/success', routes.booking.success);
@@ -95,5 +95,5 @@ exports = module.exports = function (app) {
 		res.sendFile(path.join(__dirname,"favicon.ico"));
 	});
 	app.get("/:name", routes.views.base);
-	
+
 };
