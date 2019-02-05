@@ -83,6 +83,7 @@ exports = module.exports = function (app) {
 	app.get('/booking/enquiry/success', routes.booking.success);
 	app.get('/form', routes.views.form);
 	app.get("/facility/price-list", routes.views.pricelist);
+	app.get("/facility/parties", routes.views.parties);
 	app.get("/facility", routes.views.facilitylanding);
 	app.get("/facility/:name", routes.views.facility);
 
