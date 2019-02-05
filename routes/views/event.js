@@ -9,4 +9,3 @@ module.exports = (req, res) => {
 	view.render("event/events");
 	//res.render("event/" + req.params.name);
 }
-
