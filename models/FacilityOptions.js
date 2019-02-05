@@ -1,7 +1,7 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var FacilityOptions= new keystone.List('Facility Options', {map:{name:"option"}});
+var FacilityOptions= new keystone.List('Facility Options');
 
 FacilityOptions.add({
 	facility: {type: Types.Relationship, ref: "Facility", required: true, initial: true},
@@ -12,5 +12,5 @@ FacilityOptions.schema.virtual('canAccessKeystone').get(function () {
   return true;
 });
 
-FacilityOptions.defaultColumns = ["id", "facility", "option"];
+FacilityOptions.defaultColumns = ["facility", "option"];
 FacilityOptions.register();
