@@ -16,19 +16,44 @@ block content
 					| Hire Cost Per Full Day
 					br
 					| (Up to 7 hours)
-			- var exceptions = []
+			- var exceptions = [];
+			- var facilityOptions = [];
 			each option in options
 				if !exceptions.includes(option.facility.toString())
 					- exceptions.push(option.facility.toString())
+			- var hour = -1;
+			- var half = -1;
+			- var full = -1;
 			each model in facility
 				if exceptions.includes(model.id.toString())
 					- continue
-				- var hour = -1;
-				- var half = -1;
-				- var full = -1;
+				else
+					tr
+						each price in prices
+							if price.facility == model.id
+								if price.lengthInHours == 1
+									- hour = price.priceInGBP;
+								else if price.lengthInHours == 3
+									- half = price.priceInGBP;
+								else if price.lengthInHours == 7
+									- full = price.priceInGBP;
+						if hour != -1 && half != -1 && full != -1
+							td(class="name") #{model.title}
+						if hour != -1
+							td(class="item") £#{hour}
+						if half != -1
+							td(class="item") £#{half}
+						if full != -1	
+							td(class="item") £#{full}
+				- hour = -1;
+				- half = -1;
+				- full = -1;
+			each option in options
 				tr
 					each price in prices
-						if price.facility == model.id
+						if !price.option
+							- continue
+						if option._id.toString() == price.option.toString()
 							if price.lengthInHours == 1
 								- hour = price.priceInGBP;
 							else if price.lengthInHours == 3
@@ -36,17 +61,16 @@ block content
 							else if price.lengthInHours == 7
 								- full = price.priceInGBP;
 					if hour != -1 && half != -1 && full != -1
-						td(class="name") #{model.title}
+						td(class="name") #{option.option}
 					if hour != -1
 						td(class="item") £#{hour}
 					if half != -1
 						td(class="item") £#{half}
 					if full != -1	
 						td(class="item") £#{full}
-					- hour = -1;
-					- half = -1;
-					- full = -1;
-
+				- hour = -1;
+				- half = -1;
+				- full = -1;
 		br 
 		h3(class="h-underline text-uppercase") Theatre Prices
 		table
