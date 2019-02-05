@@ -12,5 +12,5 @@ FacilityOptions.schema.virtual('canAccessKeystone').get(function () {
   return true;
 });
 
-FacilityOptions.defaultColumns = ["facility", "option"];
+FacilityOptions.defaultColumns = ["id", "facility", "option"];
 FacilityOptions.register();

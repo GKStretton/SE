@@ -6,7 +6,7 @@ var FacilityDiscounts= new keystone.List('Facility Discounts');
 FacilityDiscounts.add({
 	facility: {type: Types.Relationship, ref: "Facility", required: true, initial: true},
 	lengthInHours: {type: Types.Number, required: true, initial: true},
-	option: {type: Types.Relationship, ref: "Facility Options", required: false, initial: true, filters: {facility:":facility"}},
+	option: {type: Types.Relationship, ref: "Facility Options", filters: {facility:":facility"}},
 	priceInPence: { type: Types.Number, initial:true, required:true},
 });
 
