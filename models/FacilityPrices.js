@@ -1,19 +1,19 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var FacilityDiscounts= new keystone.List('Facility Discounts');
+var FacilityPrices = new keystone.List('Facility Prices', {map:{name:"_id"}});
 
-FacilityDiscounts.add({
+FacilityPrices.add({
 	facility: {type: Types.Relationship, ref: "Facility", required: true, initial: true},
 	lengthInHours: {type: Types.Number, required: true, initial: true},
 	option: {type: Types.Relationship, ref: "Facility Options", filters: {facility:":facility"}},
-	priceInPence: { type: Types.Number, initial:true, required:true},
+	priceInGBP: { type: Types.Number, initial:true, required:true},
 });
 
-FacilityDiscounts.schema.virtual('canAccessKeystone').get(function () {
+FacilityPrices.schema.virtual('canAccessKeystone').get(function () {
   return true;
 });
 
-FacilityDiscounts.defaultColumns = ["facility", "lengthInHours", "option", "priceInPence"];
+FacilityPrices.defaultColumns = ["facility", "lengthInHours", "option", "priceInGBP"];
 
-FacilityDiscounts.register();
+FacilityPrices.register();
