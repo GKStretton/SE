@@ -5,6 +5,8 @@ module.exports = function (req, res) {
 	var view = new keystone.View(req, res);
 	var locals = res.locals;
 	view.query("facility", keystone.list("Facility").model.find());
+	view.query("prices", keystone.list("Facility Prices").model.find());
+	view.query("options", keystone.list("Facility Options").model.find());
 	view.query("theatre", keystone.list("TheatrePrice").model.find());
 	view.query("membership", keystone.list("MembershipPrice").model.find());
 	view.query("equipment", keystone.list("EquipmentPrice").model.find());
