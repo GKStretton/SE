@@ -12,6 +12,10 @@ $(document).ready(function() {
 	$("#facility-photos").carousel({interval: 2000});
 });
 
+$(document).ready(function() {
+	$("#events-photos").carousel({interval: 2000});
+});
+
 // what's on functionality
 $(document).ready(function() {
 	$('#adultTab').hide();
