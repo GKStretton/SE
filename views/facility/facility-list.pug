@@ -1,51 +1,7 @@
 div(class="row image-gallery")
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/astro-turf" class="text-center text-grey font-weight-bold")
-                img(src="/img/astroturf/astroturf-side.jpg" class="card-img-top")
-                h4(class="card-title") Astro Turf
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/sports-hall" class="text-center text-grey font-weight-bold")
-                img(src="/img/sports-hall/sports-hall-side.jpg" class="card-img-top")
-                h4(class="card-title") Sports Hall
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/sports-field" class="text-center text-grey font-weight-bold")
-                img(src="/img/sports-field/sports-field-side.jpg" class="card-img-top")
-                h4(class="card-title") Sports Field
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/classrooms" class="text-center text-grey font-weight-bold")
-                img(src="/img/classrooms/classrooms-side.jpg" class="card-img-top")
-                h4(class="card-title") Classrooms
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/it-suite" class="text-center text-grey font-weight-bold")
-                img(src="/img/it-suite/it-suite-side.jpg" class="card-img-top")
-                h4(class="card-title") IT Suite
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/theatre" class="text-center text-grey font-weight-bold")
-                img(src="/img/theatre/theatre-side.jpg" class="card-img-top")
-                h4(class="card-title") Theatre
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/gymnasium" class="text-center text-grey font-weight-bold")
-                img(src="/img/gymnasium/gymnasium-side.jpg" class="card-img-top")
-                h4(class="card-title") The Gymnasium
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/green-room" class="text-center text-grey font-weight-bold")
-                img(src="/img/green-room/green-room-side.jpg" class="card-img-top")
-                h4(class="card-title") The Green Room
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/performing-arts-room" class="text-center text-grey font-weight-bold")
-                img(src="/img/performing-arts-room/performing-arts-room-side.jpg" class="card-img-top")
-                h4(class="card-title") Performing Arts
-    div(class="col-md-4 mb-4")
-        div(class="card")
-            a(href="/facility/dining-hall" class="text-center text-grey font-weight-bold")
-                img(src="/img/dining-hall/dining-hall-side.jpg" class="card-img-top")
-                h4(class="card-title") Dining Hall
+	for facility, index in locals.facilities
+		div(class="col-md-4 mb-4")
+			div(class="card")
+				a(href=`/facility/${facility.title}` class="text-center text-grey font-weight-bold")
+					img(src=`/uploads/img/${facility.topImage.image.filename}` class="card-img-top")
+					h4(class="card-title") #{facility.title}

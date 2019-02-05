@@ -1,4 +1,4 @@
-## Guide to setting up your work environment for the website  
+## Guide to setting up your work environment for the website
 Go to git and create a fork of the main repository  
 Copy your fork's url  
 Clone fork locally, wherever you want  
@@ -72,3 +72,23 @@ if it stops working (hangs on npm start), restart the ssh -L (ps aux | grep 4321
 If it's really broken check that mongod is running on 206.18.... , if not `mongod --fork --logpath ~/log/mongodb.log`
 
 For bash users: run ./start-tunnel to automatically connect to the database.
+
+
+## Keystone Facility Data Entry
+
+1. Go to images and upload images for the facility
+
+### How to add an automated facility:
+
+2. Go to facility and add the facility, make sure automated checkbox is ticked
+3. If there are any special options, go to facility options and add them.
+4. Go to facility base prices and add base prices, either with an option or without
+5. Go to facility discount and add discounts for 3hrs, 7hrs etc, either with an option or without.
+6. Go back to facility entry and scroll to the bottom, see if all the prices and options are shown. If not,you've fucked
+up
+
+### Manual Bookings
+
+If the facility pricing structure is too complicated to automate
+
+2. Go to facility and add the facility, make sure the automated checkbox is not ticked.

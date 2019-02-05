@@ -2,7 +2,7 @@ html, body {
 min-height: 100vh;
     width: 100%;
     margin: 0;
-    background-color:#eee;
+    background-color:#fcfcfc;
 }
 
 #padding {
@@ -58,7 +58,7 @@ hr {
 }
 
 .bg-light-grey {
-    background-color: #eee
+    background-color: #fcfcfc
 }
 
 
@@ -136,7 +136,7 @@ hr {
 
 .btn {
     background-color: black;
-    color: #eee;
+    color: #fcfcfc;
     transition: 0.2s;
 }
 
@@ -158,16 +158,18 @@ hr {
 }
 
 #main-nav .nav-item {
-    background: #eee;
+    background: #fcfcfc;
 }
 
 #main-nav .nav-link {
-    color: #222;
-    font-weight: 600;
-    font-size: 1.6rem;
+    color: #808080;
+	font-weight: 500;
+	font-size: 1.1rem;
+	text-transform: uppercase;
+	letter-spacing: 0.2ch;
     transition: 350ms;
     height: 80px;
-    min-width: 12vw;
+	width: 190px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -222,7 +224,7 @@ hr {
 .image-gallery .card {
     transition: 200ms;
     box-shadow: 0px 2px 5px 1px rgba(26, 26, 45, .3);
-    background-color: #eee;
+    background-color: #fcfcfc;
 }
 
 .image-gallery .card:hover{
@@ -258,7 +260,7 @@ hr {
 }
 
 #home-photo-carousel .carousel-caption{
-    top: 20%;
+    top: 15%;
     bottom: auto;
 }
 
@@ -267,7 +269,7 @@ hr {
     border-radius: 0;
     border: 3px solid #ffcc27;
     transition: 300ms;
-    color: #eee;
+    color: #fcfcfc;
     width: 100%;
     font-weight: 600;
 }
