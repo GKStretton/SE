@@ -12,6 +12,7 @@ module.exports = (req, res) => {
 			{
 				var view = new keystone.View(req, res);
 				var locals = res.locals;
+				view.query("facility", keystone.list("Facility").model.find());
 				view.render("booking-admin");
 			}
 		});

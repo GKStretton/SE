@@ -75,7 +75,7 @@ $(document).ready(function(){
 		slotDuration: "00:30:00",
 		slotLabelInterval: "01:00",
 		events:{
-			url: `/booking/availability/${window.location.pathname.split("/").pop()}`,
+			url: `/booking/availability/${$("#facility-input").val()}`,
 			type: 'GET'
 		}
 	});
