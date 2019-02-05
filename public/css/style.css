@@ -162,12 +162,14 @@ hr {
 }
 
 #main-nav .nav-link {
-    color: #222;
-    font-weight: 600;
-    font-size: 1.6rem;
+    color: #808080;
+	font-weight: 500;
+	font-size: 1.1rem;
+	text-transform: uppercase;
+	letter-spacing: 0.2ch;
     transition: 350ms;
     height: 80px;
-    min-width: 12vw;
+	width: 190px;
     display: flex;
     justify-content: center;
     align-items: center;
