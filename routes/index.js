@@ -62,7 +62,24 @@ exports = module.exports = function (app) {
 	}));
 
 	app.use(function (req, res, next) {
-	    if(typeof req.myCookie.booking == "undefined"){
+	    if(typeof req.myCookie.booking == "undefined"){var keystone = require("keystone");
+
+
+module.exports = function (req, res) {
+	var view = new keystone.View(req, res);
+	var locals = res.locals;
+	view.query("facility", keystone.list("Facility").model.find());
+	view.query("prices", keystone.list("Facility Prices").model.find());
+	view.query("options", keystone.list("Facility Options").model.find());
+	view.query("theatre", keystone.list("TheatrePrice").model.find());
+	view.query("membership", keystone.list("MembershipPrice").model.find());
+	view.query("equipment", keystone.list("EquipmentPrice").model.find());
+	view.query("indoorActivity", keystone.list("IndoorActivityPrice").model.find());
+
+	view.render("facility/price-list");
+}
+
+
 		req.myCookie.booking = {};
 	    }
 	    next();
@@ -83,6 +100,7 @@ exports = module.exports = function (app) {
 	app.get('/booking/enquiry/success', routes.booking.success);
 	app.get('/form', routes.views.form);
 	app.get("/facility/price-list", routes.views.pricelist);
+	app.get("/facility/parties", routes.views.parties);
 	app.get("/facility", routes.views.facilitylanding);
 	app.get("/facility/:name", routes.views.facility);
 
