@@ -62,24 +62,7 @@ exports = module.exports = function (app) {
 	}));
 
 	app.use(function (req, res, next) {
-	    if(typeof req.myCookie.booking == "undefined"){var keystone = require("keystone");
-
-
-module.exports = function (req, res) {
-	var view = new keystone.View(req, res);
-	var locals = res.locals;
-	view.query("facility", keystone.list("Facility").model.find());
-	view.query("prices", keystone.list("Facility Prices").model.find());
-	view.query("options", keystone.list("Facility Options").model.find());
-	view.query("theatre", keystone.list("TheatrePrice").model.find());
-	view.query("membership", keystone.list("MembershipPrice").model.find());
-	view.query("equipment", keystone.list("EquipmentPrice").model.find());
-	view.query("indoorActivity", keystone.list("IndoorActivityPrice").model.find());
-
-	view.render("facility/price-list");
-}
-
-
+	    if(typeof req.myCookie.booking == "undefined"){
 		req.myCookie.booking = {};
 	    }
 	    next();
