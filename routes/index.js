@@ -88,11 +88,12 @@ exports = module.exports = function (app) {
 
 	app.get("/event", routes.views.eventlanding);
 	app.get("/event/:name", routes.views.event);
-
+	app.get("/booking/admin", routes.views.bookingAdmin);
 	app.get("/whats-on", routes.views.whatson);
 	app.get("/", routes.views.index);
 	app.get("/favicon.ico",function(req,res){
 		res.sendFile(path.join(__dirname,"favicon.ico"));
 	});
 	app.get("/:name", routes.views.base);
+	
 };
