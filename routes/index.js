@@ -83,16 +83,18 @@ exports = module.exports = function (app) {
 	app.get('/booking/enquiry/success', routes.booking.success);
 	app.get('/form', routes.views.form);
 	app.get("/facility/price-list", routes.views.pricelist);
+	app.get("/facility/parties", routes.views.parties);
 	app.get("/facility", routes.views.facilitylanding);
 	app.get("/facility/:name", routes.views.facility);
 
 	app.get("/event", routes.views.eventlanding);
 	app.get("/event/:name", routes.views.event);
-
+	app.get("/booking/admin", routes.views.bookingAdmin);
 	app.get("/whats-on", routes.views.whatson);
 	app.get("/", routes.views.index);
 	app.get("/favicon.ico",function(req,res){
 		res.sendFile(path.join(__dirname,"favicon.ico"));
 	});
 	app.get("/:name", routes.views.base);
+	
 };

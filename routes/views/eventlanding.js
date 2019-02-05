@@ -1,4 +1,4 @@
 module.exports = (req, res) => {
-	res.render("event/fffa");
+	res.render("event/featured-list");
 }
 

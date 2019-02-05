@@ -1,109 +1,109 @@
 html, body {
 min-height: 100vh;
-    width: 100%;
-    margin: 0;
-    background-color:#fcfcfc;
+	width: 100%;
+	margin: 0;
+	background-color:#fcfcfc;
 }
 
 #padding {
 	position: absolute;
-    top: 100px;
-    bottom: 0;
-    width: 100%;
+	top: 100px;
+	bottom: 0;
+	width: 100%;
 }
 
 .ls-1 {
-    letter-spacing: 0.075ch
+	letter-spacing: 0.075ch
 }
 
 p {
-    font-size: 14pt;
+	font-size: 14pt;
 }
 
 /* Text Color Styles */
 
 .text-grey {
-    color: #444;
+	color: #444;
 }
 
 .text-brand {
-    color: #ffcc27;
+	color: #ffcc27;
 }
 
 
 h1, h2, h3, h4, h5 {
-    color: black;
+	color: black;
 }
 
 .h-underline {
-    border-bottom: 1px solid black
+	border-bottom: 1px solid black
 }
 
 hr {
-    border-color: black;
+	border-color: black;
 }
 
 /* Background Styles */
 
 .bg-alpha{
-    background-color: rgba(0, 0, 0, 0.4);
+	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .bg-brand-yellow {
-    background-color: #ffcc27;
+	background-color: #ffcc27;
 }
 
 .bg-brand-grey {
-    background-color: #222;
+	background-color: #222;
 }
 
 .bg-light-grey {
-    background-color: #fcfcfc
+	background-color: #fcfcfc
 }
 
 
 /* Border Styles */
 
 .br-brand, .bx-brand, .b-brand {
-    border-right: 5px solid #ffcc27;
+	border-right: 5px solid #ffcc27;
 }
 
 .bl-brand, .bx-brand, .b-brand{
-    border-left: 5px solid #ffcc27;
+	border-left: 5px solid #ffcc27;
 }
 
 .bt-brand, .by-brand, .b-brand {
-    border-top: 5px solid #ffcc27;
+	border-top: 5px solid #ffcc27;
 }
 
 .bb-brand, .by-brand, .b-brand {
-    border-bottom: 5px solid #ffcc27;
+	border-bottom: 5px solid #ffcc27;
 }
 
 .br-brand-thin, .bx-brand-thin, .b-brand-thin {
-    border-right: 3px solid #ffcc27;
+	border-right: 3px solid #ffcc27;
 }
 
 .bl-brand-thin, .bx-brand-thin, .b-brand-thin{
-    border-left: 3px solid #ffcc27;
+	border-left: 3px solid #ffcc27;
 }
 
 .bt-brand-thin, .by-brand-thin, .b-brand-thin{
-    border-top: 3px solid #ffcc27;
+	border-top: 3px solid #ffcc27;
 }
 
 .bb-brand-thin, .by-brand-thin, .b-brand-thin {
-    border-bottom: 3px solid #ffcc27;
+	border-bottom: 3px solid #ffcc27;
 }
 
 
 /* Style for arrow jumbotron on homepage */
 
 .arrow-down-box {
-    position: relative;
+	position: relative;
 }
 .arrow-down-box:after {
-    position: absolute;
+	position: absolute;
 	top: 100%;
 	left: 50%;
 	border: solid transparent;
@@ -114,65 +114,77 @@ hr {
 }
 
 .jumbo-text {
-    font-size: calc(16px + 1.4vw);
-    text-transform: uppercase;
-    text-align: center;
-    color: #444;
-    letter-spacing: 0.075ch;
+	font-size: calc(16px + 1.4vw);
+	text-transform: uppercase;
+	text-align: center;
+	color: #444;
+	letter-spacing: 0.075ch;
 }
 
 /* Style for embedded map */
 .embed-map {
-    min-height: 250px;
-    max-height: 400px;
-    height: 40vh;
+	min-height: 250px;
+	max-height: 400px;
+	height: 40vh;
 }
 
 /* Styles for forms */
 
 .form-control {
-    border: 1px solid black
+	border: 1px solid black
 }
 
 .btn {
-    background-color: black;
-    color: #fcfcfc;
-    transition: 0.2s;
+	background-color: black;
+	color: #fcfcfc;
+	transition: 0.2s;
 }
 
 .btn:hover {
-    color: #aaa;
-    background-color: #c33419
+	color: black;
+	background-color: white;
+	border-style: solid;
+	border-color: black;
+	border-width: 1px;
 }
 
 
 /* Main navbar styles */
 
 #main-nav {
-    min-height: 80px;
-    box-shadow: 0px 0px 20px 5px rgba(26, 26, 45, .3);
+	min-height: 80px;
+	box-shadow: 0px 0px 20px 5px rgba(26, 26, 45, .3);
 }
 
 #main-nav .navbar-brand {
-    height: 80px;
+	height: 80px;
 }
 
 #main-nav .nav-item {
-    background: #fcfcfc;
+	background: #fcfcfc;
 }
 
 #main-nav .nav-link {
-    color: #808080;
+	color: #808080;
 	font-weight: 500;
 	font-size: 1.1rem;
 	text-transform: uppercase;
 	letter-spacing: 0.2ch;
+<<<<<<< HEAD
     transition: 350ms;
     height: 80px;
 	min-width: 190px; /* Needs to be min width so it can expand on the mobile site*/
     display: flex;
     justify-content: center;
     align-items: center;
+=======
+	transition: 350ms;
+	height: 80px;
+	width: 190px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+>>>>>>> upstream/master
 }
 
 #main-nav .collapsing .nav-link {
@@ -184,58 +196,58 @@ hr {
 }
 
 #main-nav .nav-link:hover, #main-nav .dropdown-item:hover {
-    background: #ffcc27;
+	background: #ffcc27;
 }
 
 #main-nav .dropdown-menu {
-    padding: 0;
-    margin: 0;
-    border-top: 3px solid #ffcc27;
-    border-bottom: 3px solid #ffcc27;
-    border-left: none;
-    border-right: none;
-    background: #e8e8e8;
+	padding: 0;
+	margin: 0;
+	border-top: 3px solid #ffcc27;
+	border-bottom: 3px solid #ffcc27;
+	border-left: none;
+	border-right: none;
+	background: #e8e8e8;
 }
 
 #main-nav .dropdown-item {
-    background: #e8e8e8;
-    color: #222;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 1.4rem;
-    height: 40px;
-    font-weight: 500;
-    min-width: 12vw;
-    text-align: center;
-    transition: 250ms;
+	background: #e8e8e8;
+	color: #222;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.4rem;
+	height: 40px;
+	font-weight: 500;
+	min-width: 12vw;
+	text-align: center;
+	transition: 250ms;
 }
 
 .offset-navbar {
-    margin-top: 80px;
+	margin-top: 80px;
 }
 
 /* Images on facility landing*/
 
 .image-gallery a{
-    text-decoration: none;
+	text-decoration: none;
 }
 
 .image-gallery .card {
-    transition: 200ms;
-    box-shadow: 0px 2px 5px 1px rgba(26, 26, 45, .3);
-    background-color: #fcfcfc;
+	transition: 200ms;
+	box-shadow: 0px 2px 5px 1px rgba(26, 26, 45, .3);
+	background-color: #fcfcfc;
 }
 
 .image-gallery .card:hover{
-    transform: scale(1.02);
+	transform: scale(1.02);
 }
 
 .image-gallery .card-img-top{
-    border-bottom: 5px solid #ffcc27;
-    height:250px;
-    width:100%;
-    object-fit:cover;
+	border-bottom: 5px solid #ffcc27;
+	height:250px;
+	width:100%;
+	object-fit:cover;
 }
 
 /* Footer styles */
@@ -260,23 +272,23 @@ hr {
 }
 
 #home-photo-carousel .carousel-caption{
-    top: 15%;
-    bottom: auto;
+	top: 15%;
+	bottom: auto;
 }
 
 #home-photo-carousel .carousel-caption .btn {
-    background: rgba(0, 0, 0, 0.4);
-    border-radius: 0;
-    border: 3px solid #ffcc27;
-    transition: 300ms;
-    color: #fcfcfc;
-    width: 100%;
-    font-weight: 600;
+	background: rgba(0, 0, 0, 0.4);
+	border-radius: 0;
+	border: 3px solid #ffcc27;
+	transition: 300ms;
+	color: #fcfcfc;
+	width: 100%;
+	font-weight: 600;
 }
 
 #home-photo-carousel .carousel-caption .btn:hover {
-    background: #ffcc27;
-    color: #444;
+	background: #ffcc27;
+	color: #444;
 }
 
 #home-photo-carousel .carousel-caption .main {

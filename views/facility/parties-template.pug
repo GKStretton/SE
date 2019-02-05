@@ -21,8 +21,7 @@ block content
 				div(class="col-lg-7")
 					block description
 					//- this should be changed to use the enquire-now page instead of form manual
-					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{"Enquire Now "}
-						i(class="fa fa-question")
-					div(id="book-form" class="collapse")
-						include form-manual
+					a(href="/booking-enquiry")
+						button(id="btn-book-form" class="btn w-100" type="button") Enquire Now
+							i(class="fa fa-question")
 			br
