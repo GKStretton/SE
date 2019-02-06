@@ -99,7 +99,7 @@ exports = module.exports = function (app) {
 	app.get("/facility/parties", routes.views.parties);
 	app.get("/facility", routes.views.facilitylanding);
 	app.get("/facility/:name", routes.views.facility);
-
+	app.get("/booking-enquiry/:query",routes.views.enquiry)
 	app.get("/event", routes.views.eventlanding);
 	app.get("/event/:name", routes.views.event);
 	app.get("/booking/admin", routes.views.bookingAdmin);
