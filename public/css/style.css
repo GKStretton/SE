@@ -170,12 +170,12 @@ hr {
 	font-size: 1.1rem;
 	text-transform: uppercase;
 	letter-spacing: 0.2ch;
-	transition: 350ms;
-	height: 80px;
-	width: 190px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    transition: 350ms;
+    height: 80px;
+	min-width: 190px; /* Needs to be min width so it can expand on the mobile site*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #main-nav .collapsing .nav-link {

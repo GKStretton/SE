@@ -18,6 +18,9 @@ Facility.add({
 	description: {type: Types.Markdown}, // description
 	availability: {type: Types.Markdown}, // Availability description
 	pricing: {type: Types.Markdown}, // Pricing description
+	availabilityWeek: {type: String},
+	availabilitySaturday: {type: String},
+	availabilitySunday: {type:String},
 	automated: {type: Boolean},
 	extras: {type: Types.Relationship, ref: "EquipmentPrice", many: true},
 	topImage: {type: Types.Relationship, ref: "Images"},
@@ -30,8 +33,6 @@ Facility.schema.virtual('canAccessKeystone').get(function () {
 
 Facility.relationship({path:"options", ref: "Facility Options", refPath:"facility"})
 Facility.relationship({path:"prices", ref: "Facility Prices", refPath:"facility"})
-
-
 
 Facility.defaultColumns = ['title', "automated"];
 Facility.register();
