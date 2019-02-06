@@ -1,7 +1,7 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var FacilityOptions= new keystone.List('Facility Options');
+var FacilityOptions= new keystone.List('Facility Options', {map:{name:"option"}});
 
 FacilityOptions.add({
 	facility: {type: Types.Relationship, ref: "Facility", required: true, initial: true},

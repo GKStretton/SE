@@ -39,7 +39,7 @@ $(document).ready(function(){
 		minDate: "today",
 		maxDate: new Date().fp_incr(60), // 60 days from now
 		dateFormat: "Y-m-d",
-		defaultDate: new Date(),
+		defaultDate: new Date().fp_incr(1),
 		onChange(selectedDates, dateStr, instance){
 			$('#calendar').fullCalendar("gotoDate", dateStr);
 		},
@@ -50,7 +50,18 @@ $(document).ready(function(){
 		enableTime: true,
 		noCalendar: true,
 		dateFormat: "H:i",
-		defaultDate: "12:00"
+		minDate: "18:00",
+		maxDate: "21:30",
+		defaultDate: "18:00",
+		onChange(selectedDates, dateStr, instance){
+			var timeToInput = document.querySelector("#time-to-input")._flatpickr
+			var fromDate = new Date(selectedDates[0])
+			var toDate = new Date(timeToInput.selectedDates[0])
+			if (fromDate >= toDate){
+				toDate.setHours(toDate.getHours() + 1)
+				timeToInput.setDate(toDate)
+			}
+		}
 	});
 
 	//To time picker
@@ -58,20 +69,24 @@ $(document).ready(function(){
 			enableTime: true,
 			noCalendar: true,
 			dateFormat: "H:i",
-			defaultDate: "13:00"
+			minDate: "18:00",
+			maxDate: "21:30",
+			defaultDate: "19:00"
 	});
 
 	//Facility schedule
 	$("#calendar").fullCalendar({
 		defaultView:"agendaDay",
 		allDaySlot:false,
+		height: "auto",
 		header: {
 			left: 'prev',
 			center: 'title',
 			right: 'next'
 		},
-		minTime: "00:00:00",
-		maxTime: "24:00:00",
+		defaultDate: new Date().fp_incr(1),
+		minTime: "18:00:00",
+		maxTime: "21:30:00",
 		slotDuration: "00:30:00",
 		slotLabelInterval: "01:00",
 		events:{
@@ -83,6 +98,7 @@ $(document).ready(function(){
 	$("#book-form").on("shown.bs.collapse", function () {
 		$("#calendar").fullCalendar('rerenderEvents');
 	});
+
 });
 
 //Booking form show button

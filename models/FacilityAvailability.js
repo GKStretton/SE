@@ -1,19 +1,19 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var FacilityPrices = new keystone.List('Facility Availability', {map:{name:"_id"}});
+var FacilityAvailability = new keystone.List('Facility Availability');
 
-FacilityPrices.add({
+FacilityAvailability.add({
 	facility: {type: Types.Relationship, ref: "Facility", required: true, initial: true},
 	day: {type: Types.Select, options: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], required: true, initial: true},
-	openingHour: {type: Types.Number, required: true, initial: true},
-	closingHour: {type: Types.Number, required: true, initial: true}
+	fromHour: {type: Types.Number, required: true, initial: true},
+	toHour: {type: Types.Number, required: true, initial: true}
 });
 
-FacilityPrices.schema.virtual('canAccessKeystone').get(function () {
+FacilityAvailability.schema.virtual('canAccessKeystone').get(function () {
   return true;
 });
 
-FacilityPrices.defaultColumns = ["facility", "day", "openingHour", "closingHour"];
+FacilityAvailability.defaultColumns = ["facility", "day", "fromHour", "toHour"];
 
-FacilityPrices.register();
+FacilityAvailability.register();
