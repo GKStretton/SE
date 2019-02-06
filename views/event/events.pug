@@ -27,11 +27,11 @@ block content
 					if event.url.toString() == ""
 						- var hyperlink = "/booking-enquiry/" + event.name;
 						a(href=hyperlink target="_blank")
-							button(class="btn") Enquire Now
+							button(class="btn" style="margin-right: 5px;") Enquire Now
 					else
 						a(href=event.url target="_blank")
-							button(class="btn") Learn More
+							button(class="btn" style="margin-right: 5px;") Learn More
 					//-may want to improve style and add to the css file 
-					br
 					a(href="/whats-on")
 						button(class="btn" style="margin:10px;") Return
+					br
