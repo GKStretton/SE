@@ -82,8 +82,8 @@ For bash users: run ./start-tunnel to automatically connect to the database.
 
 2. Go to facility and add the facility, make sure automated checkbox is ticked
 3. If there are any special options, go to facility options and add them.
-4. Go to facility base prices and add base prices, either with an option or without
-5. Go to facility discount and add discounts for 3hrs, 7hrs etc, either with an option or without.
+4. Go to facility prices and add entries, either with options or without. Make sure all posibilities are covered (e.g
+there is a 1hr price for every option at least)
 6. Go back to facility entry and scroll to the bottom, see if all the prices and options are shown. If not,you've fucked
 up
 
