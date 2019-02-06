@@ -155,8 +155,8 @@ function unavailable(tgtDB,days,facilityId,callback){
             while(i<bookingArr.length){
                 resultsList.push({
                     title:"Unavailable",
-                    start: bookingArr[i].startTime,
-                    end: bookingArr[i].endTime
+                    start: new Date (bookingArr[i].startTime),
+                    end: new Date (bookingArr[i].endTime)
                 })
                 i ++;
             }

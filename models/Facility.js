@@ -33,7 +33,6 @@ Facility.schema.virtual('canAccessKeystone').get(function () {
 
 Facility.relationship({path:"options", ref: "Facility Options", refPath:"facility"})
 Facility.relationship({path:"prices", ref: "Facility Prices", refPath:"facility"})
-Facility.relationship({path:"availability", ref: "Facility Availability", refPath:"facility"})
 
 Facility.defaultColumns = ['title', "automated"];
 Facility.register();
