@@ -12,6 +12,7 @@ function validateEmail(email) {
 }
 
 module.exports = (req, res) => {
+    console.log(req.body.facility);
     if(!validateEmail(req.body.email)){
         res.status(400).send('Error: Invalid email address'); // email address does not conform to the regex above
         return false; // this makes sure to terminate the request - delete/change as you please
