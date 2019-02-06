@@ -26,7 +26,7 @@ keystone.set("routes", require("./routes"));
 
 keystone.set("nav", {
 	"Pricing":["TheatrePrice", "MembershipPrice", "EquipmentPrice", "IndoorActivityPrice"],
-	"Facilities":["Facility", "Facility Options", "Facility Prices", "Facility Availability"],
+	"Facilities":["Facility", "Facility Options", "Facility Prices"],
 	"Upload Image": "Images",
 	'Booking': [{label: 'Booking', key: 'booking', path: '/booking/admin'}]
 });
