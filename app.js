@@ -1,4 +1,4 @@
-var keystone = require("keystone");
+keystone = require("keystone");
 mongo = require("./mongo.js");
 const url = 'mongodb://localhost:4321';
 // BACKEND STUFF

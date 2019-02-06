@@ -20,6 +20,26 @@ $(document).on("click","#automatedFormSubmit",function(){
 	});
 });
 
+//Admin form booking submit
+$(document).on("click","#adminFormSubmit",function(){
+	let formData = $("#adminForm").serialize();
+	$.ajax({
+		url:"/booking/adminRequest",
+		type:"POST",
+		data:formData,
+		async:false,
+		success: function(data){
+            //temporary, can be changed to something nicer
+			alert("Successfully added booking");
+			location.reload();
+		},
+		error: function(error){
+			console.log(error);
+			$('#errMsg').text(error.responseText);
+		}
+	});
+});
+
 
 //Manual form submit
 $(document).on("click","#manualFormSubmit",function(){
