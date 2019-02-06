@@ -1,30 +1,22 @@
 nav(id="main-nav" class="navbar navbar-expand-lg fixed-top bg-light-grey by-brand-thin p-0")
-    a(class="navbar-brand pb-0 pt-2 ml-5" href="/")
-        img(src="/img/pvcc_logo.png" class="h-100")
-    button(class="navbar-toggler mr-5" type="button" data-toggle="collapse" data-target="#navbar-links")
-        i(class="fa fa-fw fa-bars fa-3x text-brand")
-    div(id="navbar-links" class="navbar-collapse collapse")
-        ul(class="navbar-nav h-100 ml-auto")
-            li(class="nav-item")
-                a(class="nav-link" href='/') Home
-            li(class="nav-item")
-                a(class="nav-link" href='/about-us') About Us
-            li(class="nav-item")
-                a(class="nav-link" href='/whats-on') What's On
-            li(class="nav-item dropdown")
-                a(class="nav-link dropdown-toggle" href='#' id="navbar-facility-dropdown" data-toggle="dropdown") Facilities
-                div(class="dropdown-menu")
-                    a(class="dropdown-item" href='/facility/price-list') Price List
-                    a(class="dropdown-item" href='/facility/parties') Children's Parties
-                    a(class="dropdown-item" href='/facility/Astro Turf') Astro Turf
-                    a(class="dropdown-item" href='/facility/Sports Hall') Sports Hall
-                    a(class="dropdown-item" href='/facility/Sports Field') Sports Field
-                    a(class="dropdown-item" href='/facility/Gymnasium') The Gymnasium
-                    a(class="dropdown-item" href='/facility/Theatre') Theatre
-                    a(class="dropdown-item" href='/facility/Performing Arts Room') Performing Arts Room
-                    a(class="dropdown-item" href='/facility/Green Room') The Green Room
-                    a(class="dropdown-item" href='/facility/Dining Hall') Dining Hall
-                    a(class="dropdown-item" href='/facility/IT Suite') IT Suite
-                    a(class="dropdown-item" href='/facility/Classrooms') Classrooms
-            li(class="nav-item")
-                a(class="nav-link" href='/contact-us') Contact Us
+	a(class="navbar-brand pb-0 pt-2 ml-5" href="/")
+		img(src="/img/pvcc_logo.png" class="h-100")
+	button(class="navbar-toggler mr-5" type="button" data-toggle="collapse" data-target="#navbar-links")
+		i(class="fa fa-fw fa-bars fa-3x text-brand")
+	div(id="navbar-links" class="navbar-collapse collapse")
+		ul(class="navbar-nav h-100 ml-auto")
+			li(class="nav-item")
+				a(class="nav-link" href='/') Home
+			li(class="nav-item")
+				a(class="nav-link" href='/about-us') About Us
+			li(class="nav-item")
+				a(class="nav-link" href='/whats-on') What's On
+			li(class="nav-item dropdown")
+				a(class="nav-link dropdown-toggle" href='#' id="navbar-facility-dropdown" data-toggle="dropdown") Facilities
+				div(class="dropdown-menu")
+					a(class="dropdown-item" href='/facility/price-list') Price List
+					a(class="dropdown-item" href='/facility/parties') Children's Parties
+					each model in facilityNav
+						a(class="dropdown-item" href='/facility/'+model.title) #{model.title}
+			li(class="nav-item")
+				a(class="nav-link" href='/contact-us') Contact Us
