@@ -49,6 +49,19 @@ const session = require('client-sessions'); //cookies
 //The order of these is important
 exports = module.exports = function (app) {
 	// Middleware
+	app.use((req, res, next) => {
+		res.view = new keystone.View(req, res);
+		keystone.list("Facility").model.find().exec((err, result) => {
+			if (err) {
+				console.log(err);
+			} else {
+				res.locals.facilityNav = result;
+			}
+			next();
+		});
+
+	});
+
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({
 		extended: true
