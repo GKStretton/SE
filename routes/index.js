@@ -49,6 +49,19 @@ const session = require('client-sessions'); //cookies
 //The order of these is important
 exports = module.exports = function (app) {
 	// Middleware
+	app.use((req, res, next) => {
+		res.view = new keystone.View(req, res);
+		keystone.list("Facility").model.find().exec((err, result) => {
+			if (err) {
+				console.log(err);
+			} else {
+				res.locals.facilityNav = result;
+			}
+			next();
+		});
+
+	});
+
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({
 		extended: true
@@ -86,7 +99,7 @@ exports = module.exports = function (app) {
 	app.get("/facility/parties", routes.views.parties);
 	app.get("/facility", routes.views.facilitylanding);
 	app.get("/facility/:name", routes.views.facility);
-
+	app.get("/booking-enquiry/:query",routes.views.enquiry)
 	app.get("/event", routes.views.eventlanding);
 	app.get("/event/:name", routes.views.event);
 	app.get("/booking/admin", routes.views.bookingAdmin);

@@ -24,19 +24,14 @@ block content
 				div(class="col-sm-7")
 					div(class="container-fluid")
 					div !{event.description.html}
-
-					button(class="btn btn-secondary") TEMPORARY
-					// EITHER REMOVE, OR INTEGRATE
-					//if button_name === "Learn more"
-					//	a(href=hyperlink target="_blank")
-					//		button(class="btn") #{button_name}
-					//else
-					//	- var hyperlink = "/booking-enquiry/" + page_name
-					//	a(href=hyperlink target="_blank")
-					//		button(class="btn") #{button_name}
-					//END
-
+					if event.url.toString() == ""
+						- var hyperlink = "/booking-enquiry/" + event.name;
+						a(href=hyperlink target="_blank")
+							button(class="btn" style="margin-right: 5px;") Enquire Now
+					else
+						a(href=event.url target="_blank")
+							button(class="btn" style="margin-right: 5px;") Learn More
 					//-may want to improve style and add to the css file 
-					br
 					a(href="/whats-on")
 						button(class="btn" style="margin:10px;") Return
+					br
