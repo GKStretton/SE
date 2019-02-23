@@ -84,7 +84,7 @@ For bash users: run ./start-tunnel to automatically connect to the database.
 3. If there are any special options, go to facility options and add them.
 4. Go to facility prices and add entries, either with options or without. Make sure all posibilities are covered (e.g
 there is a 1hr price for every option at least)
-6. Go back to facility entry and scroll to the bottom, see if all the prices and options are shown. If not,you've fucked
+6. Go back to facility entry and scroll to the bottom, see if all the prices and options are shown. If not,you've messed up
 up
 
 ### Manual Bookings

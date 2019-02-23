@@ -6,5 +6,4 @@ module.exports = (req, res) => {
 	
 	locals.enquiry = req.params.query;
 	view.render("booking-enquiry");
-	//res.render("event/" + req.params.name);
 }
