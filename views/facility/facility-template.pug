@@ -3,7 +3,7 @@ block content
 	div(class="row")
 		img(src=`/uploads/img/${locals.facility.topImage.image.filename}` class="by-brand-thin" style="width:100%;height:250px;object-fit:cover;")
 	div(class="row mt-5")
-		div(class="col-lg-8 mx-auto")
+		div(class="col-lg-10 mx-auto")
 			h3(class="h-underline") #{locals.facility.title}
 			div(class="row")
 				div(class="col-lg-5")
@@ -18,7 +18,7 @@ block content
 						a(class="carousel-control-next" href="#facility-photos" data-slide="next" role="button")
 							span(class="fa fa-arrow-right text-brand")
 				div(class="col-lg-7")
-					div !{locals.facility.description.html}
+					div !{facility.description.html}
 					//- add onclick js to hide.show form
 					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{locals.facility.automated?"Book Now ":"Enquire Now "}
 						i(class=locals.facility.automated?"fa fa-book":"fa fa-question")
@@ -32,15 +32,15 @@ block content
 						div(class="col-sm-6")
 							h5 Availability
 							b Monday - Friday: 
-							span !{locals.facility.availabilityWeekday}
+							span #{facility.availabilityWeekday}
 							br
 							b Saturday: 
-							span !{locals.facility.availabilitySaturday}
+							span #{facility.availabilitySaturday}
 							br
 							b Sunday: 
-							span !{locals.facility.availabilitySunday}
+							span #{facility.availabilitySunday}
 							
 						div(class="col-sm-6")
 							h5 Pricing
-							//div !{locals.facility.pricing.html}
+							//div !{facility.pricing.html}
 							| TODO - load from facility pricelist model
