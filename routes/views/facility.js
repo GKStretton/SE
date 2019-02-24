@@ -8,7 +8,9 @@ module.exports = function (req, res) {
 				facility.options = options;
 			}
 			keystone.list("Facility Prices").model.find().where("facility", facility.id).exec((err, prices)=>{
-				facility.prices = prices;
+				if(prices === undefined || prices.length != 0){
+					facility.prices = prices;
+				}
 				view.render("facility/facility-template", {facility: facility});
 			})
 		})

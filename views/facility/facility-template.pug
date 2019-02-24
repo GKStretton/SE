@@ -15,21 +15,22 @@ mixin listPrices(prices)
 		br
 
 mixin pricing
-	h5 Hire Cost
-	- facility.prices.sort((a, b) => (a.lengthInHours > b.lengthInHours) ? 1 : -1)
-	if facility.options === undefined
-		+listPrices(facility.prices)
-	else
-		-var optionPrices = []
-		each option in facility.options
-			- optionPrices = []
-			b #{option.option}
-			br
-			each price in facility.prices
-				if option._id.toString() == price.option.toString()
-					-optionPrices.push(price)
-			+listPrices(optionPrices)
-			br
+	if facility.prices !== undefined
+		h5 Hire Cost
+		- facility.prices.sort((a, b) => (a.lengthInHours > b.lengthInHours) ? 1 : -1)
+		if facility.options === undefined
+			+listPrices(facility.prices)
+		else
+			-var optionPrices = []
+			each option in facility.options
+				- optionPrices = []
+				b #{option.option}
+				br
+				each price in facility.prices
+					if option._id.toString() == price.option.toString()
+						-optionPrices.push(price)
+				+listPrices(optionPrices)
+				br
 
 block content
 	div(class="row")
