@@ -89,6 +89,7 @@ $(document).ready(function(){
 	flatpickr("#time-to-input",{
 			enableTime: true,
 			noCalendar: true,
+			time_24hr: true,
 			dateFormat: "H:i",
 			minDate: "18:00",
 			maxDate: "21:30",
