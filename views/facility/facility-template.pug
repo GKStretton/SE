@@ -31,7 +31,16 @@ block content
 					div(class="row")
 						div(class="col-sm-6")
 							h5 Availability
-							div !{locals.facility.availability.html}
+							b Monday - Friday: 
+							span !{locals.facility.availabilityWeekday}
+							br
+							b Saturday: 
+							span !{locals.facility.availabilitySaturday}
+							br
+							b Sunday: 
+							span !{locals.facility.availabilitySunday}
+							
 						div(class="col-sm-6")
 							h5 Pricing
-							div !{locals.facility.pricing.html}
+							//div !{locals.facility.pricing.html}
+							| TODO - load from facility pricelist model
