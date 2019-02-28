@@ -41,7 +41,7 @@ module.exports = (facility, day, callback) => {
 
 		switch (day) {
 		case "mo": case "tu": case "we": case "th": case "fr":
-			result = re.exec(posts.availabilityWeek);
+			result = re.exec(posts.availabilityWeekday);
 			break;
 		case "sa":
 			result = re.exec(posts.availabilitySaturday);

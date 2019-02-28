@@ -11,6 +11,6 @@ EquipmentPrice.add({
 EquipmentPrice.schema.virtual('canAccessKeystone').get(function () {
   return true;
 });
-EquipmentPrice.relationship({path:"facilities", ref: "Facility", refPath:"equiptment"})
+EquipmentPrice.relationship({path:"facilities", ref: "Facility", refPath:"equipment"})
 EquipmentPrice.defaultColumns = 'item';
 EquipmentPrice.register();

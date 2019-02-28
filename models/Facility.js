@@ -16,9 +16,7 @@ var storage = new keystone.Storage({
 Facility.add({
 	title: {type: String, required: true, initial: true, unique: true},
 	description: {type: Types.Markdown}, // description
-	availability: {type: Types.Markdown}, // Availability description
-	pricing: {type: Types.Markdown}, // Pricing description
-	availabilityWeek: {type: String},
+	availabilityWeekday: {type: String},
 	availabilitySaturday: {type: String},
 	availabilitySunday: {type:String},
 	automated: {type: Boolean},
