@@ -1,10 +1,10 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var Booking = new keystone.List('Booking');
+var Bookings = new keystone.List('Bookings');
 
 
-Booking.add({
+Bookings.add({
     startTime: {type: Types.Datetime,initial:true}, // description
     bookingID: {type: String, hidden:true,inital: false},
     endTime: {type: Types.Datetime,initial:true},
@@ -15,7 +15,7 @@ Booking.add({
     information: {type: String}
 });
 
-Booking.schema.virtual('canAccessKeystone').get(function () {
+Bookings.schema.virtual('canAccessKeystone').get(function () {
   return true;
 });
 
@@ -23,5 +23,5 @@ Booking.schema.virtual('canAccessKeystone').get(function () {
 //Might need to add relationship with facility
 //Booking.relationship({path:"options", ref: "Facility Options", refPath:"facility"})
 
-Booking.defaultColumns = ['startTime','endTime'];
-Booking.register();
+Bookings.defaultColumns = ['startTime','endTime'];
+Bookings.register();

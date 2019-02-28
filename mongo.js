@@ -1,3 +1,4 @@
+var keystone = require('keystone');
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const url = 'mongodb://localhost:4321';
@@ -16,33 +17,27 @@ function deleteEntry(tgtDB, eventID,collectionName){
     return 0;
 }
 
-function getLock(tgtDB, eventId, callback) {
-    tgtDB.collection("Locks").find({eventID: eventId},function(err,resCursor){
+//callback with (error,lock), error true if there is no such lock - ie a booking has timed out
+function getLock(eventId, callback) {
+    keystone.list("Locks").model.find({eventID: eventId},function(err,res){
         if(err){
             callback(err);
         }
         else{
-            resCursor.count(function(err,count){
-                if(err){
-                    callback('Error');
-                }
-                else{
-                    if (count > 0){
-                        resCursor.forEach(function(lock){
-                            callback(false,lock);
-                            return;
-                        });
-                    }
-                    else{
-                        callback('Timed out');
-                    }
-                }
-            });
+            if(res.length > 0){
+                callback(false,res[0]); //return the lock
+            }
+            else{
+                callback('Timed out'); //in this case, the lock has timed out
+            }
         }
     });
 }
 
-function addEntry(collection,tgtDB,eventId,startTime,endTime,facilityId,price,name,email,information,callback){
+// adds an entry to either locks or bookings
+//TODO: Add code to get the actual facility object using the given facilityID, and insert that
+function addEntry(collection,eventId,startTime,endTime,facilityId,price,name,email,information,callback){
+    //
     let ev = {
         eventID: eventId,
         startTime: startTime,
