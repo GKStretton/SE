@@ -10,7 +10,6 @@ function validateEmail(email) {
      */
     return re.test(email);
 }
-
 module.exports = (req, res) => {
     console.log(req.body.facility);
     if(!validateEmail(req.body.email)){

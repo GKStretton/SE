@@ -133,7 +133,32 @@ function checkBusy(tgtDB,startTime,endTime,facilityId,callback){
         }
     });
 }
+function unavailable2(tgtDB,startTime,endTime,facilityName,callback){
+    let resultsList = []
+    listEntries(tgtDB,"Locks",startTime,endTime,facilityId,function(lockCursor){
+        if(lockCursor === 'error'){
+            callback('error');
+            return 0;
+        }
+        else{
+            let current = Date.now();
+            let i = 0;
+            lockCursor.toArray()
+            .then(function(lockArr){
+                while(i< lockArr.length){
+                    resultsList.push({
+                        title: "Unavailable",
+                        startTime: new Date(lockArr[i].startTime),
+                        endTime: new Date(lockArr[i].endTime)
+                    });
+                    i++;
+                }
 
+            });
+        }
+    });
+
+}
 function unavailable(tgtDB,days,facilityId,callback){
     //get tomorrow as dateTime
     // get x days from tomorrow as dateTime
