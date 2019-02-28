@@ -9,6 +9,7 @@ Bookings.add({
     bookingID: {type: String, hidden:true,inital: false},
     endTime: {type: Types.Datetime,initial:true},
     price: {type: Number},
+    //hopefully should work just by inserting the id in a query
     facilityID: {type: Types.Relationship,ref:'Facility',initial:true},
     email: {type: String },
     customer_name: {type: String},

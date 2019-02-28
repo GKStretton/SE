@@ -76,7 +76,7 @@ exports = module.exports = function (app) {
 
 	app.use(function (req, res, next) {
 		if(typeof req.myCookie.booking == "undefined"){
-		req.myCookie.booking = {};
+		    req.myCookie.booking = {};
 		}
 		next();
 	});
