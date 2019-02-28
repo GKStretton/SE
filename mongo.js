@@ -157,7 +157,7 @@ function unavailable(startTime,endTime,facilityId,callback){
             for (i= 0; i<bookings.length;i++){
                 let st = bookings[i].startTime.toISOString();
                 let et = bookings[i].endTime.toISOString();
-                bookingList.push({title:"unavailable",startTime:st,endTime:et});
+                bookingList.push({title:"unavailable",start:st,end:et});
             }
             console.log(bookingList);
             callback(false,bookingList);
