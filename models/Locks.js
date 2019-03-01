@@ -1,0 +1,28 @@
+var keystone = require('keystone');
+var Types = keystone.Field.Types;
+
+var Locks = new keystone.List('Locks');// { hidden: true }); - add hidden true part when done testing!
+
+
+Locks.add({
+    startTime: {type: Types.Datetime}, // description
+    bookingID: {type: String},
+    endTime: {type: Types.Datetime},
+    price: {type: Number},
+    facilityID: {type: Types.Relationship,ref:'Facility'},
+    email: {type: String },
+    customer_name: {type: String},
+    information: {type: String},
+    timestamp: {type: Number}
+});
+
+Locks.schema.virtual('canAccessKeystone').get(function () {
+  return true;
+});
+
+
+//Might need to add relationship with facility
+//Booking.relationship({path:"options", ref: "Facility Options", refPath:"facility"})
+
+Locks.defaultColumns = ['startTime','endTime'];
+Locks.register();

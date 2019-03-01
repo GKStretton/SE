@@ -1,178 +1,173 @@
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const url = 'mongodb://localhost:4321';
-const dbName = 'testdb';
 const RFC4122 = require('rfc4122'); //unique id
 let rfc4122 = new RFC4122();
-let exampleId = rfc4122.v1();
 /** IMPORTANT **/
 /*
  * If creating an insertion for a booking for the functions below, for collectionName
  * use 'Bookings' and for a lock use 'Locks'. Failure to comply will result in the db
  * being polluted with a bunch of random collections which is bad juju.
  */
-function deleteEntry(tgtDB, eventID,collectionName){
-    tgtDB.collection(collectionName).deleteOne({eventID: eventID});
+function deleteEntry(bookingID,modelName){
+    keystone.list(modelName).model.deleteOne({bookingID: bookingID},function(err){
+        if(err){
+            console.log("Problem deleting..");
+            console.log(err);
+        }
+    });
     return 0;
 }
 
-function getLock(tgtDB, eventId, callback) {
-    tgtDB.collection("Locks").find({eventID: eventId},function(err,resCursor){
+//gets the facility name given facility id
+function getFacilityName(facilityID,callback){
+    keystone.list("Facility").model.findOne({_id:facilityID},function(err,res){
+        callback(res.title);
+    });
+}
+
+
+//callback with (error,lock), error if there is no such lock - ie a booking has timed out
+function getLock(bookingId, callback) {
+    keystone.list("Locks").model.findOne({bookingID: bookingId},function(err,res){
         if(err){
+            console.log(err);
             callback(err);
+            return 0;
+        }
+        if(res){
+            callback(false,res); //return the lock
         }
         else{
-            resCursor.count(function(err,count){
-                if(err){
-                    callback('Error');
-                }
-                else{
-                    if (count > 0){
-                        resCursor.forEach(function(lock){
-                            callback(false,lock);
-                            return;
-                        });
-                    }
-                    else{
-                        callback('Timed out');
-                    }
-                }
-            });
+            callback('Timed out'); //in this case, the lock has timed out
         }
     });
 }
 
-function addEntry(collection,tgtDB,eventId,startTime,endTime,facilityId,price,name,email,information,callback){
+// adds an entry to either locks or bookings
+function addEntry(modelName, bookingId,startTime,endTime,facilityId,price,name,email,information,callback){
+    //
     let ev = {
-        eventID: eventId,
+        bookingID: bookingId,
         startTime: startTime,
         endTime: endTime,
         facilityID: facilityId,
         price: price,
         email: email,
         information: information,
-        name: name
+        customer_name: name
     }
-    if (collection === "Locks"){
+    if (modelName === "Locks"){
         ev.timestamp = Date.now();
     }
-    tgtDB.collection(collection).insertOne(ev)
-        .then(function(result){
-            console.log('successfully added to db')
-            callback(false);
-        })
-        .catch(function(err){
-            console.log(err);
-            callback(err);
-        });
-    return 0;
-}
-
-
-
-//returns 'error' if error
-function listEntries(tgtDB,collectionName,startTime,endTime,facilityId,cb){
-    //returns cursor of bookings that lie between the two times
-    tgtDB.collection(collectionName).find({
-        facilityID: {$eq: facilityId},
-        endTime: {$gt: startTime},
-        startTime: {$lt: endTime}
-    },function(err,listCursor){
+    keystone.list(modelName).model.create(ev,function(err,ev){
         if(err){
-            cb('error');
+            callback(err);
+            return 0;
         }
-        else{
-            cb(listCursor);
-        }
+        console.log('successfully added to db')
+        callback(false);
     });
     return 0;
 }
 
-function checkBusy(tgtDB,startTime,endTime,facilityId,callback){
-    listEntries(tgtDB,"Locks",startTime,endTime,facilityId,function(lockCursor){
-        if(lockCursor === 'error'){
+
+//lists the entries which clash with each other
+//returns 'error' if error
+function listEntries(modelName,startTime,endTime,facilityId,callback){
+    //returns cursor of bookings that lie between the two times
+    keystone.list(modelName).model.find({
+        facilityID: {$eq: facilityId},
+        //Hopefully robust clash checking:
+        // if existing booking overlaps into the start of our booking
+        $or:[{endTime: {$gt: startTime, $lte: endTime}},
+            // if existing booking overlaps into the end of our booking
+            {startTime: {$lt: endTime, $gte:startTime}},
+            // if existing booking contains our whole duration of our booking
+            {startTime: {$lte:startTime},endTime:{$gte:endTime}}
+        ]
+    },function(err,res){
+        if(err){
             callback('error');
             return 0;
         }
-        else{
-            let current = Date.now();
-            let i = 0;
-            lockCursor.toArray()
-            .then(function(lockArr){
-                while(i< lockArr.length){
-                    let diff = current - lockArr[i].timestamp;
-                    if (diff < (1000 * 60 * 5)){
-                        console.log('locked');
-                        callback(false,'busy');
-                        return 0;
-                    }
-                    i++;
-                }
-            listEntries(tgtDB,"Bookings",startTime,endTime,facilityId,function(bookingCursor){
-                if(bookingCursor === 'error'){
-                    callback('error');
-                    return 0;
-                }
-                else{
-                    bookingCursor.count(function(err,count){
-                        if(err){
-                            callback(false,'busy');
-                        }
-                        else{
-                            if(count > 0){
-                                callback(false,'busy');
-                            }
-                            else{
-                                callback(false,'notBusy');
-                            }
-                        }
-                    });
-                }
-            });
-        });
-        }
+        callback(false,res);
     });
+    return 0;
 }
 
-function unavailable(tgtDB,days,facilityId,callback){
-    //get tomorrow as dateTime
-    // get x days from tomorrow as dateTime
-    let start = new Date();
-    start.setTime(start.getTime() + (0 * 86400000)); //tomorrow
-    start.setHours(0,0,0,0);
-    let end = new Date();
-    end.setTime(end.getTime() + ((1 + days) * 86400000));
-    end.setHours(0,0,0,0);
-    listEntries(tgtDB,"Bookings",start.toISOString(),end.toISOString(),facilityId,function(bookingCursor){
-        if (bookingCursor === 'error'){
+//callbacks with err,busyString where busyString is either 'busy' or 'notBusy'
+function checkBusy(startTime,endTime,facilityId,callback){
+    let current = Date.now();
+    listEntries("Locks",startTime,endTime,facilityId,function(err,locks){
+        if(err){
             callback('error');
             return 0;
         }
-        let resultsList = [];
         let i = 0;
-        bookingCursor.toArray()
-        .then(function(bookingArr){
-            while(i<bookingArr.length){
-                resultsList.push({
-                    title:"Unavailable",
-                    start: new Date (bookingArr[i].startTime),
-                    end: new Date (bookingArr[i].endTime)
-                })
-                i ++;
+        for (i= 0; i<locks.length;i++){
+            let diff = current - locks[i].timestamp;
+            if (diff < (1000 * 60 * 5)){ // if lock is recent
+                console.log('locked');
+                callback(false,'busy');
+                return 0;
             }
-            callback(false,resultsList);
+        }
+        listEntries("Bookings",startTime,endTime,facilityId,function(err,bookings){
+            if(err){
+                callback('error');
+                return 0;
+            }
+            let i = 0;
+            for (i= 0; i<bookings.length;i++){
+                console.log('booked out');
+                callback(false,'busy');
+                return 0;
+            }
+            callback(false,'notBusy');
         });
     });
 }
 
-dbo = null;
-MongoClient.connect(url,{useNewUrlParser: true},function(err,client){  //Creates the database and initialises it with a table for booking info.
-    assert.equal(null,err);
-    dbo = client.db(dbName);
-    console.log("Database created.");
-    //client.close(); //Might need to be removed in case this closes the actual connection with the DB.
-});
 
+//callbacks with err,bookingList where bookingList is a list of clashing bookings in format:
+//{title:"unavailable",startTime:ISOString, endTime:ISOString}
+
+function unavailable(startTime,endTime,facilityId,callback){
+    let current = Date.now();
+    let bookingList = [];
+    listEntries("Locks",startTime,endTime,facilityId,function(err,locks){
+        if(err){
+            callback('error');
+            return 0;
+        }
+        let i = 0;
+        for (i= 0; i<locks.length;i++){
+            let diff = current - locks[i].timestamp;
+            if (diff < (1000 * 60 * 5)){ // if lock is recent
+                console.log('locked');
+                let st = locks[i].startTime.toISOString();
+                let et = locks[i].endTime.toISOString();
+                bookingList.push({title:"unavailable",start:st,end:et})
+            }
+        }
+        listEntries("Bookings",startTime,endTime,facilityId,function(err,bookings){
+            if(err){
+                callback('error');
+                return 0;
+            }
+            console.log(bookings.length);
+            for (i= 0; i<bookings.length;i++){
+                let st = bookings[i].startTime.toISOString();
+                let et = bookings[i].endTime.toISOString();
+                bookingList.push({title:"unavailable",start:st,end:et});
+            }
+            console.log(bookingList);
+            callback(false,bookingList);
+        });
+    });
+}
+
+
+
+module.exports.getFacilityName = getFacilityName;
 module.exports.getLock = getLock;
 module.exports.unavailable = unavailable;
 module.exports.addEntry = addEntry;
