@@ -76,10 +76,10 @@ function listEntries(modelName,startTime,endTime,facilityId,callback){
     keystone.list(modelName).model.find({
         facilityID: {$eq: facilityId},
         //Hopefully robust clash checking:
-        // if existing booking overlaps into the start of our bookin
-        $or:[{endTime: {$gte: startTime},endTime: {$lte: endTime}},
+        // if existing booking overlaps into the start of our booking
+        $or:[{endTime: {$gt: startTime, $lte: endTime}},
             // if existing booking overlaps into the end of our booking
-            {startTime: {$lte: endTime},startTime:{$gte:startTime}},
+            {startTime: {$lt: endTime, $gte:startTime}},
             // if existing booking contains our whole duration of our booking
             {startTime: {$lte:startTime},endTime:{$gte:endTime}}
         ]
@@ -145,7 +145,7 @@ function unavailable(startTime,endTime,facilityId,callback){
                 console.log('locked');
                 let st = locks[i].startTime.toISOString();
                 let et = locks[i].endTime.toISOString();
-                bookingList.push({title:"unavailable",startTime:st,endTime:et})
+                bookingList.push({title:"unavailable",start:st,end:et})
             }
         }
         listEntries("Bookings",startTime,endTime,facilityId,function(err,bookings){
