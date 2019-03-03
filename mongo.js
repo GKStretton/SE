@@ -1,5 +1,3 @@
-const RFC4122 = require('rfc4122'); //unique id
-let rfc4122 = new RFC4122();
 /** IMPORTANT **/
 /*
  * If creating an insertion for a booking for the functions below, for collectionName
@@ -94,7 +92,7 @@ function listEntries(modelName,startTime,endTime,facilityId,callback){
 }
 
 //callbacks with err,busyString where busyString is either 'busy' or 'notBusy'
-function checkBusy(startTime,endTime,facilityId,callback){
+function checkBusy(startTime,endTime,facilityId,unique_id,bookingID,callback){
     let current = Date.now();
     listEntries("Locks",startTime,endTime,facilityId,function(err,locks){
         if(err){
@@ -105,9 +103,13 @@ function checkBusy(startTime,endTime,facilityId,callback){
         for (i= 0; i<locks.length;i++){
             let diff = current - locks[i].timestamp;
             if (diff < (1000 * 60 * 5)){ // if lock is recent
-                console.log('locked');
-                callback(false,'busy');
-                return 0;
+                //if lock not from our own booking
+                if (locks[i].bookingID.toString() != bookingID.toString()){
+                    console.log('booked out');
+                    callback(false,'busy');
+                    return 0;
+                }
+
             }
         }
         listEntries("Bookings",startTime,endTime,facilityId,function(err,bookings){
@@ -117,9 +119,12 @@ function checkBusy(startTime,endTime,facilityId,callback){
             }
             let i = 0;
             for (i= 0; i<bookings.length;i++){
-                console.log('booked out');
-                callback(false,'busy');
-                return 0;
+                //to handle keystone checking hook twice
+                if (bookings[i]._id.toString() != unique_id.toString()){
+                    console.log('booked out');
+                    callback(false,'busy');
+                    return 0;
+                }
             }
             callback(false,'notBusy');
         });

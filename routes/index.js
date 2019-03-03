@@ -3,9 +3,6 @@ var express = require("express");
 
 
 // BACKEND STUFF
-calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
-lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
-const {google} = require('googleapis');
 
 /**** Rowans API Libraries ****/
 
@@ -14,24 +11,7 @@ calendarFunctions = require('../googleApiFunctions'); // functions which call go
 paypalId = require("../tokens/paypalId.json");
 paypalApiFunctions = require('../paypalApiFunctions.js');
 
-//private key from google service account, service acc email also has to be added to each calendar manually
-privatekey = require("../tokens/private-key.json");
-// configure a JWT auth client
-jwtClient = new google.auth.JWT(
-	privatekey.client_email,
-	null,
-	privatekey.private_key,
-	['https://www.googleapis.com/auth/calendar']);
 
-//authenticate request
-jwtClient.authorize(function (err, tokens) {
-	if (err) {
-		console.log(err);
-		return;
-	} else {
-		console.log('Calendar api successfully authenticated');
-	}
-});
 
 var importRoutes = keystone.importer(__dirname);
 

@@ -20,44 +20,37 @@ module.exports = (req, res) => {
                 return;
             }
             bookingInfo = JSON.stringify(lock); // <-- this needs to be something nicer
-            calendarFunctions.addEvent(calendarId,jwtClient,lock.startTime,lock.endTime,bookingInfo,bookingId,function(err){
-                if(err){
-                    console.log(err.code);
-                    console.log(err.message);
-                    res.sendStatus(400); // some sort of error occurs on google's side
-                }
              //successfully added booking, so we can finalise the payment
                 //console.log(req.body);
-                paypalApiFunctions.executePayment(
-                    paypalId.clientId,
-                    "",
-                    lock.price,
-                    req.body.paymentID,
-                    req.body.payerID,
-                    function(err,response){
-                        if(err){ // payment error, we have to delete the booking
-                            console.log(err)
-                            res.sendStatus(400);
-                            //delete lock event
-                            mongo.deleteEntry(bookingId, "Locks");
-                            mongo.deleteEntry(bookingId, "Bookings");
-                            return;
-                        }
-                     //payment achieved successfully
-                        console.log('Payment executed');
-                        res.sendStatus(200);
-                        // delete the lock event we no longer need
-                        dtString = lock.startTime.toISOString();
-                        let lockDate = dtString.slice(0,10);
-                        let lockTime = dtString.slice(11,16);
-                        mongo.getFacilityName(lock.facilityID,function(facilityName){
-                            mailer.sendConfirmationMail('group6.se.durham@gmail.com',lock.email,facilityName,lock.customer_name,lockDate,lockTime,lock.information);
-                            mongo.deleteEntry(bookingId, "Locks");
-                        });
-
+            paypalApiFunctions.executePayment(
+                paypalId.clientId,
+                "",
+                lock.price,
+                req.body.paymentID,
+                req.body.payerID,
+                function(err,response){
+                    if(err){ // payment error, we have to delete the booking
+                        console.log(err)
+                        res.sendStatus(400);
+                        //delete lock event
+                        mongo.deleteEntry(bookingId, "Locks");
+                        mongo.deleteEntry(bookingId, "Bookings");
+                        return;
+                    }
+                 //payment achieved successfully
+                    console.log('Payment executed');
+                    res.sendStatus(200);
+                    // delete the lock event we no longer need
+                    dtString = lock.startTime.toISOString();
+                    let lockDate = dtString.slice(0,10);
+                    let lockTime = dtString.slice(11,16);
+                    mongo.getFacilityName(lock.facilityID,function(facilityName){
+                        mailer.sendConfirmationMail('group6.se.durham@gmail.com',lock.email,facilityName,lock.customer_name,lockDate,lockTime,lock.information);
+                        mongo.deleteEntry(bookingId, "Locks");
                     });
 
-            });
+                });
+
         });
 
     });
