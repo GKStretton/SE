@@ -1,3 +1,4 @@
+var keystone = require("keystone")
 //query that creates a lock on a slot
 //var mongo = require("../../mongo");
 //TODO - add calendar booking info, get price (you should be able to query via keystone facility "title")
@@ -19,37 +20,49 @@ module.exports = (req, res) => {
     let timeFrom = req.body.timeFrom;
     let timeTo = req.body.timeTo;
     let startTime = req.body.date +'T'+ timeFrom + ":00.0z";
-    let endTime = req.body.date +'T'+ timeTo + ":00.0z";
-    mongo.checkBusy(dbo,startTime,endTime,req.body.facility.toString(),function(err,response){
-        console.log(response);
+    let endTime = req.body.date + 'T' + timeTo + ":00.0z";
+
+    keystone.list("Facility").model.findOne().where("title", req.body.facility).exec(function(err,facility){
         if(err){
-            console.log('Check busy error');
-            res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+            return res.send("Facility not found/does not exist");
         }
         else{
-            let eventId = rfc4122.v1();
-            eventId = eventId.replace(/-/g,"");
-            if (response == 'busy'){
-                console.log('busy');
-                res.status(400).send('Error: The time slot you chose is already booked'); // if the slot is busy
-            }
-            else{ // if not busy, we lock the slot, the user still needs to pay though
-                console.log('Adding lock..');
-                mongo.addEntry("Locks",dbo,eventId,startTime,endTime,req.body.facility.toString(),0.01,req.body.name,req.body.email,req.body.info,function(err){
-                    if(err){
-                        console.log("Add entry error");
-                        res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+            mongo.checkBusy(dbo, startTime, endTime, facility.title.toString(), function (err, response) {
+                console.log(response);
+                if (err) {
+                    console.log('Check busy error');
+                    res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+                }
+                else {
+                    let eventId = rfc4122.v1();
+                    eventId = eventId.replace(/-/g, "");
+                    if (response == 'busy') {
+                        console.log('busy');
+                        res.status(400).send('Error: The time slot you chose is already booked'); // if the slot is busy
                     }
-                    else{
-                        console.log('200');
-                        req.myCookie.eventID = eventId;
-                        res.sendStatus(200); //success
-                        setTimeout(function(){
-                            mongo.deleteEntry(dbo,eventId,"Locks");
-                        }, 120000); //delete lock on timeout after 2 minutes
+                    else { // if not busy, we lock the slot, the user still needs to pay though
+                        console.log('Adding lock..');
+                        //price should be sourced from keystone
+                        let pricing = facility.pricing.md
+                        let availability = facility.availability.md
+                        console.log(pricing)
+                        mongo.addEntry("Locks", dbo, eventId, startTime, endTime, facility.title.toString(), 0.01, req.body.name, req.body.email, req.body.info, function (err) {
+                            if (err) {
+                                console.log("Add entry error");
+                                res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+                            }
+                            else {
+                                console.log('200');
+                                req.myCookie.eventID = eventId;
+                                res.sendStatus(200); //success
+                                setTimeout(function () {
+                                    mongo.deleteEntry(dbo, eventId, "Locks");
+                                }, 120000); //delete lock on timeout after 2 minutes
+                            }
+                        });
                     }
-                });
-            }
+                }
+            });
         }
     });
 }
