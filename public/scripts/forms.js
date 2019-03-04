@@ -115,6 +115,12 @@ $(document).ready(function(){
 		maxTime: "21:30:00",
 		slotDuration: "00:30:00",
 		slotLabelInterval: "01:00",
+		eventAfterAllRender:function(view){
+			let date = $("#calendar").fullCalendar("getDate").toDate();
+			let fp = flatpickr("#date-input", {});
+			console.log(date);
+			fp.setDate(date);
+		},
 		events:{
 			url: `/booking/availability/${$("#facility-input-id").val()}`,
 			type: 'GET'
