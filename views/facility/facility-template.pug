@@ -1,9 +1,42 @@
 extends ../template
+
+mixin listPrices(prices)
+	each price in prices
+		if price.lengthInHours == 1
+			b Hourly: 
+		else if price.lengthInHours == 3
+			b Half Day (Up to 3 hours): 
+		else if price.lengthInHours == 7
+			b Full Day (Up to 7 hours): 
+		//- exception case that will only trigger if PVCC enter a length that is not in [1,3,7]
+		else
+			b Up to #{price.lengthInHours} Hours: 
+		span £#{price.priceInGBP}
+		br
+
+mixin pricing
+	if facility.prices !== undefined
+		h5 Hire Cost
+		- facility.prices.sort((a, b) => (a.lengthInHours > b.lengthInHours) ? 1 : -1)
+		if facility.options === undefined
+			+listPrices(facility.prices)
+		else
+			-var optionPrices = []
+			each option in facility.options
+				- optionPrices = []
+				b #{option.option}
+				br
+				each price in facility.prices
+					if option._id.toString() == price.option.toString()
+						-optionPrices.push(price)
+				+listPrices(optionPrices)
+				br
+
 block content
 	div(class="row")
 		img(src=`/uploads/img/${locals.facility.topImage.image.filename}` class="by-brand-thin" style="width:100%;height:250px;object-fit:cover;")
 	div(class="row mt-5")
-		div(class="col-lg-8 mx-auto")
+		div(class="col-lg-10 mx-auto")
 			h3(class="h-underline") #{locals.facility.title}
 			div(class="row")
 				div(class="col-lg-5")
@@ -18,7 +51,7 @@ block content
 						a(class="carousel-control-next" href="#facility-photos" data-slide="next" role="button")
 							span(class="fa fa-arrow-right text-brand")
 				div(class="col-lg-7")
-					div !{locals.facility.description.html}
+					div !{facility.description.html}
 					//- add onclick js to hide.show form
 					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{locals.facility.automated?"Book Now ":"Enquire Now "}
 						i(class=locals.facility.automated?"fa fa-book":"fa fa-question")
@@ -29,9 +62,20 @@ block content
 							include form-manual
 					hr
 					div(class="row")
-						div(class="col-sm-6")
-							h5 Availability
-							div !{locals.facility.availability.html}
-						div(class="col-sm-6")
-							h5 Pricing
-							div !{locals.facility.pricing.html}
+						if facility.availabilityWeekday === undefined || facility.availabilitySaturday === undefined || facility.availabilitySunday === undefined
+							div(class="col-sm-12")
+								+pricing
+						else
+							div(class="col-sm-6")
+								h5 Availability
+								b Monday - Friday: 
+								span #{facility.availabilityWeekday}
+								br
+								b Saturday: 
+								span #{facility.availabilitySaturday}
+								br
+								b Sunday: 
+								span #{facility.availabilitySunday}
+
+							div(class="col-sm-6")
+								+pricing

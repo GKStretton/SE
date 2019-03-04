@@ -11,22 +11,21 @@ function validateEmail(email) {
      */
     return re.test(email);
 }
-
 module.exports = (req, res) => {
-    if(!validateEmail(req.body.email)){
+    console.log(req.body.facility);
+    if (!validateEmail(req.body.email)) {
         res.status(400).send('Error: Invalid email address'); // email address does not conform to the regex above
         return false; // this makes sure to terminate the request - delete/change as you please
     }
     let timeFrom = req.body.timeFrom;
     let timeTo = req.body.timeTo;
-    let startTime = req.body.date +'T'+ timeFrom + ":00.0z";
+    let startTime = req.body.date + 'T' + timeFrom + ":00.0z";
     let endTime = req.body.date + 'T' + timeTo + ":00.0z";
-
-    keystone.list("Facility").model.findOne().where("title", req.body.facility).exec(function(err,facility){
-        if(err){
+    keystone.list("Facility").model.findOne().where("title", req.body.facility).exec(function (err, facility) {
+        if (err) {
             return res.send("Facility not found/does not exist");
         }
-        else{
+        else {
             mongo.checkBusy(dbo, startTime, endTime, facility.title.toString(), function (err, response) {
                 console.log(response);
                 if (err) {
@@ -42,23 +41,18 @@ module.exports = (req, res) => {
                     }
                     else { // if not busy, we lock the slot, the user still needs to pay though
                         console.log('Adding lock..');
-                        //price should be sourced from keystone
-                        let pricing = facility.pricing.md
-                        let availability = facility.availability.md
-                        console.log(pricing)
-                        mongo.addEntry("Locks", dbo, eventId, startTime, endTime, facility.title.toString(), 0.01, req.body.name, req.body.email, req.body.info, function (err) {
+                        mongo.addEntry("Locks", bookingId, startTime, endTime, req.body.facilityId.toString(), 0.01, req.body.name, req.body.email, req.body.info, function (err) {
                             if (err) {
                                 console.log("Add entry error");
                                 res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+                                return;
                             }
-                            else {
-                                console.log('200');
-                                req.myCookie.eventID = eventId;
-                                res.sendStatus(200); //success
-                                setTimeout(function () {
-                                    mongo.deleteEntry(dbo, eventId, "Locks");
-                                }, 120000); //delete lock on timeout after 2 minutes
-                            }
+                            console.log('200');
+                            req.myCookie.bookingId = bookingId;
+                            res.sendStatus(200); //success
+                            setTimeout(function () {
+                                mongo.deleteEntry(bookingId, "Locks");
+                            }, 120000); //delete lock on timeout after 2 minutes
                         });
                     }
                 }
@@ -66,3 +60,6 @@ module.exports = (req, res) => {
         }
     });
 }
+        
+    
+

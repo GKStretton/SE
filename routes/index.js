@@ -3,9 +3,6 @@ var express = require("express");
 
 
 // BACKEND STUFF
-calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com'; // test calendar
-lockCalendarId = 'f60vk9un5f4ajucgu5165go8m8@group.calendar.google.com'; // lock calendar
-const {google} = require('googleapis');
 
 /**** Rowans API Libraries ****/
 
@@ -14,24 +11,7 @@ calendarFunctions = require('../googleApiFunctions'); // functions which call go
 paypalId = require("../tokens/paypalId.json");
 paypalApiFunctions = require('../paypalApiFunctions.js');
 
-//private key from google service account, service acc email also has to be added to each calendar manually
-privatekey = require("../tokens/private-key.json");
-// configure a JWT auth client
-jwtClient = new google.auth.JWT(
-	privatekey.client_email,
-	null,
-	privatekey.private_key,
-	['https://www.googleapis.com/auth/calendar']);
 
-//authenticate request
-jwtClient.authorize(function (err, tokens) {
-	if (err) {
-		console.log(err);
-		return;
-	} else {
-		console.log('Calendar api successfully authenticated');
-	}
-});
 
 var importRoutes = keystone.importer(__dirname);
 
@@ -49,6 +29,19 @@ const session = require('client-sessions'); //cookies
 //The order of these is important
 exports = module.exports = function (app) {
 	// Middleware
+	app.use((req, res, next) => {
+		res.view = new keystone.View(req, res);
+		keystone.list("Facility").model.find().exec((err, result) => {
+			if (err) {
+				console.log(err);
+			} else {
+				res.locals.facilityNav = result;
+			}
+			next();
+		});
+
+	});
+
 	app.use(bodyParser.json());
 	app.use(bodyParser.urlencoded({
 		extended: true
@@ -63,7 +56,7 @@ exports = module.exports = function (app) {
 
 	app.use(function (req, res, next) {
 		if(typeof req.myCookie.booking == "undefined"){
-		req.myCookie.booking = {};
+		    req.myCookie.booking = {};
 		}
 		next();
 	});
@@ -86,7 +79,7 @@ exports = module.exports = function (app) {
 	app.get("/facility/parties", routes.views.parties);
 	app.get("/facility", routes.views.facilitylanding);
 	app.get("/facility/:name", routes.views.facility);
-
+	app.get("/booking-enquiry/:query",routes.views.enquiry)
 	app.get("/event", routes.views.eventlanding);
 	app.get("/event/:name", routes.views.event);
 	app.get("/booking/admin", routes.views.bookingAdmin);

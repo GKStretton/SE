@@ -16,6 +16,7 @@ var storage = new keystone.Storage({
 Activity.add({
 	name: {type: String, required:true, initial:true, unique:true },
 	description: {type:Types.Markdown, required:true, initial:true},
+	url : {type:Types.Url},
 	imageTop: {type: Types.File, storage:storage},
 	image1: {type: Types.File, storage:storage},
 	image2: {type: Types.File, storage:storage},

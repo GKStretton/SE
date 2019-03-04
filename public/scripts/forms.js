@@ -70,6 +70,7 @@ $(document).ready(function(){
 		enableTime: true,
 		noCalendar: true,
 		dateFormat: "H:i",
+		time_24hr: true,
 		minDate: "18:00",
 		maxDate: "21:30",
 		defaultDate: "18:00",
@@ -88,6 +89,7 @@ $(document).ready(function(){
 	flatpickr("#time-to-input",{
 			enableTime: true,
 			noCalendar: true,
+			time_24hr: true,
 			dateFormat: "H:i",
 			minDate: "18:00",
 			maxDate: "21:30",
@@ -105,12 +107,16 @@ $(document).ready(function(){
 			right: 'next'
 		},
 		defaultDate: new Date().fp_incr(1),
+		validRange: {
+			start: new Date().fp_incr(1),
+			end: new Date().fp_incr(60)
+		},
 		minTime: "18:00:00",
 		maxTime: "21:30:00",
 		slotDuration: "00:30:00",
 		slotLabelInterval: "01:00",
 		events:{
-			url: `/booking/availability/${$("#facility-input").val()}`,
+			url: `/booking/availability/${$("#facility-input-id").val()}`,
 			type: 'GET'
 		}
 	});
