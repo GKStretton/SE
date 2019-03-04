@@ -20,7 +20,7 @@ module.exports = (req, res) => {
     let timeTo = req.body.timeTo;
     let startTime = req.body.date +'T'+ timeFrom + ":00.0z";
     let endTime = req.body.date +'T'+ timeTo + ":00.0z";
-    mongo.checkBusy(startTime,endTime,req.body.facilityId.toString(),function(err,response){
+    mongo.checkBusy(startTime,endTime,req.body.facilityId.toString(),'','',function(err,response){
         console.log(response);
         if(err){
             console.log('Check busy error');

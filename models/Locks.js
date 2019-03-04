@@ -6,7 +6,7 @@ var Locks = new keystone.List('Locks');// { hidden: true }); - add hidden true p
 
 Locks.add({
     startTime: {type: Types.Datetime}, // description
-    bookingID: {type: String},
+    bookingID:{type:String},
     endTime: {type: Types.Datetime},
     price: {type: Number},
     facilityID: {type: Types.Relationship,ref:'Facility'},
