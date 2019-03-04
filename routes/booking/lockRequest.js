@@ -21,38 +21,47 @@ module.exports = (req, res) => {
     let timeTo = req.body.timeTo;
     let startTime = req.body.date + 'T' + timeFrom + ":00.0z";
     let endTime = req.body.date + 'T' + timeTo + ":00.0z";
-    keystone.list("Facility").model.findOne().where("title", req.body.facility).exec(function (err, facility) {
+    keystone.list("Facility").model.findOne().where("title", req.body.facility).exec(function(err, facility) {
         if (err) {
             return res.send("Facility not found/does not exist");
         }
         else {
-            mongo.checkBusy(dbo, startTime, endTime, facility.title.toString(), function (err, response) {
+            mongo.checkBusy(startTime,endTime,req.body.facilityId.toString(),'','',function(err, response) {
                 console.log(response);
                 if (err) {
                     console.log('Check busy error');
                     res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
                 }
                 else {
-                    let eventId = rfc4122.v1();
-                    eventId = eventId.replace(/-/g, "");
+                    let bookingId = rfc4122.v1();
+                    bookingId = bookingId.replace(/-/g, "");
                     if (response == 'busy') {
                         console.log('busy');
                         res.status(400).send('Error: The time slot you chose is already booked'); // if the slot is busy
                     }
                     else { // if not busy, we lock the slot, the user still needs to pay though
                         console.log('Adding lock..');
-                        mongo.addEntry("Locks", bookingId, startTime, endTime, req.body.facilityId.toString(), 0.01, req.body.name, req.body.email, req.body.info, function (err) {
+                        mongo.calcPrice(req.body.facilityId.toString(), timeFrom, timeTo, function (err, price) {
                             if (err) {
-                                console.log("Add entry error");
-                                res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+                                console.log("Facility price calculation error");
+                                res.status(400).send('Error: We couldn\'t make your booking');
                                 return;
                             }
-                            console.log('200');
-                            req.myCookie.bookingId = bookingId;
-                            res.sendStatus(200); //success
-                            setTimeout(function () {
-                                mongo.deleteEntry(bookingId, "Locks");
-                            }, 120000); //delete lock on timeout after 2 minutes
+                            else {
+                                mongo.addEntry("Locks", bookingId, startTime, endTime, req.body.facilityId.toString(), price, req.body.name, req.body.email, req.body.info, function (err) {
+                                    if (err) {
+                                        console.log("Add entry error");
+                                        res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+                                        return;
+                                    }
+                                    console.log('200');
+                                    req.myCookie.bookingId = bookingId;
+                                    res.sendStatus(200); //success
+                                    setTimeout(function () {
+                                        mongo.deleteEntry(bookingId, "Locks");
+                                    }, 120000); //delete lock on timeout after 2 minutes
+                                });
+                            }
                         });
                     }
                 }
