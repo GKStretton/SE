@@ -54,16 +54,22 @@ $(document).on("click","#manualFormSubmit",function(){
 
 
 $(document).ready(function(){
+	
+	function getConfig(){
+		return {
+			minDate: "today",
+			maxDate: new Date().fp_incr(60), // 60 days from now
+			dateFormat: "Y-m-d",
+			defaultDate: new Date().fp_incr(1),
+			onChange(selectedDates, dateStr, instance){
+				console.log("onchange triggered");
+				$('#calendar').fullCalendar("gotoDate", dateStr);
+			}
+		};
+	}
+	
 	// Date picker
-	flatpickr("#date-input",{
-		minDate: "today",
-		maxDate: new Date().fp_incr(60), // 60 days from now
-		dateFormat: "Y-m-d",
-		defaultDate: new Date().fp_incr(1),
-		onChange(selectedDates, dateStr, instance){
-			$('#calendar').fullCalendar("gotoDate", dateStr);
-		},
-	});
+	flatpickr("#date-input",getConfig());
 
 	//From time picker
 	flatpickr("#time-from-input",{
@@ -118,6 +124,11 @@ $(document).ready(function(){
 		events:{
 			url: `/booking/availability/${$("#facility-input-id").val()}`,
 			type: 'GET'
+		},
+		viewRender: function(view,element){
+			let date = $("#calendar").fullCalendar("getDate").toDate();
+			let picker = $("#date-input").flatpickr(getConfig());
+			picker.setDate(date);
 		}
 	});
 
