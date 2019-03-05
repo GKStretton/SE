@@ -91,6 +91,59 @@ function listEntries(modelName,startTime,endTime,facilityId,callback){
     return 0;
 }
 
+function checkAvailability(startTime,endTime,facilityId,callback){
+    keystone.list("Facility").model.find({
+        _id: {$eq: facilityId}
+    }),function(err,res){
+        if(err){
+            callback('error');
+            return 0;
+        }
+
+    }
+}
+
+//validates automated booking
+function bookingValAut(startTime,endTime,facilityId,callback){
+    if(startTime >= endTime){
+        callback('End of slot must be later than start');
+        return 0;
+    }
+    checkBusy(startTime,endTime,facilityId,'','',function(err,res){
+        if(err){
+            callback('An unexpected error occured');
+            return 0;
+        }
+        if(res == 'busy'){
+            callback('Slot is busy at that time');
+        }
+        else{
+            callback(false);
+        }
+    });
+}
+
+
+//validates manual booking
+function bookingValMan(startTime,endTime,facilityId,unique_id,bookingID,callback){
+    if(startTime >= endTime){
+        callback('End of slot must be later than start');
+        return 0;
+    }
+    checkBusy(startTime,endTime,facilityId,unique_id,bookingID,function(err,res){
+        if(err){
+            callback('An unexpected error occured');
+            return 0;
+        }
+        if(res == 'busy'){
+            callback('Slot is busy at that time');
+        }
+        else{
+            callback(false);
+        }
+    });
+
+}
 //callbacks with err,busyString where busyString is either 'busy' or 'notBusy'
 function checkBusy(startTime,endTime,facilityId,unique_id,bookingID,callback){
     let current = Date.now();
@@ -176,5 +229,6 @@ module.exports.getFacilityName = getFacilityName;
 module.exports.getLock = getLock;
 module.exports.unavailable = unavailable;
 module.exports.addEntry = addEntry;
-module.exports.checkBusy = checkBusy;
+module.exports.bookingValMan = bookingValMan;
+module.exports.bookingValAut = bookingValAut;
 module.exports.deleteEntry = deleteEntry;

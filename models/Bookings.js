@@ -62,19 +62,12 @@ Bookings.schema.pre('validate',function preVal(next){
     else{
         inBookingID = bk.bookingID;
     }
-    mongo.checkBusy(bk.startTime, bk.endTime,bk.facilityID, bk._id, inBookingID, function(err, res){
-        let exception = new Error("Could not make a booking at this time");
+    mongo.bookingValMan(bk.startTime, bk.endTime,bk.facilityID, bk._id, inBookingID, function(err, res){
         if(err){
-            next(exception);
+            next(new Error(err));
             return;
         }
-        if(res == 'busy'){
-            next(exception);
-        }
-        else{
-
-            next();
-        }
+        next();
     });
 });
 
@@ -120,7 +113,6 @@ Bookings.schema.pre('save',function preSave(next){
                 return;
             }
             //the "initial" creation has already made the event, so we now need to update
-            //TODO: add update here
             let description = niceCalendarDescription(bk);
             console.log(description);
             calendarFunctions.updateEvent(calendarId,
