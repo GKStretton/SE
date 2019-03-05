@@ -41,15 +41,18 @@ Bookings.add({
     endTime: {type: Types.Datetime,initial:true},
     price: {type: Number},
     //hopefully should work just by inserting the id in a query
-    facilityID: {type: Types.Relationship,ref:'Facility',initial:true},
+    facility: {type: Types.Relationship,ref:'Facility',initial:true},
     email: {type: String },
-    customer_name: {type: String},
+    customerName: {type: String},
     information: {type: String}
 });
 
 Bookings.schema.virtual('canAccessKeystone').get(function () {
   return true;
 });
+
+
+Bookings.defaultColumns = ['facility','startTime','endTime', 'customerName'];
 
 
 //pre validate hook, to check manual events for clashes
@@ -62,19 +65,12 @@ Bookings.schema.pre('validate',function preVal(next){
     else{
         inBookingID = bk.bookingID;
     }
-    mongo.checkBusy(bk.startTime, bk.endTime,bk.facilityID, bk._id, inBookingID, function(err, res){
-        let exception = new Error("Could not make a booking at this time");
+    mongo.bookingValMan(bk.startTime, bk.endTime,bk.facility, bk._id, inBookingID, function(err, res){
         if(err){
-            next(exception);
+            next(new Error(err));
             return;
         }
-        if(res == 'busy'){
-            next(exception);
-        }
-        else{
-
-            next();
-        }
+        next();
     });
 });
 
@@ -83,7 +79,7 @@ Bookings.schema.pre('validate',function preVal(next){
 //note: we won't need the facility name/id here because
 //it's intended to go on a calendar which is unique to a facility
 function niceCalendarDescription(bk){
-        string = 'Customer name: '+ bk.customer_name +'\n' +
+        string = 'Customer name: '+ bk.customerName +'\n' +
         'Email: ' + bk.email + '\n' +
         'Other information: ' + bk.information + '\n';
         return string;
@@ -120,7 +116,6 @@ Bookings.schema.pre('save',function preSave(next){
                 return;
             }
             //the "initial" creation has already made the event, so we now need to update
-            //TODO: add update here
             let description = niceCalendarDescription(bk);
             console.log(description);
             calendarFunctions.updateEvent(calendarId,
@@ -163,5 +158,4 @@ Bookings.schema.pre('remove',function preRemove(next){
 //Might need to add relationship with facility
 //Booking.relationship({path:"options", ref: "Facility Options", refPath:"facility"})
 
-Bookings.defaultColumns = ['startTime','endTime'];
 Bookings.register();

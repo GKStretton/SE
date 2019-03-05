@@ -13,7 +13,7 @@ module.exports = (req, res) => {
             res.sendStatus(400);
             return;
         }
-        mongo.addEntry("Bookings",bookingId,lock.startTime,lock.endTime,lock.facilityID,lock.price,lock.name,lock.email,lock.information,function(err){
+        mongo.addEntry("Bookings",bookingId,lock.startTime,lock.endTime,lock.facility,lock.price,lock.name,lock.email,lock.information,function(err){
             if(err){
                 console.log(err);
                 res.sendStatus(400);
@@ -44,7 +44,7 @@ module.exports = (req, res) => {
                     dtString = lock.startTime.toISOString();
                     let lockDate = dtString.slice(0,10);
                     let lockTime = dtString.slice(11,16);
-                    mongo.getFacilityName(lock.facilityID,function(facilityName){
+                    mongo.getFacilityName(lock.facility,function(facilityName){
                         mailer.sendConfirmationMail('group6.se.durham@gmail.com',lock.email,facilityName,lock.customer_name,lockDate,lockTime,lock.information);
                         mongo.deleteEntry(bookingId, "Locks");
                     });

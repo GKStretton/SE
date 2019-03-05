@@ -46,11 +46,11 @@ function addEntry(modelName, bookingId,startTime,endTime,facilityId,price,name,e
         bookingID: bookingId,
         startTime: startTime,
         endTime: endTime,
-        facilityID: facilityId,
+        facility: facilityId,
         price: price,
         email: email,
         information: information,
-        customer_name: name
+        customerName: name
     }
     if (modelName === "Locks"){
         ev.timestamp = Date.now();
@@ -72,7 +72,7 @@ function addEntry(modelName, bookingId,startTime,endTime,facilityId,price,name,e
 function listEntries(modelName,startTime,endTime,facilityId,callback){
     //returns cursor of bookings that lie between the two times
     keystone.list(modelName).model.find({
-        facilityID: {$eq: facilityId},
+        facility: {$eq: facilityId},
         //Hopefully robust clash checking:
         // if existing booking overlaps into the start of our booking
         $or:[{endTime: {$gt: startTime, $lte: endTime}},
@@ -91,6 +91,81 @@ function listEntries(modelName,startTime,endTime,facilityId,callback){
     return 0;
 }
 
+//returns flaoting point representations of string of availability
+//if there is a problem, returns -1
+//eg "18:00 - 21:30" > "20.00"
+function availStringToNums(availString){
+
+
+}
+
+
+//callbacks with "available" or "unavailable"
+function checkAvailability(startTime,endTime,facilityId,callback){
+    keystone.list("Facility").model.findOne({
+        _id: {$eq: facilityId}
+    }),function(err,res){
+        if(err){
+            callback('error');
+            return 0;
+        }
+        let dayNo = startTime.getDay();
+        if(dayNo == 6){ //saturday
+            let availData = res.availabilitySaturday;
+        }
+        else if(dayNo == 0){ //sunday
+            let availData = res.availabilitySunday;
+        }
+        else{ //weekday
+            let availData = res.availabilityWeekday;
+        }
+
+    }
+}
+
+//validates automated booking
+//callbacks with error message or false
+function bookingValAut(startTime,endTime,facilityId,callback){
+    if(startTime >= endTime){
+        callback('End of slot must be later than start');
+        return 0;
+    }
+    checkBusy(startTime,endTime,facilityId,'','',function(err,res){
+        if(err){
+            callback('An unexpected error occured');
+            return 0;
+        }
+        if(res == 'busy'){
+            callback('Slot is busy at that time');
+        }
+        else{
+            callback(false);
+        }
+    });
+}
+
+
+//validates manual booking
+//callbacks with error message or false
+function bookingValMan(startTime,endTime,facilityId,unique_id,bookingID,callback){
+    if(startTime >= endTime){
+        callback('End of slot must be later than start');
+        return 0;
+    }
+    checkBusy(startTime,endTime,facilityId,unique_id,bookingID,function(err,res){
+        if(err){
+            callback('An unexpected error occured');
+            return 0;
+        }
+        if(res == 'busy'){
+            callback('Slot is busy at that time');
+        }
+        else{
+            callback(false);
+        }
+    });
+
+}
 //callbacks with err,busyString where busyString is either 'busy' or 'notBusy'
 function checkBusy(startTime,endTime,facilityId,unique_id,bookingID,callback){
     let current = Date.now();
@@ -232,6 +307,7 @@ module.exports.getFacilityName = getFacilityName;
 module.exports.getLock = getLock;
 module.exports.unavailable = unavailable;
 module.exports.addEntry = addEntry;
-module.exports.checkBusy = checkBusy;
+module.exports.bookingValMan = bookingValMan;
+module.exports.bookingValAut = bookingValAut;
 module.exports.deleteEntry = deleteEntry;
 module.exports.calcPrice = calcPrice;
