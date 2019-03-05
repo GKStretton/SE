@@ -9,7 +9,7 @@ Locks.add({
     bookingID:{type:String},
     endTime: {type: Types.Datetime},
     price: {type: Number},
-    facilityID: {type: Types.Relationship,ref:'Facility'},
+    facility: {type: Types.Relationship,ref:'Facility'},
     email: {type: String },
     customer_name: {type: String},
     information: {type: String},
