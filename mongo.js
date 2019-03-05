@@ -91,58 +91,121 @@ function listEntries(modelName,startTime,endTime,facilityId,callback){
     return 0;
 }
 
-//returns flaoting point representations of string of availability
-//if there is a problem, returns -1
-//eg "18:00 - 21:30" > "20.00"
-function availStringToNums(availString){
 
-
+//returns array length 2 of floats for availability
+//if there is a problem, returns empty array []
+//eg "18:00 - 21:30" > [18.00,21.30]
+function availStringArray(availString){
+    //remove the spaces
+    availString =  availString.replace(/ +?/g,"");
+    //check if in format like "18:40-19:40"
+    if (!(/\d\d:\d\d-\d\d:\d\d/.test(availString))){
+        console.log("no match");
+        return [];
+    }
+    let tString1 = availString.split('-')[0];
+    let tString2 = availString.split('-')[1];
+    returnArr = [];
+    let s = [tString1,tString2]
+    for (i = 0; i<2;i++){
+        let h = parseInt(s[i].split(':')[0]);
+        let m = parseInt(s[i].split(':')[1]);
+        if (h > 24|| h < 0){
+            return [];
+        }
+        if(m > 60 || m < 0){
+            return [];
+        }
+        returnArr.push(h + (m/100));
+        if(returnArr.length == 2){
+            if (returnArr[0] > returnArr[1]){
+                return [];
+            }
+        }
+    }
+    return returnArr;
 }
 
 
-//callbacks with "available" or "unavailable"
+//callbacks with error message or false if availability is ok
 function checkAvailability(startTime,endTime,facilityId,callback){
+    startTime = new Date(startTime);
+    endTime = new Date(startTime);
     keystone.list("Facility").model.findOne({
         _id: {$eq: facilityId}
-    }),function(err,res){
+    },function(err,res){
         if(err){
-            callback('error');
+            callback('Invalid availability data');
             return 0;
         }
         let dayNo = startTime.getDay();
+        let availData = '';
         if(dayNo == 6){ //saturday
-            let availData = res.availabilitySaturday;
+             availData = res.availabilitySaturday;
         }
         else if(dayNo == 0){ //sunday
-            let availData = res.availabilitySunday;
+            availData = res.availabilitySunday;
         }
         else{ //weekday
-            let availData = res.availabilityWeekday;
+            availData = res.availabilityWeekday;
         }
 
-    }
+        let a = availStringArray(availData);
+        if (a.length == 0){
+            callback('Invalid availability data');
+            return 0;
+        }
+        let startFloat = startTime.getHours() + startTime.getMinutes()/100;
+        let endFloat = endTime.getHours() + endTime.getHours()/100;
+        if(startFloat >= a[0] && endFloat <= a[1]){
+            callback(false);
+        }
+        else{
+            callback("Facility is not available at that time");
+        }
+    });
 }
 
 //validates automated booking
 //callbacks with error message or false
-function bookingValAut(startTime,endTime,facilityId,callback){
-    if(startTime >= endTime){
-        callback('End of slot must be later than start');
-        return 0;
-    }
-    checkBusy(startTime,endTime,facilityId,'','',function(err,res){
+//now checks availability and double checks price
+function bookingValAut(startTime,endTime,facilityId,priceFromFE,callback){
+    checkAvailability(startTime,endTime,facilityId,function(err){
         if(err){
-            callback('An unexpected error occured');
+            callback(err);
             return 0;
         }
-        if(res == 'busy'){
-            callback('Slot is busy at that time');
+        if(startTime >= endTime){
+            callback('End of slot must be later than start');
+            return 0;
         }
-        else{
-            callback(false);
-        }
+        checkBusy(startTime,endTime,facilityId,'','',function(err,res){
+            if(err){
+                callback('An unexpected error occured');
+                return 0;
+            }
+            if(res == 'busy'){
+                callback('Slot is busy at that time');
+                return 0;
+            }
+            calcPrice(facilityId, startTime, endTime, function(err,price){
+                if(err){
+                    callback("Error calculating price");
+                    return 0;
+                }
+                //uncomment below line when price calculation comes from front end
+                //if(price != priceFromFE){
+                if(0 != 0){
+                    callback("Error calculating price");
+                }
+                else{
+                    callback(false);
+                }
+            });
+        });
     });
 }
+
 
 
 //validates manual booking

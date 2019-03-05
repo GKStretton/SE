@@ -21,7 +21,8 @@ module.exports = (req, res) => {
     let timeTo = req.body.timeTo;
     let startTime = req.body.date +'T'+ timeFrom + ":00.0z";
     let endTime = req.body.date +'T'+ timeTo + ":00.0z";
-    mongo.bookingValAut(startTime,endTime,req.body.facilityId.toString(),function(err){
+    let price = parseInt(req.body.price.substr(1));
+    mongo.bookingValAut(startTime,endTime,req.body.facilityId.toString(),price,function(err){
         console.log(err);
         if(err){
             console.log('booking error');
@@ -33,7 +34,7 @@ module.exports = (req, res) => {
          bookingId =  bookingId.replace(/-/g,"");
      // if not busy, we lock the slot, the user still needs to pay though
         console.log('Adding lock..');
-        mongo.addEntry("Locks", bookingId,startTime,endTime,req.body.facilityId.toString(),0.01,req.body.name,req.body.email,req.body.info,function(err){
+        mongo.addEntry("Locks", bookingId,startTime,endTime,req.body.facilityId.toString(),price,req.body.name,req.body.email,req.body.info,function(err){
             if(err){
                 console.log("Add entry error");
                 res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
