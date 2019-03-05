@@ -170,6 +170,62 @@ function unavailable(startTime,endTime,facilityId,callback){
     });
 }
 
+function calcPrice(facilityId, startTime, endTime, callback) {
+    keystone.list("Facility Prices").model.find().where("facility", facilityId).exec(function (err, pricingData) {
+        console.log("PRICES", pricingData);
+        if (err) {
+            callback('Pricing for this facility not found/does not exist');
+            return 0;
+        }
+        else {
+            startTime = startTime.split(":");
+            endTime = endTime.split(":");
+            let noHours = parseInt(endTime[0], 10) - parseInt(startTime[0], 10);
+            let noMins = parseInt(endTime[1], 10) - parseInt(startTime[1], 10);
+            if (noMins < 0) {
+                noHours--;
+                noMins = Math.abs(noMins);
+            }
+            let totHours = noHours + (noMins / 60);
+
+            let price = 0;
+
+            let price1 = 0;
+            let price3 = 0;
+            let price7 = 0;
+
+            for (let i = 0; i < pricingData.length; i++) {
+                if (pricingData[i].lengthInHours == 1) {
+                    price1 = pricingData[i].priceInGBP;
+                }
+                else if (pricingData[i].lengthInHours == 3) {
+                    price3 = pricingData[i].priceInGBP;
+                }
+                else if (pricingData[i].lengthInHours == 7) {
+                    price7 = pricingData[i].priceInGBP;
+                }
+            }
+
+            while (totHours != 0) {
+                if (totHours >= 7) {
+                    price += price7;
+                    totHours -= 7;
+                }
+                else if (totHours < 7 && totHours >= 3) {
+                    price += price3;
+                    totHours -= 3;
+                }
+                else if (totHours < 3) {
+                    price += price1;
+                    totHours -= 1;
+                }
+            }
+
+            callback(false, price);
+        }
+    });
+}
+
 
 
 module.exports.getFacilityName = getFacilityName;
@@ -178,3 +234,4 @@ module.exports.unavailable = unavailable;
 module.exports.addEntry = addEntry;
 module.exports.checkBusy = checkBusy;
 module.exports.deleteEntry = deleteEntry;
+module.exports.calcPrice = calcPrice;

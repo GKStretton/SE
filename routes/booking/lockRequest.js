@@ -1,3 +1,4 @@
+var keystone = require("keystone")
 //query that creates a lock on a slot
 //var mongo = require("../../mongo");
 //TODO - add calendar booking info, get price (you should be able to query via keystone facility "title")
@@ -12,44 +13,62 @@ function validateEmail(email) {
 }
 module.exports = (req, res) => {
     console.log(req.body.facility);
-    if(!validateEmail(req.body.email)){
+    if (!validateEmail(req.body.email)) {
         res.status(400).send('Error: Invalid email address'); // email address does not conform to the regex above
         return false; // this makes sure to terminate the request - delete/change as you please
     }
     let timeFrom = req.body.timeFrom;
     let timeTo = req.body.timeTo;
-    let startTime = req.body.date +'T'+ timeFrom + ":00.0z";
-    let endTime = req.body.date +'T'+ timeTo + ":00.0z";
-    mongo.checkBusy(startTime,endTime,req.body.facilityId.toString(),'','',function(err,response){
-        console.log(response);
-        if(err){
-            console.log('Check busy error');
-            res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
-            return;
+    let startTime = req.body.date + 'T' + timeFrom + ":00.0z";
+    let endTime = req.body.date + 'T' + timeTo + ":00.0z";
+    keystone.list("Facility").model.findOne().where("title", req.body.facility).exec(function(err, facility) {
+        if (err) {
+            return res.send("Facility not found/does not exist");
         }
-        //make a calendar compatible id
-        let bookingId = rfc4122.v1();
-         bookingId =  bookingId.replace(/-/g,"");
-        if (response == 'busy'){
-            console.log('busy');
-            res.status(400).send('Error: The time slot you chose is already booked'); // if the slot is busy
-            return;
+        else {
+            mongo.checkBusy(startTime,endTime,req.body.facilityId.toString(),'','',function(err, response) {
+                console.log(response);
+                if (err) {
+                    console.log('Check busy error');
+                    res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+                }
+                else {
+                    let bookingId = rfc4122.v1();
+                    bookingId = bookingId.replace(/-/g, "");
+                    if (response == 'busy') {
+                        console.log('busy');
+                        res.status(400).send('Error: The time slot you chose is already booked'); // if the slot is busy
+                    }
+                    else { // if not busy, we lock the slot, the user still needs to pay though
+                        console.log('Adding lock..');
+                        mongo.calcPrice(req.body.facilityId.toString(), timeFrom, timeTo, function (err, price) {
+                            if (err) {
+                                console.log("Facility price calculation error");
+                                res.status(400).send('Error: We couldn\'t make your booking');
+                                return;
+                            }
+                            else {
+                                mongo.addEntry("Locks", bookingId, startTime, endTime, req.body.facilityId.toString(), price, req.body.name, req.body.email, req.body.info, function (err) {
+                                    if (err) {
+                                        console.log("Add entry error");
+                                        res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
+                                        return;
+                                    }
+                                    console.log('200');
+                                    req.myCookie.bookingId = bookingId;
+                                    res.sendStatus(200); //success
+                                    setTimeout(function () {
+                                        mongo.deleteEntry(bookingId, "Locks");
+                                    }, 120000); //delete lock on timeout after 2 minutes
+                                });
+                            }
+                        });
+                    }
+                }
+            });
         }
-     // if not busy, we lock the slot, the user still needs to pay though
-        console.log('Adding lock..');
-        mongo.addEntry("Locks", bookingId,startTime,endTime,req.body.facilityId.toString(),0.01,req.body.name,req.body.email,req.body.info,function(err){
-            if(err){
-                console.log("Add entry error");
-                res.status(400).send('Error: We couldn\'t make your booking'); // some sort of error occurs on db's side
-                return;
-            }
-            console.log('200');
-            req.myCookie.bookingId =  bookingId;
-            res.sendStatus(200); //success
-            setTimeout(function(){
-                mongo.deleteEntry(bookingId,"Locks");
-            }, 120000); //delete lock on timeout after 2 minutes
-        });
-
     });
 }
+        
+    
+

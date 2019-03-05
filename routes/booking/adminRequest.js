@@ -9,8 +9,9 @@ function validateEmail(email) {
      */
     return re.test(email);
 }
+
 module.exports = (req, res) => {
-    keystone.list("User").model.findOne().where('_id', req.user._id).exec(function(keystoneErr, post){
+    keystone.list("User").model.findOne().where('_id', req.user._id).exec(function(keystoneErr,post){
         if(keystoneErr){//if we're not logged in via keystone admin system
             res.status(403).send("Error: Permission denied");
         }
