@@ -71,6 +71,7 @@ exports = module.exports = function (app) {
 	app.post('/booking/lockRequest', routes.booking.lockRequest);
 	app.post('/booking/enquiry', routes.booking.enquiry);
 	app.post('/booking/adminRequest',routes.booking.adminRequest);
+	app.get('/booking/price',routes.booking.price);
 	app.get("/booking/availability/:facility", routes.booking.availability);
 	app.get('/payment',routes.views.payment);
 	app.get('/booking/enquiry/success', routes.booking.success);

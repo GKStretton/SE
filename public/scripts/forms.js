@@ -29,7 +29,7 @@ $(document).on("click","#adminFormSubmit",function(){
 		data:formData,
 		async:false,
 		success: function(data){
-            //temporary, can be changed to something nicer
+			//temporary, can be changed to something nicer
 			alert("Successfully added booking");
 			location.reload();
 		},
@@ -52,18 +52,45 @@ $(document).on("click","#manualFormSubmit",function(){
 	})
 });
 
+//get pricing data, render on front end
+$(document).on("change","#automatedForm",function(){
+	let formData = $("#automatedForm").serialize();
+	console.log(formData);
+	$.ajax({
+		url:"/booking/price",
+		type:"GET",
+		data:formData,
+		async:false,
+		success: function(price){
+			$("#price").val("£" + price.toString());
+			$('#price')[0].type = "text";
+			$("#price-header").show();
+		},
+		error: function(error){
+			console.log(error);
+			$('#errMsg').text(error.responseText);
+		}
+	});
+});
+
 
 $(document).ready(function(){
+	
+	function getConfig(){
+		return {
+			minDate: "today",
+			maxDate: new Date().fp_incr(60), // 60 days from now
+			dateFormat: "Y-m-d",
+			defaultDate: new Date().fp_incr(1),
+			onChange(selectedDates, dateStr, instance){
+				console.log("onchange triggered");
+				$('#calendar').fullCalendar("gotoDate", dateStr);
+			}
+		};
+	}
+	
 	// Date picker
-	flatpickr("#date-input",{
-		minDate: "today",
-		maxDate: new Date().fp_incr(60), // 60 days from now
-		dateFormat: "Y-m-d",
-		defaultDate: new Date().fp_incr(1),
-		onChange(selectedDates, dateStr, instance){
-			$('#calendar').fullCalendar("gotoDate", dateStr);
-		},
-	});
+	flatpickr("#date-input",getConfig());
 
 	//From time picker
 	flatpickr("#time-from-input",{
@@ -118,6 +145,11 @@ $(document).ready(function(){
 		events:{
 			url: `/booking/availability/${$("#facility-input-id").val()}`,
 			type: 'GET'
+		},
+		viewRender: function(view,element){
+			let date = $("#calendar").fullCalendar("getDate").toDate();
+			let picker = $("#date-input").flatpickr(getConfig());
+			picker.setDate(date);
 		}
 	});
 
