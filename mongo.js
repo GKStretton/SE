@@ -91,14 +91,33 @@ function listEntries(modelName,startTime,endTime,facilityId,callback){
     return 0;
 }
 
-//TODO, complete this
+//returns flaoting point representations of string of availability
+//if there is a problem, returns -1
+//eg "18:00 - 21:30" > "20.00"
+function availStringToNums(availString){
+
+
+}
+
+
+//callbacks with "available" or "unavailable"
 function checkAvailability(startTime,endTime,facilityId,callback){
-    keystone.list("Facility").model.find({
+    keystone.list("Facility").model.findOne({
         _id: {$eq: facilityId}
     }),function(err,res){
         if(err){
             callback('error');
             return 0;
+        }
+        let dayNo = startTime.getDay();
+        if(dayNo == 6){ //saturday
+            let availData = res.availabilitySaturday;
+        }
+        else if(dayNo == 0){ //sunday
+            let availData = res.availabilitySunday;
+        }
+        else{ //weekday
+            let availData = res.availabilityWeekday;
         }
 
     }
