@@ -29,7 +29,7 @@ $(document).on("click","#adminFormSubmit",function(){
 		data:formData,
 		async:false,
 		success: function(data){
-            //temporary, can be changed to something nicer
+			//temporary, can be changed to something nicer
 			alert("Successfully added booking");
 			location.reload();
 		},
@@ -50,6 +50,27 @@ $(document).on("click","#manualFormSubmit",function(){
 	.fail(function(res){
 		$('#errMsg').text(res.responseText);
 	})
+});
+
+//get pricing data, render on front end
+$(document).on("change","#automatedForm",function(){
+	let formData = $("#automatedForm").serialize();
+	console.log(formData);
+	$.ajax({
+		url:"/booking/price",
+		type:"GET",
+		data:formData,
+		async:false,
+		success: function(price){
+			$("#price").val("£" + price.toString());
+			$('#price')[0].type = "text";
+			$("#price-header").show();
+		},
+		error: function(error){
+			console.log(error);
+			$('#errMsg').text(error.responseText);
+		}
+	});
 });
 
 
