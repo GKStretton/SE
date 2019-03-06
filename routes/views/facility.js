@@ -11,6 +11,29 @@ module.exports = function (req, res) {
 				if(prices === undefined || prices.length != 0){
 					facility.prices = prices;
 				}
+				facility.hasAvailability = false;
+				let availability = splitAvailability.splitAvailability(facility.availabilityWeekday);
+				if(availability.length != 0){
+					facility.availabilityWeekdayStart = availability[0];
+					facility.availabilityWeekdayEnd = availability[1];
+					facility.hasAvailability = true;
+				}
+				availability = splitAvailability.splitAvailability(facility.availabilitySaturday); 
+				if(availability.length != 0){
+					facility.availabilitySaturdayStart = availability[0];
+					facility.availabilitySaturdayEnd = availability[1];
+					facility.hasAvailability = true;
+				}
+				availability = splitAvailability.splitAvailability(facility.availabilitySunday);
+				if(availability.length != 0){
+					facility.availabilitySundayStart = availability[0];
+					facility.availabilitySundayEnd = availability[1];
+					facility.hasAvailability = true;
+				}
+				if(!facility.hasAvailability)
+				{
+					facility.automated = false;
+				}
 				view.render("facility/facility-template", {facility: facility});
 			})
 		})
