@@ -62,7 +62,6 @@ $(document).on("click","#adminFormSubmit",function(){
 	});
 });
 
-
 //Manual form submit
 $(document).on("click","#manualFormSubmit",function(){
 	let formData = $("#manualForm").serialize();
@@ -74,8 +73,7 @@ $(document).on("click","#manualFormSubmit",function(){
 	})
 });
 
-//get pricing data, render on front end
-$(document).on("change","#automatedForm",function(){
+function getPrice(){
 	let formData = $("#facility-input-id").serialize() + '&' + $("#time-from-input").serialize() + '&' + $("#time-to-input").serialize();
 	$.ajax({
 		url:"/booking/price",
@@ -92,7 +90,7 @@ $(document).on("change","#automatedForm",function(){
 			$('#errMsg').text(error.responseText);
 		}
 	});
-});
+}
 
 function addHour(time) {
 	currentTime = parseInt(time.charAt(0) + time.charAt(1));
@@ -217,7 +215,7 @@ function getCalendarConfig(){
 			start: new Date().fp_incr(1),
 			end: new Date().fp_incr(61)
 		},
-		slotDuration: "01:00:00",
+		slotDuration: "00:30:00",
 		slotLabelInterval: "01:00:00",
 		events:{
 			url: `/booking/availability/${$("#facility-input-id").val()}`,
@@ -247,32 +245,19 @@ $(document).ready(function(){
 		flatpickr("#time-from-input",getTimeFromConfig());
 		flatpickr("#time-to-input",getTimeToConfig());
 		updateTimeRange(new Date().getDay());
-
 		$("#book-form").on("shown.bs.collapse", function () {
 			$("#calendar").fullCalendar('rerenderEvents');
 		});
 	}
+	getPrice();
+});
+
+//get pricing data, render on front end
+$(document).on("change","#automatedForm",function(){
+	getPrice();
 });
 
 $(document).on("click", ".fc-button", function(){
-	let date = $("#calendar").fullCalendar("getDate").toDate();
-	let picker = document.querySelector("#date-input")._flatpickr;
-	console.log(picker)
-	console.log(date)
-	picker.setDate(date);
-	updateTimeRange(date.getDay());
-});
-
-$(document).on("click", ".fc-button", function(){
-	let date = $("#calendar").fullCalendar("getDate").toDate();
-	let picker = document.querySelector("#date-input")._flatpickr;
-	console.log(picker)
-	console.log(date)
-	picker.setDate(date);
-	updateTimeRange(date.getDay());
-});
-
-$(document).on("click", ".fc-state-disabled", function(){
 	let date = $("#calendar").fullCalendar("getDate").toDate();
 	let picker = document.querySelector("#date-input")._flatpickr;
 	console.log(picker)
