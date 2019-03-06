@@ -33,6 +33,8 @@ mixin pricing
 				br
 
 block content
+	script
+		| setAvailability(#{facility.hasAvailability},"#{facility.availabilityWeekdayStart}","#{facility.availabilityWeekdayEnd}","#{facility.availabilitySaturdayStart}","#{facility.availabilitySaturdayEnd}","#{facility.availabilitySundayStart}","#{facility.availabilitySundayEnd}");
 	div(class="row")
 		img(src=`/uploads/img/${locals.facility.topImage.image.filename}` class="by-brand-thin" style="width:100%;height:250px;object-fit:cover;")
 	div(class="row mt-5")
