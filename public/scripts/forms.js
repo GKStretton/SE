@@ -102,8 +102,9 @@ function addHour(time) {
 }
 
 function updateTimeRange(day){
-	console.log("call updateTimeRange");
-	console.log(day)
+	//reset times to avoid conficts
+	$("#calendar").fullCalendar("option","minTime","00:00:00");
+	$("#calendar").fullCalendar("option","maxTime","24:00:00");
 	switch(day){
 		//sunday
 		case 0:
@@ -117,9 +118,9 @@ function updateTimeRange(day){
 			fp.set("minDate",availabilitySundayStart);
 			fp.set("maxDate",availabilitySundayEnd);
 			fp.setDate(addHour(availabilitySundayStart));
-			//Facility schedule
-			$("#calendar").fullCalendar("option","minTime",availabilitySundayStart);
+			//Facility schedule - ORDER IS IMPORTANT
 			$("#calendar").fullCalendar("option","maxTime",availabilitySundayEnd);
+			$("#calendar").fullCalendar("option","minTime",availabilitySundayStart);
 			break;
 		//saturday
 		case 6:
@@ -133,9 +134,9 @@ function updateTimeRange(day){
 			fp.set("minDate",availabilitySaturdayStart);
 			fp.set("maxDate",availabilitySaturdayEnd);
 			fp.setDate(addHour(availabilitySaturdayStart));
-			//Facility schedule
-			$("#calendar").fullCalendar("option","minTime",availabilitySaturdayStart);
+			//Facility schedule - ORDER IS IMPORTANT
 			$("#calendar").fullCalendar("option","maxTime",availabilitySaturdayEnd);
+			$("#calendar").fullCalendar("option","minTime",availabilitySaturdayStart);
 			break;
 		//weekdays
 		default:
@@ -149,9 +150,9 @@ function updateTimeRange(day){
 			fp.set("minDate",availabilityWeekdayStart);
 			fp.set("maxDate",availabilityWeekdayEnd);
 			fp.setDate(addHour(availabilityWeekdayStart));
-			//Facility schedule
-			$("#calendar").fullCalendar("option","minTime",availabilityWeekdayStart);
+			//Facility schedule - ORDER IS IMPORTANT
 			$("#calendar").fullCalendar("option","maxTime",availabilityWeekdayEnd);
+			$("#calendar").fullCalendar("option","minTime",availabilityWeekdayStart);
 	}
 };
 
