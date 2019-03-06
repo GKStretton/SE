@@ -358,7 +358,9 @@ function calcPrice(facilityId, startTime, endTime, callback) {
                     totHours -= 1;
                 }
             }
-
+            if (price > price7) {
+                price = price7;
+            }
             callback(false, price);
         }
     });
