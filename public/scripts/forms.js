@@ -76,8 +76,7 @@ $(document).on("click","#manualFormSubmit",function(){
 
 //get pricing data, render on front end
 $(document).on("change","#automatedForm",function(){
-	let formData = $("#automatedForm").serialize();
-	console.log(formData);
+	let formData = $("#facility-input-id").serialize() + '&' + $("#time-from-input").serialize() + '&' + $("#time-to-input").serialize();
 	$.ajax({
 		url:"/booking/price",
 		type:"GET",
@@ -216,7 +215,7 @@ function getCalendarConfig(){
 		defaultDate: new Date().fp_incr(1),
 		validRange: {
 			start: new Date().fp_incr(1),
-			end: new Date().fp_incr(60)
+			end: new Date().fp_incr(61)
 		},
 		slotDuration: "01:00:00",
 		slotLabelInterval: "01:00:00",
@@ -253,13 +252,33 @@ $(document).ready(function(){
 			$("#calendar").fullCalendar('rerenderEvents');
 		});
 	}
-	
-	$(document).on("click", ".fc-button", function(){
-		let date = $("#calendar").fullCalendar("getDate").toDate();
-		let picker = document.querySelector("#date-input")._flatpickr;
-		picker.setDate(date);
-		updateTimeRange(date.getDay());
-	});
+});
+
+$(document).on("click", ".fc-button", function(){
+	let date = $("#calendar").fullCalendar("getDate").toDate();
+	let picker = document.querySelector("#date-input")._flatpickr;
+	console.log(picker)
+	console.log(date)
+	picker.setDate(date);
+	updateTimeRange(date.getDay());
+});
+
+$(document).on("click", ".fc-button", function(){
+	let date = $("#calendar").fullCalendar("getDate").toDate();
+	let picker = document.querySelector("#date-input")._flatpickr;
+	console.log(picker)
+	console.log(date)
+	picker.setDate(date);
+	updateTimeRange(date.getDay());
+});
+
+$(document).on("click", ".fc-state-disabled", function(){
+	let date = $("#calendar").fullCalendar("getDate").toDate();
+	let picker = document.querySelector("#date-input")._flatpickr;
+	console.log(picker)
+	console.log(date)
+	picker.setDate(date);
+	updateTimeRange(date.getDay());
 });
 
 //Booking form show button
