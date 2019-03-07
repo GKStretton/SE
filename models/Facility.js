@@ -39,8 +39,13 @@ Facility.defaultColumns = ['title', "automated"];
 //if there isn't one already, creates a new calendar and stores the id
 Facility.schema.pre('save',function preSave(next){
     let f = this;
+    let exception = new Error("Problem making a calendar");
     if(!f.calendarId){
-        newCalendarId = calendarFunctions.createCalendar(f.title,jwtClient,function(newCalendarId){
+        newCalendarId = calendarFunctions.createCalendar(f.title,jwtClient,function(err,newCalendarId){
+            if(err){
+                next(exception);
+                return 0;
+            }
             console.log('cal id created: ' + newCalendarId);
             f.calendarId = newCalendarId;
             next();

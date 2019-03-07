@@ -21,8 +21,8 @@ function createCalendar(summary,authInput,callback) {
     },
     function(err,res){
         if(err){
-            console.error('Error making calendar');
-            return;
+            callback('error');
+            return 0;
         }
         let calendarId = res.data.id;
         calendar.acl.insert({
@@ -37,7 +37,11 @@ function createCalendar(summary,authInput,callback) {
             }
         },
         function(err,res){
-            callback(calendarId);
+            if(err){
+                callback('error');
+                return 0;
+            }
+            callback(false,calendarId);
         });
     });
 
