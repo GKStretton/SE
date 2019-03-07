@@ -3,38 +3,6 @@ var Types = keystone.Field.Types;
 
 var Bookings = new keystone.List('Bookings');
 
-/** GOOGLE CALENDAR STUFF **/
-var {google} = require('googleapis');
-
-var calendarFunctions = require('../googleApiFunctions'); // functions which call google calendar api
-
-//private key from google service account, service acc email also has to be added to each calendar manually
-var privatekey = require("../tokens/private-key.json");
-// configure a JWT auth client
-var jwtClient = new google.auth.JWT(
-	privatekey.client_email,
-	null,
-	privatekey.private_key,
-	['https://www.googleapis.com/auth/calendar']);
-
-//authenticate request
-jwtClient.authorize(function (err, tokens) {
-	if (err) {
-		console.log(err);
-		return;
-	} else {
-		console.log('Calendar api successfully authenticated.');
-	}
-});
-//note: the client wants multiple calendars so we might change this
-//to have one calendarID per facility
-
-const calendarId = 'gen9kai518437ib6jc8sq2dsfg@group.calendar.google.com';
-
-
-/** END GOOGLE CALENDAR STUFF **/
-
-console.log('cal id: ' + calendarId);
 Bookings.add({
     startTime: {type: Types.Datetime,initial:true}, // description
     bookingID: {type: String, hidden:true,inital: false},
@@ -95,15 +63,39 @@ Bookings.schema.pre('save',function preSave(next){
     }
     let exception = new Error("Problem adding event to calendar");
     let bk = this;
-    calendarFunctions.getEvent(calendarId,jwtClient,bk.bookingID,
-        function(err,res){
-            //this means it's the first time we are adding
-            if(err){
-                calendarFunctions.addEvent(
-                    calendarId,
+    keystone.list("Facility").model.findOne({_id:bk.facility},function(err,facility){
+        if(err){
+            next(exception);
+            return;
+        }
+        calendarFunctions.getEvent(facility.calendarId,jwtClient,bk.bookingID,
+            function(err,res){
+                //this means it's the first time we are adding
+                if(err){
+                    calendarFunctions.addEvent(
+                        facility.calendarId,
+                        jwtClient,
+                        bk.startTime,
+                        bk.endTime,
+                        bk.bookingID,
+                        function(err){
+                            if(err){
+                                next(exception);
+                            }
+                            else{
+                                next();
+                            }
+                        });
+                    return;
+                }
+                //the "initial" creation has already made the event, so we now need to update
+                let description = niceCalendarDescription(bk);
+                console.log(description);
+                calendarFunctions.updateEvent(facility.calendarId,
                     jwtClient,
                     bk.startTime,
                     bk.endTime,
+                    description,
                     bk.bookingID,
                     function(err){
                         if(err){
@@ -113,44 +105,31 @@ Bookings.schema.pre('save',function preSave(next){
                             next();
                         }
                     });
-                return;
-            }
-            //the "initial" creation has already made the event, so we now need to update
-            let description = niceCalendarDescription(bk);
-            console.log(description);
-            calendarFunctions.updateEvent(calendarId,
-                jwtClient,
-                bk.startTime,
-                bk.endTime,
-                description,
-                bk.bookingID,
-                function(err){
-                    if(err){
-                        next(exception);
-                    }
-                    else{
-                        next();
-                    }
-                });
-        });
+            });
+    });
 });
 
 //hook for deletion
 
 Bookings.schema.pre('remove',function preRemove(next){
     let exception = new Error("Problem  deleting event from calendar");
-    calendarFunctions.deleteEvent(calendarId,
-        jwtClient,
-        this.bookingID,
-        function(err){
-            if(err){
-                next();
-                //next(exception);
-            }
-            else{
-                next();
-            }
+    keystone.list("Facility").model.findOne({_id:bk.facility},function(err,facility){
+        if(err){
+            newxt(exception);
+            return;
+        }
+        calendarFunctions.deleteEvent(facility.calendarId,
+            jwtClient,
+            this.bookingID,
+            function(err){
+                if(err){
+                    next(exception);
+                }
+                else{
+                    next();
+                }
         });
+    });
 });
 
 
