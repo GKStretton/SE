@@ -32,10 +32,8 @@ mixin pricing
 				+listPrices(optionPrices)
 				br
 
-block append head
-	script(src='/scripts/forms.js')
-
 block content
+	script(src='/scripts/forms.js')
 	script
 		| setAvailability(#{facility.hasAvailability},"#{facility.availabilityWeekdayStart}","#{facility.availabilityWeekdayEnd}","#{facility.availabilitySaturdayStart}","#{facility.availabilitySaturdayEnd}","#{facility.availabilitySundayStart}","#{facility.availabilitySundayEnd}");
 	div(class="row")
