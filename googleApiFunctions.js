@@ -8,6 +8,42 @@ general format is function(calendarId,authInput,[parameters],callback)
 const {google} = require('googleapis');
 const calendar = google.calendar('v3');
 
+
+function createCalendar(summary,authInput,callback) {
+    // Create calendar with given name and share it with the default
+    let calendarId = null;
+    calendar.calendars.insert({
+        auth:authInput,
+        resource: {
+            summary:summary,
+            timeZone: 'Europe/London'
+        }
+    },
+    function(err,res){
+        if(err){
+            console.error('Error making calendar');
+            return;
+        }
+        let calendarId = res.data.id;
+        calendar.acl.insert({
+            auth:authInput,
+            calendarId:calendarId,
+            resource: {
+                role: 'owner',
+                scope: {
+                    type:  'user',
+                    value: 'group6.se.durham@gmail.com'
+                },
+            }
+        },
+        function(err,res){
+            callback(calendarId);
+        });
+    });
+
+}
+
+
 function addEvent(calendarId,authInput,startTime,endTime,eventId,callback){
     calendar.events.insert({
         auth: authInput,
@@ -85,6 +121,8 @@ function getEvent(calendarId,authInput,eventId,callback) {
         }
     });
 }
+
+module.exports.createCalendar = createCalendar;
 module.exports.addEvent = addEvent;
 module.exports.deleteEvent = deleteEvent;
 module.exports.getEvent  = getEvent;
