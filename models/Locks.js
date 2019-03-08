@@ -11,7 +11,7 @@ Locks.add({
     price: {type: Number},
     facility: {type: Types.Relationship,ref:'Facility'},
     email: {type: String },
-    customer_name: {type: String},
+    customerName: {type: String},
     information: {type: String},
     timestamp: {type: Number}
 });
