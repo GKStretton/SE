@@ -115,7 +115,7 @@ Bookings.schema.pre('remove',function preRemove(next){
     let exception = new Error("Problem  deleting event from calendar");
     keystone.list("Facility").model.findOne({_id:bk.facility},function(err,facility){
         if(err){
-            newxt(exception);
+            next(exception);
             return;
         }
         calendarFunctions.deleteEvent(facility.calendarId,
