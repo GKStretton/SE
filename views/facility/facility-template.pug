@@ -36,6 +36,12 @@ block content
 	script(src='/scripts/forms.js')
 	script
 		| setAvailability(#{facility.hasAvailability},"#{facility.availabilityWeekdayStart}","#{facility.availabilityWeekdayEnd}","#{facility.availabilitySaturdayStart}","#{facility.availabilitySaturdayEnd}","#{facility.availabilitySundayStart}","#{facility.availabilitySundayEnd}");
+	- var automated = locals.facility.automated && !(locals.facility.options && locals.facility.options.length > 0)
+	script
+		| setAutomated(#{automated})
+	- var options = locals.facility.options && locals.facility.options.length > 0
+	script
+		| setOptions(#{options})
 	div(class="row")
 		img(src=`/uploads/img/${locals.facility.topImage.image.filename}` class="by-brand-thin" style="width:100%;height:250px;object-fit:cover;")
 	div(class="row mt-5")
@@ -56,10 +62,14 @@ block content
 				div(class="col-lg-7")
 					div !{facility.description.html}
 					//- add onclick js to hide.show form
-					button(id="btn-book-form" class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{locals.facility.automated?"Book Now ":"Enquire Now "}
-						i(class=locals.facility.automated?"fa fa-book":"fa fa-question")
+					if automated
+						- var btnID = "btn-book-form"
+					else
+						- var btnID = "btn-enquire-form"
+					button(id=btnID class="btn w-100" type="button" data-toggle="collapse" data-target="#book-form") #{automated?"Book Now ":"Enquire Now "}
+						i(class=automated?"fa fa-book":"fa fa-question")
 					div(id="book-form" class="collapse")
-						if locals.facility.automated
+						if automated
 							include form-automated
 						else
 							include form-manual
