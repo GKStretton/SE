@@ -15,7 +15,7 @@ function setAutomated(auto){
 };
 
 function setOptions(opt){
-	options = !opt;
+	noOptions = !opt;
 };
 
 function setAvailability(hasAvailability,weekdayStart,weekdayEnd,saturdayStart,saturdayEnd,sundayStart,sundayEnd){
@@ -214,32 +214,21 @@ function updateTimeRange(day){
 	}
 };
 
-$("#time-from-input").change(function() {
+$(document).on("change","#time-from-input",function() {
 	console.log("changing from");
-	let from = this.selectedIndex;
+	let from = $("#time-from-input").prop("selectedIndex") - 1;
 	let to = $("#time-to-input").prop("selectedIndex");
-	if(from > to){
-		if((to-1) < 0){
-			this.prop("selectedIndex",0);
-			$("#time-to-input").prop("selectedIndex",1)
-		}else{
-			this.prop("selectedIndex",to-1);
-		}
+	if(from >= to){
+		$("#time-to-input").prop("selectedIndex",to+1);
 	}
 });
 
-$("#time-to-input").change(function() {
-	console.log("changing from");
-	let to = this.selectedIndex;
+$(document).on("change","#time-to-input",function() {
+	console.log("changing to");
+	let to = $("#time-to-input").prop("selectedIndex");
 	let from = $("#time-from-input").prop("selectedIndex");
-	let len = $('#time-from-input > option').length;
 	if(to < from){
-		if(to+1 > length-1){
-			this.prop("selectedIndex",len-1);
-			$("#time-from-input").prop("selectedIndex",len-2)
-		}else{
-			this.prop("selectedIndex",from+1);
-		}
+		$("#time-from-input").prop("selectedIndex",to);
 	}
 });
 
