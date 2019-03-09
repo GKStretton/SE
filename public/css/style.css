@@ -156,6 +156,18 @@ hr {
 	box-shadow: 0px 0px 20px 5px rgba(26, 26, 45, .3);
 }
 
+/*lg breakpoint*/
+@media(min-width:992px){	
+	.offset-navbar {
+		margin-top: 80px;
+	}
+}
+@media(max-width:992px){
+	#main-nav {
+		position: relative;
+	}
+}
+
 #main-nav .navbar-brand {
 	height: 80px;
 }
@@ -214,9 +226,7 @@ hr {
 	transition: 250ms;
 }
 
-.offset-navbar {
-	margin-top: 80px;
-}
+
 
 /* Images on facility landing*/
 
@@ -263,7 +273,7 @@ hr {
 }
 
 #home-photo-carousel .carousel-caption{
-	top: 15%;
+	top: 5%;
 	bottom: auto;
 }
 
