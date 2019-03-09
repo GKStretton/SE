@@ -153,7 +153,7 @@ function setWeekday(id,back){
 
 function setSaturday(id,back){
 	$(id).empty();
-	getSaturdayRange(function(options){
+	getSatudayRange(function(options){
 		for(var i=0;i<options.length;i++){
 			$(id).append( $("<option>")
 				.val(options[i])
@@ -186,7 +186,7 @@ function updateTimeRange(day){
 				setSunday("#time-from-input",false);
 				setSunday("#time-to-input",true);
 			}
-
+			
 			//Facility schedule - ORDER IS IMPORTANT
 			$("#calendar").fullCalendar("option","maxTime",availabilitySundayEnd);
 			$("#calendar").fullCalendar("option","minTime",availabilitySundayStart);
@@ -197,7 +197,7 @@ function updateTimeRange(day){
 				setSaturday("#time-from-input",false);
 				setSaturday("#time-to-input",true);
 			}
-
+			
 			//Facility schedule - ORDER IS IMPORTANT
 			$("#calendar").fullCalendar("option","maxTime",availabilitySaturdayEnd);
 			$("#calendar").fullCalendar("option","minTime",availabilitySaturdayStart);
@@ -274,7 +274,7 @@ $(document).ready(function(){
 	if(availability && noOptions){
 		$("#calendar").fullCalendar(getCalendarConfig());
 		flatpickr("#date-input",getConfig());
-		updateTimeRange(new Date().fp_incr(1).getDay());
+		updateTimeRange(new Date().getDay())
 		$("#book-form").on("shown.bs.collapse", function () {
 			$("#calendar").fullCalendar('rerenderEvents');
 		});
@@ -290,8 +290,7 @@ $(document).on("click", "#btn-book-form", function(){
 	getPrice();
 });
 
-$(document).on("click", ".fc-left", function(){
-    console.log("Button event handler");
+$(document).on("click", ".fc-button", function(){
 	let date = $("#calendar").fullCalendar("getDate").toDate();
 	if(automated){
 		let picker = document.querySelector("#date-input")._flatpickr;
@@ -300,21 +299,9 @@ $(document).on("click", ".fc-left", function(){
 	if(noOptions){
 		updateTimeRange(date.getDay());
 	}
-
+	
 });
 
-$(document).on("click", ".fc-right", function(){
-    console.log("Button event handler");
-	let date = $("#calendar").fullCalendar("getDate").toDate();
-	if(automated){
-		let picker = document.querySelector("#date-input")._flatpickr;
-		picker.setDate(date);
-	}
-	if(noOptions){
-		updateTimeRange(date.getDay());
-	}
-
-});
 //Booking form show button
 
 // contact-us form
