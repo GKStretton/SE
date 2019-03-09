@@ -4,9 +4,9 @@ var Types = keystone.Field.Types;
 var Bookings = new keystone.List('Bookings');
 
 Bookings.add({
-    startTime: {type: Types.Datetime,initial:true,parseFormat:'YYYY-MM-DD HH:mm Z'}, // description
+    startTime: {type: Types.Datetime,initial:true}, // description
     bookingID: {type: String, hidden:true,inital: false},
-    endTime: {type: Types.Datetime,initial:true,parseFormat:'YYYY-MM-DD HH:mm Z'},
+    endTime: {type: Types.Datetime,initial:true},
     price: {type: Number},
     //hopefully should work just by inserting the id in a query
     facility: {type: Types.Relationship,ref:'Facility',initial:true},
@@ -113,7 +113,6 @@ Bookings.schema.pre('save',function preSave(next){
 
 Bookings.schema.pre('remove',function preRemove(next){
     let exception = new Error("Problem  deleting event from calendar");
-    let bk = this;
     keystone.list("Facility").model.findOne({_id:bk.facility},function(err,facility){
         if(err){
             next(exception);
@@ -121,7 +120,7 @@ Bookings.schema.pre('remove',function preRemove(next){
         }
         calendarFunctions.deleteEvent(facility.calendarId,
             jwtClient,
-            bk.bookingID,
+            this.bookingID,
             function(err){
                 if(err){
                     next(exception);
