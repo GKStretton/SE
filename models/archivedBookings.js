@@ -5,9 +5,9 @@ var Types = keystone.Field.Types;
 //the same as a booking but with no personal information
 var archivedBookings = new keystone.List('archivedBookings');
 archivedBookings.add({
-    startTime: {type: Types.Datetime,initial:true},
+    startTime: {type: Types.Datetime,initial:true,parseFormat:'YYYY-MM-DD HH:mm Z'},
     bookingID: {type: String, hidden:true,inital: false},
-    endTime: {type: Types.Datetime,initial:true},
+    endTime: {type: Types.Datetime,initial:true,parseFormat:'YYYY-MM-DD HH:mm Z'},
     price: {type: Number},
     facility: {type: Types.Relationship,ref:'Facility',initial:true},
 });
