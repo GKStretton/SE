@@ -58,4 +58,19 @@ Facility.schema.pre('save',function preSave(next){
 });
 
 
+//deletes the calendar when the facility is deleted
+
+Facility.schema.pre('remove',function preRemove(next){
+    let f = this;
+    let exception = new Error("Problem deleting calendar");
+    calendarFunctions.deleteCalendar(f.calendarId,jwtClient,function(err){
+        if(err){
+            next(exception);
+        }
+        else{
+            next();
+        }
+    });
+});
+
 Facility.register();

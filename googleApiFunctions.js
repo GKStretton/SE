@@ -29,7 +29,7 @@ function createCalendar(summary,authInput,callback) {
             auth:authInput,
             calendarId:calendarId,
             resource: {
-                role: 'owner',
+                role: 'reader',
                 scope: {
                     type:  'user',
                     value: 'group6.se.durham@gmail.com'
@@ -47,15 +47,31 @@ function createCalendar(summary,authInput,callback) {
 
 }
 
+//deletes a calendar by calendar Id
+function deleteCalendar(calendarId,authInput,callback){
+    calendar.calendars.delete({
+        auth:authInput,
+        calendarId: calendarId
+    },function(err){
+        if (err){
+            callback(err);
+            return;
+        }
+            callback(false);
+    }
+    );
 
-function addEvent(calendarId,authInput,startTime,endTime,eventId,callback){
+}
+
+
+function addEvent(calendarId,authInput,startTime,endTime,eventId,bookingDescription,callback){
     calendar.events.insert({
         auth: authInput,
         calendarId: calendarId,
         resource:{
             start:{dateTime:startTime,timeZone:'Europe/London'},
             end: {dateTime:endTime,timeZone:'Europe/London'},
-            summary:'Booking',
+            summary:bookingDescription,
             id: eventId,
         }
     },function(err,response){
@@ -70,7 +86,7 @@ function addEvent(calendarId,authInput,startTime,endTime,eventId,callback){
 }
 
 //update an event
-function updateEvent(calendarId,authInput,startTime,endTime,description,eventId,callback){
+function updateEvent(calendarId,authInput,startTime,endTime,summary,description,eventId,callback){
     calendar.events.update({
         auth: authInput,
         calendarId: calendarId,
@@ -79,7 +95,7 @@ function updateEvent(calendarId,authInput,startTime,endTime,description,eventId,
             start:{dateTime:startTime,timeZone:'Europe/London'},
             end: {dateTime:endTime,timeZone:'Europe/London'},
             description:description,
-            summary: 'Booking'
+            summary:summary
         }
     },function(err,response){
         if(err){
@@ -126,6 +142,7 @@ function getEvent(calendarId,authInput,eventId,callback) {
     });
 }
 
+module.exports.deleteCalendar = deleteCalendar;
 module.exports.createCalendar = createCalendar;
 module.exports.addEvent = addEvent;
 module.exports.deleteEvent = deleteEvent;

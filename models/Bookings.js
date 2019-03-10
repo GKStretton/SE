@@ -1,9 +1,12 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var Bookings = new keystone.List('Bookings');
+var Bookings = new keystone.List('Bookings',{
+  map: { name: 'summary' }
+});
 
 Bookings.add({
+    summary:{type: String, initial: true},
     startTime: {type: Types.Datetime,initial:true,parseFormat:'YYYY-MM-DD HH:mm Z'}, // description
     bookingID: {type: String, hidden:true,inital: false},
     endTime: {type: Types.Datetime,initial:true,parseFormat:'YYYY-MM-DD HH:mm Z'},
@@ -20,7 +23,7 @@ Bookings.schema.virtual('canAccessKeystone').get(function () {
 });
 
 
-Bookings.defaultColumns = ['facility','startTime','endTime', 'customerName'];
+Bookings.defaultColumns = ['summary','facility','startTime','endTime', 'customerName'];
 
 
 //pre validate hook, to check manual events for clashes
@@ -78,6 +81,7 @@ Bookings.schema.pre('save',function preSave(next){
                         bk.startTime,
                         bk.endTime,
                         bk.bookingID,
+                        bk.summary,
                         function(err){
                             if(err){
                                 next(exception);
@@ -89,13 +93,13 @@ Bookings.schema.pre('save',function preSave(next){
                     return;
                 }
                 //the "initial" creation has already made the event, so we now need to update
-                let description = niceCalendarDescription(bk);
-                console.log(description);
+                let nice_description = niceCalendarDescription(bk);
                 calendarFunctions.updateEvent(facility.calendarId,
                     jwtClient,
                     bk.startTime,
                     bk.endTime,
-                    description,
+                    bk.summary,
+                    nice_description,
                     bk.bookingID,
                     function(err){
                         if(err){
