@@ -1,7 +1,9 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var ChildWhatsOn = new keystone.List('ChildWhatsOn');
+var ChildWhatsOn = new keystone.List('ChildWhatsOn',{
+    label: "Child What's On",
+});
 
 ChildWhatsOn.add({
 	day: {type: String, required:true, initial:true},

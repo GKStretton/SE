@@ -52,7 +52,8 @@ keystone.set("nav", {
 	"Pricing":["TheatrePrice", "MembershipPrice", "EquipmentPrice", "IndoorActivityPrice"],
 	"Facilities":["Facility", "Facility Options", "Facility Prices"],
     "Bookings":["Bookings","archivedBookings"],
-	"Upload Image": "Images"
+	"Upload Image": "Images",
+    "Events": ["Activity","ChildWhatsOn","AdultWhatsOn"],
 });
 
 keystone.start();
