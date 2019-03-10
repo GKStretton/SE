@@ -2,7 +2,8 @@ var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
 var Bookings = new keystone.List('Bookings',{
-  map: { name: 'summary' }
+  map: { name: 'summary' },
+  defaultSort: '-startTime'
 });
 
 Bookings.add({
