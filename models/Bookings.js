@@ -37,12 +37,23 @@ Bookings.schema.pre('validate',function preVal(next){
     else{
         inBookingID = bk.bookingID;
     }
-    mongo.bookingValMan(bk.startTime, bk.endTime,bk.facility, bk._id, inBookingID, function(err, res){
+    keystone.list("Facility").model.findOne({_id:bk.facility},function(err,facility){
         if(err){
             next(new Error(err));
             return;
         }
-        next();
+        if(facility.automated){
+            mongo.bookingValMan(bk.startTime, bk.endTime,bk.facility, bk._id, inBookingID, function(err, res){
+                if(err){
+                    next(new Error(err));
+                    return;
+                }
+                next();
+            });
+        }
+        else{//we don't check
+            next();
+        }
     });
 });
 
