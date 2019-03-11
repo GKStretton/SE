@@ -42,6 +42,7 @@ keystone.init({
 	"static": "public",
 	"views": "views",
 	"view engine":"pug",
+	"favicon":"routes/favicon.ico",
 
 /* NODE_ENV=production in .env
 	"port":80,
