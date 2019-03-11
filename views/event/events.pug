@@ -26,12 +26,9 @@ block content
 					div !{event.description.html}
 					if event.url.toString() == ""
 						- var hyperlink = "/booking-enquiry/" + event.name;
-						a(href=hyperlink target="_blank")
-							button(class="btn" style="margin-right: 5px;") Enquire Now
+						a(href=hyperlink class="btn" role="button" target="_blank" style="margin-right:5px;") Enquire Now
 					else
-						a(href=event.url target="_blank")
-							button(class="btn" style="margin-right: 5px;") Learn More
+						a(href=event.url class="btn" role="button" target="_blank" style="margin-right:5px;") Learn More
 					//-may want to improve style and add to the css file 
-					a(href="/whats-on")
-						button(class="btn" style="margin:10px;") Return
-					br
+					a(href="/whats-on" class="btn" role="button") Return
+			br
