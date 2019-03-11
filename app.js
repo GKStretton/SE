@@ -42,6 +42,18 @@ keystone.init({
 	"static": "public",
 	"views": "views",
 	"view engine":"pug",
+
+/* NODE_ENV=production in .env
+	"port":80,
+	"ssl port":443,
+	"ssl":"force",
+	"letsencrypt": (process.env.NODE_ENV !== 'production') && {
+			email: 'group6.se.durham@gmail.com',
+			domains: ['gregstretton.org'],
+			register: true,
+			tos:true,
+			production:true,
+	},*/
 });
 
 keystone.import("models");
