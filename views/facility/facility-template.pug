@@ -75,7 +75,7 @@ block content
 							include form-manual
 					hr
 					div(class="row")
-						if facility.availabilityWeekday === undefined || facility.availabilitySaturday === undefined || facility.availabilitySunday === undefined
+						if facility.availabilityWeekday === undefined || facility.availabilitySaturday === undefined || facility.availabilitySunday === undefined || facility.availabilityWeekday === "" || facility.availabilitySaturday === "" || facility.availabilitySunday === ""
 							div(class="col-sm-12")
 								+pricing
 						else
