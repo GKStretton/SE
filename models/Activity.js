@@ -17,10 +17,8 @@ Activity.add({
 	name: {type: String, required:true, initial:true, unique:true },
 	description: {type:Types.Markdown, required:true, initial:true},
 	url : {type:Types.Url},
-	imageTop: {type: Types.File, storage:storage},
-	image1: {type: Types.File, storage:storage},
-	image2: {type: Types.File, storage:storage},
-	image3: {type: Types.File, storage:storage}
+	topImage: {type: Types.Relationship, ref: "Images"},
+	galleryImages: {type: Types.Relationship, ref: "Images", many: true},
 });
 
 Activity.schema.virtual('canAccessKeystone').get(function () {
