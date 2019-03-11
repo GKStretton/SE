@@ -23,7 +23,8 @@ Facility.add({
 	extras: {type: Types.Relationship, ref: "EquipmentPrice", many: true},
 	topImage: {type: Types.Relationship, ref: "Images"},
 	galleryImages: {type: Types.Relationship, ref: "Images", many: true},
-    calendarId:{type:String}
+    calendarId:{type:String,hidden:true},
+    initialised: {type: Boolean,hidden:true},
 });
 
 Facility.schema.virtual('canAccessKeystone').get(function () {
@@ -40,6 +41,12 @@ Facility.defaultColumns = ['title', "automated"];
 Facility.schema.pre('save',function preSave(next){
     let f = this;
     let exception = new Error("Problem making a calendar");
+    //so we get blocking calendar id creation
+    if(!f.initialised){
+        f.initialised = true;
+        next();
+        return;
+    }
     if(!f.calendarId){
         newCalendarId = calendarFunctions.createCalendar(f.title,jwtClient,function(err,newCalendarId){
             if(err){
@@ -57,5 +64,20 @@ Facility.schema.pre('save',function preSave(next){
     }
 });
 
+
+//deletes the calendar when the facility is deleted
+
+Facility.schema.pre('remove',function preRemove(next){
+    let f = this;
+    let exception = new Error("Problem deleting calendar");
+    calendarFunctions.deleteCalendar(f.calendarId,jwtClient,function(err){
+        if(err){
+            next(exception);
+        }
+        else{
+            next();
+        }
+    });
+});
 
 Facility.register();

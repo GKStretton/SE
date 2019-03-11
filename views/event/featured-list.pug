@@ -1,17 +1,8 @@
 //-likely that href/img/h4 's will become a variable loaded either from keystone or randomly day to day
 div(class="row image-gallery")
-	div(class="col-md-4 mb-4")
-		div(class="card")
-			a(href="/events/Fast Feet Football Academy" class="text-center text-grey font-weight-bold")
-				img(src="/img/FFFA/FFFA-side.png" class="card-img-top")
-				h4(class="card-title") Fast Feet Football Academy
-	div(class="col-md-4 mb-4")
-		div(class="card")
-			a(href="/events/Fast Feet Football Academy" class="text-center text-grey font-weight-bold")
-				img(src="/img/FFFA/FFFA-side.png" class="card-img-top")
-				h4(class="card-title") Fast Feet Football Academy
-	div(class="col-md-4 mb-4")
-		div(class="card")
-			a(href="/events/Fast Feet Football Academy" class="text-center text-grey font-weight-bold")
-				img(src="/img/FFFA/FFFA-side.png" class="card-img-top")
-				h4(class="card-title") Fast Feet Football Academy
+	each act in activities	
+		div(class="col-md-4 mb-4")
+			div(class="card")
+				a(href="/event/"+act.name class="text-center text-grey font-weight-bold")
+					img(src="/getImage/"+act.name class="card-img-top")
+					h4(class="card-title") #{act.name}

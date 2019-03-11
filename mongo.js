@@ -55,6 +55,9 @@ function addEntry(modelName, bookingId,startTime,endTime,facilityId,price,name,e
     if (modelName === "Locks"){
         ev.timestamp = Date.now();
     }
+    else{
+        ev.summary = "Automated Booking";
+    }
     keystone.list(modelName).model.create(ev,function(err,ev){
         if(err){
             callback(err);
