@@ -16,14 +16,14 @@ var storage = new keystone.Storage({
 Facility.add({
 	title: {type: String, required: true, initial: true, unique: true},
 	description: {type: Types.Markdown}, // description
-	availabilityWeekday: {type: String},
-	availabilitySaturday: {type: String},
-	availabilitySunday: {type:String},
+	availabilityWeekday: {type: String,default:"HH:MM - HH:MM"},
+	availabilitySaturday: {type: String,default:"HH:MM - HH:MM"},
+	availabilitySunday: {type:String,default:"HH:MM - HH:MM"},
 	automated: {type: Boolean},
 	extras: {type: Types.Relationship, ref: "EquipmentPrice", many: true},
-	topImage: {type: Types.Relationship, ref: "Images"},
+	topImage: {type: Types.Relationship, ref: "Images",initial:true},
 	galleryImages: {type: Types.Relationship, ref: "Images", many: true},
-    calendarId:{type:String,hidden:true},
+    calendarId:{type:String},
     initialised: {type: Boolean,hidden:true},
 });
 
@@ -41,11 +41,25 @@ Facility.defaultColumns = ['title', "automated"];
 Facility.schema.pre('save',function preSave(next){
     let f = this;
     let exception = new Error("Problem making a calendar");
+    if(!f.topImage){
+        next(new Error("Please add at least a top image for the facility"));
+    }
     //so we get blocking calendar id creation
     if(!f.initialised){
         f.initialised = true;
         next();
         return;
+    }
+    if(f.automated){ //check automated facility for availability data
+        if(mongo.availStringArray(f.availabilitySunday).length == 0){
+            next(new Error("Availability for sunday isn't well formatted"));
+        }
+        if(mongo.availStringArray(f.availabilityWeekday).length == 0){
+            next(new Error("Availability for weekday isn't well formatted"));
+        }
+        if(mongo.availStringArray(f.availabilitySaturday).length == 0){
+            next(new Error("Availability for saturday isn't well formatted"));
+        }
     }
     if(!f.calendarId){
         newCalendarId = calendarFunctions.createCalendar(f.title,jwtClient,function(err,newCalendarId){
@@ -57,7 +71,6 @@ Facility.schema.pre('save',function preSave(next){
             f.calendarId = newCalendarId;
             next();
         });
-
     }
     else{
         next();
