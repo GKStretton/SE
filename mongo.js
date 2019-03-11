@@ -39,6 +39,7 @@ function getLock(bookingId, callback) {
     });
 }
 
+
 // adds an entry to either locks or bookings
 function addEntry(modelName, bookingId,startTime,endTime,facilityId,price,name,email,information,callback){
     //
@@ -232,6 +233,8 @@ function bookingValMan(startTime,endTime,facilityId,unique_id,bookingID,callback
     });
 
 }
+
+
 //callbacks with err,busyString where busyString is either 'busy' or 'notBusy'
 function checkBusy(startTime,endTime,facilityId,unique_id,bookingID,callback){
     let current = Date.now();
@@ -369,7 +372,7 @@ function calcPrice(facilityId, startTime, endTime, callback) {
     });
 }
 
-
+module.exports.availStringArray = availStringArray;
 
 module.exports.getFacilityName = getFacilityName;
 module.exports.getLock = getLock;
