@@ -1,9 +1,8 @@
 extends ../template
 
 block content
-	- var images = [event.image1.filename,event.image2.filename,event.image3.filename]
 	div(class="row")
-		img(src=`/uploads/${event.imageTop.filename}` class="img-fluid " style="width:100%;height:250px;object-fit:cover;")
+		img(src=`/uploads/img/${event.topImage.image.filename}` class="img-fluid " style="width:100%;height:250px;object-fit:cover;")
 	br
 	div(class="row")
 		div(class="col-sm-8 mx-auto")
@@ -11,13 +10,13 @@ block content
 			hr
 			div(class="row")
 				div(class="col-lg-5")
-					//-Has a corresponding function in functions.js for carousel options
+					//-Has a correspondinng function in functions.js for carousel options
 					div(id="events-photos" class="carousel slide b-brand-thin" data-ride="carousel")
 						div(class="carousel-inner")
-							each img, index in images
+							each img, index in event.galleryImages
 								div(class=(index===0)?"carousel-item active":"carousel-item")
-									img(src=`/uploads/${img}` style="height:300px; width:100%; object-fit:cover")
-						a(class="carousel-control-prev" href="#events-photos" data-slide="prev" role="button")
+									img(src=`/uploads/img/${img.image.filename}` style="height:300px; width:100%; object-fit:cover")
+						a(class="carousel-control-prev" href="#facility-photos" data-slide="prev" role="button")
 							span(class="fa fa-arrow-left text-brand")
 						a(class="carousel-control-next" href="#events-photos" data-slide="next" role="button")
 							span(class="fa fa-arrow-right text-brand")
