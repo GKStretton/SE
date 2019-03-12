@@ -15,5 +15,15 @@ AdultWhatsOn.schema.virtual('canAccessKeystone').get(function () {
 	return true;
 });
 
+AdultWhatsOn.schema.pre('validate',function preVal(next){
+    if(this.activities.length != this.times.length){
+        next(new Error("There needs to be the same number of times as activities"));
+    }
+    else{
+        next();
+    }
+
+});
+
 AdultWhatsOn.defaultColumns = 'day';
 AdultWhatsOn.register();
