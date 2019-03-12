@@ -3,6 +3,6 @@ div(class="row image-gallery")
 	each act in activities	
 		div(class="col-md-4 mb-4")
 			div(class="card")
-				a(href="/event/"+act.name class="text-center text-grey font-weight-bold")
-					img(src="/getImage/"+act.name class="card-img-top")
+				a(href="/event/"+act._id class="text-center text-grey font-weight-bold")
+					img(src="/getImage/"+act._id class="card-img-top")
 					h4(class="card-title") #{act.name}

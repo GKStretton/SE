@@ -82,12 +82,11 @@ exports = module.exports = function (app) {
 	app.get("/facility/:name", routes.views.facility);
 	app.get("/booking-enquiry/:query",routes.views.enquiry)
 	app.get("/event", routes.views.eventlanding);
-	app.get("/event/:name", routes.views.event);
-	app.get("/getImage/:name",(req,res) =>{
-		keystone.list("Activity").model.findOne({name:req.params.name}).exec((err, act)=>{
-			let name = act.image1.filename; 
-			console.log(name);
-			res.sendFile(path.join(__dirname,"..","public","uploads",name));
+	app.get("/event/:id", routes.views.event);
+	app.get("/getImage/:id",(req,res) =>{
+		keystone.list("Activity").model.findOne({_id:req.params.id}).populate("galleryImages").exec((err, act)=>{
+			let name = act.galleryImages[0].image.filename; 
+			res.sendFile(path.join(__dirname,"..","public","uploads","img",name));
 		})});
 	app.get("/whats-on", routes.views.whatson);
 	app.get("/", routes.views.index);
