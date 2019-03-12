@@ -18,7 +18,7 @@ module.exports = function (req, res) {
 					facility.availabilityWeekdayEnd = availability[1];
 					facility.hasAvailability = true;
 				}
-				availability = splitAvailability.splitAvailability(facility.availabilitySaturday); 
+				availability = splitAvailability.splitAvailability(facility.availabilitySaturday);
 				if(availability.length != 0){
 					facility.availabilitySaturdayStart = availability[0];
 					facility.availabilitySaturdayEnd = availability[1];

@@ -90,6 +90,7 @@ Facility.schema.pre('validate',function preVal(next){
 Facility.schema.pre('save',function preSave(next){
 	let f = this;
 	let exception = new Error("Problem making a calendar");
+    f.title = f.title.trim();
 	if(!f.topImage){
 		next(new Error("Please add at least a top image for the facility"));
 	}
