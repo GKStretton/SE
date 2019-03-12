@@ -54,7 +54,11 @@ hr {
 }
 
 .bg-brand-grey {
-	background-color: #444;
+	background-color: #222;
+}
+
+.bg-grey {
+	background-color: #444
 }
 
 .bg-light-grey {
