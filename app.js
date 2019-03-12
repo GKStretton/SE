@@ -44,7 +44,6 @@ keystone.init({
 	"view engine":"pug",
 	"favicon":"routes/favicon.ico",
 
-/* NODE_ENV=production in .env
 	"port":80,
 	"ssl port":443,
 	"ssl":"force",
@@ -54,7 +53,7 @@ keystone.init({
 			register: true,
 			tos:true,
 			production:true,
-	},*/
+	},
 });
 
 keystone.import("models");
