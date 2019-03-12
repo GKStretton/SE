@@ -36,7 +36,7 @@ keystone.init({
 	"cookie secret": "helloworld",
 	"mongo": url,
 	"user model": "User",
-	"auto update": true,
+	"auto update": false,
 	"auth": true,
 	"name": "KeystoneDB",
 	"static": "public",
