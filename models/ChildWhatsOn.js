@@ -15,5 +15,15 @@ ChildWhatsOn.schema.virtual('canAccessKeystone').get(function () {
 	return true;
 });
 
+ChildWhatsOn.schema.pre('validate',function preVal(next){
+    if(this.activities.length != this.times.length){
+        next(new Error("There needs to be the same number of times as activities"));
+    }
+    else{
+        next();
+    }
+
+});
+
 ChildWhatsOn.defaultColumns = 'day';
 ChildWhatsOn.register();
