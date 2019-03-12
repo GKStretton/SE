@@ -1,7 +1,7 @@
 keystone = require("keystone");
 mongo = require("./mongo.js");
 splitAvailability = require("./splitAvailability.js");
-const url = 'mongodb://localhost:4321';
+const url = 'mongodb://localhost:27017';
 // BACKEND STUFF
 const bodyParser = require('body-parser');
 path = require('path');
