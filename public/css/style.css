@@ -308,4 +308,31 @@ hr {
 	font-weight: 500;
 	font-size: 1.1rem;
 	text-transform: uppercase;
-	letter-spacing: 0.1ch;}
+	letter-spacing: 0.1ch;
+}
+
+/* Table Styles */
+
+#priceList table {
+	border-collapse: collapse;
+	table-layout: fixed;
+	width: 100%;
+}
+
+#priceList td, #priceList th {
+	border: 1px solid black;
+	text-align: center;
+	padding: 8px;
+}
+
+#priceList td.name{
+	text-align: right;
+}
+
+#priceList td.item{
+	text-align: center;
+}
+
+#priceList tr:nth-child(even) {
+	background-color: #dddddd;
+}
