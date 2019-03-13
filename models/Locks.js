@@ -1,7 +1,7 @@
 var keystone = require('keystone');
 var Types = keystone.Field.Types;
 
-var Locks = new keystone.List('Locks');// { hidden: true }); - add hidden true part when done testing!
+var Locks = new keystone.List('Locks',{hidden: true});
 
 
 Locks.add({

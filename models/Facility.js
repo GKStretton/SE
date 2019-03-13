@@ -23,7 +23,7 @@ Facility.add({
 	extras: {type: Types.Relationship, ref: "EquipmentPrice", many: true},
 	topImage: {type: Types.Relationship, ref: "Images",initial:true},
 	galleryImages: {type: Types.Relationship, ref: "Images", many: true},
-	calendarId:{type:String},
+	calendarId:{type:String, hidden:true},
 	initialised: {type: Boolean,hidden:true},
 });
 

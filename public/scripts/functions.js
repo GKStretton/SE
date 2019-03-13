@@ -15,18 +15,3 @@ $(document).ready(function() {
 $(document).ready(function() {
 	$("#events-photos").carousel({interval: 2000});
 });
-
-// what's on functionality
-$(document).ready(function() {
-	$('#adultTab').hide();
-});
-
-$(document).on("click", "#childTabButton", function() {
-	$('#childTab').show();
-	$('#adultTab').hide();
-});
-
-$(document).on("click", "#adultTabButton", function() {
-	$('#childTab').hide();
-	$('#adultTab').show();
-});
