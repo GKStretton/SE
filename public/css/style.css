@@ -303,28 +303,9 @@ hr {
 	border-left: 3px solid #ffcc27;
 }
 
-/* Table Styles */
-
-table {
-	border-collapse: collapse;
-	table-layout: fixed;
-	width: 100%;
-}
-
-td, th {
-	border: 1px solid black;
-	text-align: center;
-	padding: 8px;
-}
-
-td.name{
-	text-align: right;
-}
-
-td.item{
-	text-align: center;
-}
-
-tr:nth-child(even) {
-	background-color: #dddddd;
-}
+#whatsOnNav .nav-link {
+	color: #808080;
+	font-weight: 500;
+	font-size: 1.1rem;
+	text-transform: uppercase;
+	letter-spacing: 0.1ch;}
