@@ -13,7 +13,7 @@ Bookings.add({
     endTime: {type: Types.Datetime,initial:true,parseFormat:'YYYY-MM-DD HH:mm Z'},
     price: {type: Number},
     //hopefully should work just by inserting the id in a query
-    facility: {type: Types.Relationship,ref:'Facility',initial:true},
+    facility: {type: Types.Relationship,ref:'Facility',initial:true,noedit:true},
     email: {type: String },
     customerName: {type: String},
     information: {type: String}
